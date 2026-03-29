@@ -11,14 +11,14 @@ import { regionsF3 } from "./regions/f3";
 export const floors: FloorPlan[] = [
   {
     floor: "3F",
-    label: "3F — JR Platforms (Yamanote, Saikyo)",
+    label: "3F — Ginza Line Platform",
     elevation: 3,
     svgViewBox: "0 0 1200 600",
     regions: regionsF3,
   },
   {
     floor: "2F",
-    label: "2F — JR Concourse / Keio Inokashira",
+    label: "2F — JR Platforms / Keio Inokashira",
     elevation: 2,
     svgViewBox: "0 0 1200 600",
     regions: regionsF2,
@@ -39,7 +39,7 @@ export const floors: FloorPlan[] = [
   },
   {
     floor: "B2",
-    label: "B2 — Ginza Line / Hanzomon Concourse",
+    label: "B2 — Hanzomon / Den-en-toshi Concourse",
     elevation: -2,
     svgViewBox: "0 0 1200 600",
     regions: regionsB2,

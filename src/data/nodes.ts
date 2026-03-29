@@ -2,12 +2,66 @@ import type { StationNode } from "@/types/station";
 
 export const stationNodes: StationNode[] = [
   // ============================================================
-  // 3F — JR Platforms
+  // 3F — Tokyo Metro Ginza Line
+  // ============================================================
+  {
+    id: "metro_ginza_platform",
+    type: "platform",
+    floor: "3F",
+    label: "Tokyo Metro Ginza Line Platform",
+    railwayLine: "metro_ginza",
+    position: { x: 600, y: 200 },
+  },
+  {
+    id: "3f_ginza_gate",
+    type: "ticket_gate",
+    floor: "3F",
+    label: "Ginza Line Ticket Gate",
+    position: { x: 600, y: 350 },
+  },
+  {
+    id: "3f_concourse",
+    type: "concourse",
+    floor: "3F",
+    label: "3F Ginza Concourse",
+    position: { x: 600, y: 300 },
+  },
+  {
+    id: "3f_escalator_to_2f",
+    type: "escalator",
+    floor: "3F",
+    label: "3F Escalator (to 2F)",
+    position: { x: 500, y: 450 },
+  },
+  {
+    id: "3f_stairs_to_2f",
+    type: "stairs",
+    floor: "3F",
+    label: "3F Stairs (to 2F)",
+    position: { x: 700, y: 450 },
+  },
+  {
+    id: "3f_west_junction",
+    type: "junction",
+    floor: "3F",
+    label: "3F West Junction",
+    position: { x: 300, y: 300 },
+  },
+  {
+    id: "3f_east_junction",
+    type: "junction",
+    floor: "3F",
+    label: "3F East Junction",
+    position: { x: 900, y: 300 },
+  },
+
+  // ============================================================
+  // 2F — JR Platforms / Keio Inokashira
   // ============================================================
   {
     id: "jr_yamanote_platform",
     type: "platform",
-    floor: "3F",
+    floor: "2F",
     label: "JR Yamanote Line Platform",
     railwayLine: "jr_yamanote",
     position: { x: 600, y: 180 },
@@ -15,50 +69,11 @@ export const stationNodes: StationNode[] = [
   {
     id: "jr_saikyo_platform",
     type: "platform",
-    floor: "3F",
+    floor: "2F",
     label: "JR Saikyo / Shonan-Shinjuku Line Platform",
     railwayLine: "jr_saikyo",
     position: { x: 600, y: 400 },
   },
-  {
-    id: "3f_central_stairs",
-    type: "stairs",
-    floor: "3F",
-    label: "3F Central Stairs",
-    position: { x: 600, y: 300 },
-  },
-  {
-    id: "3f_west_escalator",
-    type: "escalator",
-    floor: "3F",
-    label: "3F West Escalator",
-    position: { x: 200, y: 300 },
-  },
-  {
-    id: "3f_east_escalator",
-    type: "escalator",
-    floor: "3F",
-    label: "3F East Escalator",
-    position: { x: 1000, y: 300 },
-  },
-  {
-    id: "3f_north_junction",
-    type: "junction",
-    floor: "3F",
-    label: "3F North Walkway",
-    position: { x: 400, y: 180 },
-  },
-  {
-    id: "3f_south_junction",
-    type: "junction",
-    floor: "3F",
-    label: "3F South Walkway",
-    position: { x: 400, y: 400 },
-  },
-
-  // ============================================================
-  // 2F — JR Concourse / Keio Inokashira
-  // ============================================================
   {
     id: "2f_jr_concourse_center",
     type: "concourse",
@@ -81,20 +96,6 @@ export const stationNodes: StationNode[] = [
     position: { x: 900, y: 300 },
   },
   {
-    id: "2f_jr_north_gate",
-    type: "ticket_gate",
-    floor: "2F",
-    label: "JR North Ticket Gate",
-    position: { x: 600, y: 150 },
-  },
-  {
-    id: "2f_jr_south_gate",
-    type: "ticket_gate",
-    floor: "2F",
-    label: "JR South Ticket Gate",
-    position: { x: 600, y: 450 },
-  },
-  {
     id: "keio_inokashira_platform",
     type: "platform",
     floor: "2F",
@@ -110,32 +111,39 @@ export const stationNodes: StationNode[] = [
     position: { x: 250, y: 300 },
   },
   {
-    id: "2f_escalator_to_3f_west",
-    type: "escalator",
+    id: "2f_jr_central_gate",
+    type: "ticket_gate",
     floor: "2F",
-    label: "2F West Escalator (to 3F)",
-    position: { x: 200, y: 300 },
+    label: "JR Central Ticket Gate",
+    position: { x: 600, y: 450 },
   },
   {
-    id: "2f_escalator_to_3f_east",
+    id: "2f_escalator_to_3f",
     type: "escalator",
     floor: "2F",
-    label: "2F East Escalator (to 3F)",
-    position: { x: 1000, y: 300 },
+    label: "2F Escalator (to 3F)",
+    position: { x: 500, y: 150 },
   },
   {
     id: "2f_stairs_to_3f",
     type: "stairs",
     floor: "2F",
     label: "2F Stairs (to 3F)",
-    position: { x: 600, y: 300 },
+    position: { x: 700, y: 150 },
   },
   {
     id: "2f_escalator_to_1f",
     type: "escalator",
     floor: "2F",
     label: "2F Escalator (to 1F)",
-    position: { x: 500, y: 450 },
+    position: { x: 500, y: 500 },
+  },
+  {
+    id: "2f_stairs_to_1f",
+    type: "stairs",
+    floor: "2F",
+    label: "2F Stairs (to 1F)",
+    position: { x: 700, y: 500 },
   },
   {
     id: "2f_hikarie_passage",
@@ -152,11 +160,11 @@ export const stationNodes: StationNode[] = [
     position: { x: 150, y: 300 },
   },
   {
-    id: "2f_north_concourse",
-    type: "concourse",
+    id: "2f_north_junction",
+    type: "junction",
     floor: "2F",
-    label: "2F North Concourse",
-    position: { x: 600, y: 200 },
+    label: "2F North Junction",
+    position: { x: 600, y: 120 },
   },
 
   // ============================================================
@@ -348,36 +356,28 @@ export const stationNodes: StationNode[] = [
   },
 
   // ============================================================
-  // B2 — Ginza Line / Hanzomon Concourse
+  // B2 — Hanzomon / Den-en-toshi Concourse
   // ============================================================
-  {
-    id: "metro_ginza_platform",
-    type: "platform",
-    floor: "B2",
-    label: "Tokyo Metro Ginza Line Platform",
-    railwayLine: "metro_ginza",
-    position: { x: 600, y: 200 },
-  },
-  {
-    id: "b2_ginza_gate",
-    type: "ticket_gate",
-    floor: "B2",
-    label: "Ginza Line Ticket Gate",
-    position: { x: 600, y: 350 },
-  },
   {
     id: "b2_hanzomon_concourse",
     type: "concourse",
     floor: "B2",
     label: "B2 Hanzomon Concourse",
-    position: { x: 600, y: 450 },
+    position: { x: 600, y: 300 },
+  },
+  {
+    id: "b2_ticket_gate",
+    type: "ticket_gate",
+    floor: "B2",
+    label: "Hanzomon / Den-en-toshi Ticket Gate",
+    position: { x: 600, y: 200 },
   },
   {
     id: "b2_escalator_from_b1",
     type: "escalator",
     floor: "B2",
     label: "B2 Escalator (from B1)",
-    position: { x: 600, y: 150 },
+    position: { x: 600, y: 100 },
   },
   {
     id: "b2_escalator_to_b3",
@@ -391,7 +391,7 @@ export const stationNodes: StationNode[] = [
     type: "elevator",
     floor: "B2",
     label: "B2 Elevator",
-    position: { x: 500, y: 350 },
+    position: { x: 500, y: 300 },
     accessible: true,
   },
   {
@@ -399,28 +399,28 @@ export const stationNodes: StationNode[] = [
     type: "junction",
     floor: "B2",
     label: "B2 West Junction",
-    position: { x: 350, y: 350 },
+    position: { x: 350, y: 300 },
   },
   {
     id: "b2_east_junction",
     type: "junction",
     floor: "B2",
     label: "B2 East Junction",
-    position: { x: 850, y: 350 },
+    position: { x: 850, y: 300 },
   },
   {
-    id: "b2_stairs_from_b1",
-    type: "stairs",
+    id: "b2_north_junction",
+    type: "junction",
     floor: "B2",
-    label: "B2 Stairs (from B1)",
-    position: { x: 700, y: 150 },
+    label: "B2 North Junction",
+    position: { x: 600, y: 150 },
   },
   {
-    id: "b2_north_concourse",
-    type: "concourse",
+    id: "b2_south_junction",
+    type: "junction",
     floor: "B2",
-    label: "B2 North Concourse",
-    position: { x: 600, y: 280 },
+    label: "B2 South Junction",
+    position: { x: 600, y: 450 },
   },
 
   // ============================================================

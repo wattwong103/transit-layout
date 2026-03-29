@@ -2,39 +2,38 @@ import { FloorRegion } from "@/types/station";
 
 export const regionsB2: FloorRegion[] = [
   {
-    id: "b2-platform-ginza",
-    type: "platform_area",
-    railwayLine: "metro_ginza",
-    svgPath:
-      "M 100 250 L 1100 250 L 1100 330 L 100 330 Z",
-    label: "Ginza Line Platform",
-  },
-  {
-    id: "b2-concourse-hanzomon-gate",
+    id: "b2-hanzomon-concourse",
     type: "concourse",
     svgPath:
-      "M 150 60 L 600 60 L 600 230 L 150 230 Z",
-    label: "Hanzomon Ticket Gate / Concourse",
+      "M 200 200 L 1000 200 L 1000 400 L 200 400 Z",
+    label: "Hanzomon / Den-en-toshi Concourse",
   },
   {
-    id: "b2-passage-connecting",
+    id: "b2-ticket-gate-area",
     type: "concourse",
     svgPath:
-      "M 620 80 L 1050 80 L 1050 240 L 620 240 Z",
-    label: "Connecting Passage",
+      "M 350 100 L 850 100 L 850 190 L 350 190 Z",
+    label: "Hanzomon / Den-en-toshi Ticket Gate Area",
   },
   {
-    id: "b2-concourse-south",
+    id: "b2-passage-west",
     type: "concourse",
     svgPath:
-      "M 200 340 L 900 340 L 900 460 L 200 460 Z",
-    label: "South Concourse",
+      "M 80 220 L 190 220 L 190 380 L 80 380 Z",
+    label: "West Corridor",
   },
   {
-    id: "b2-passage-vertical",
+    id: "b2-passage-east",
     type: "concourse",
     svgPath:
-      "M 440 460 L 560 460 L 560 560 L 440 560 Z",
+      "M 1010 220 L 1120 220 L 1120 380 L 1010 380 Z",
+    label: "East Corridor",
+  },
+  {
+    id: "b2-passage-to-b3",
+    type: "concourse",
+    svgPath:
+      "M 440 410 L 560 410 L 560 540 L 440 540 Z",
     label: "Passage to B3",
   },
 ];

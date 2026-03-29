@@ -2,77 +2,86 @@ import type { StationEdge } from "@/types/station";
 
 export const stationEdges: StationEdge[] = [
   // ============================================================
-  // 3F — Internal walkways
+  // 3F — Internal walkways (Ginza Line floor)
   // ============================================================
   {
     id: "e1",
-    from: "jr_yamanote_platform",
-    to: "3f_north_junction",
+    from: "metro_ginza_platform",
+    to: "3f_concourse",
     type: "walkway",
-    weight: 40,
+    weight: 30,
     bidirectional: true,
     accessible: true,
   },
   {
     id: "e2",
-    from: "3f_north_junction",
-    to: "3f_west_escalator",
+    from: "3f_concourse",
+    to: "3f_ginza_gate",
     type: "walkway",
-    weight: 45,
+    weight: 30,
     bidirectional: true,
     accessible: true,
   },
   {
     id: "e3",
-    from: "jr_yamanote_platform",
-    to: "3f_central_stairs",
-    type: "walkway",
-    weight: 30,
+    from: "3f_ginza_gate",
+    to: "metro_ginza_platform",
+    type: "passage",
+    weight: 15,
     bidirectional: true,
     accessible: true,
   },
   {
     id: "e4",
-    from: "3f_central_stairs",
-    to: "jr_saikyo_platform",
-    type: "walkway",
-    weight: 30,
-    bidirectional: true,
-    accessible: true,
-  },
-  {
-    id: "e5",
-    from: "jr_saikyo_platform",
-    to: "3f_south_junction",
-    type: "walkway",
-    weight: 40,
-    bidirectional: true,
-    accessible: true,
-  },
-  {
-    id: "e6",
-    from: "3f_south_junction",
-    to: "3f_west_escalator",
-    type: "walkway",
-    weight: 45,
-    bidirectional: true,
-    accessible: true,
-  },
-  {
-    id: "e7",
-    from: "3f_central_stairs",
-    to: "3f_east_escalator",
+    from: "3f_concourse",
+    to: "3f_west_junction",
     type: "walkway",
     weight: 60,
     bidirectional: true,
     accessible: true,
   },
   {
-    id: "e8",
-    from: "jr_yamanote_platform",
-    to: "3f_east_escalator",
+    id: "e5",
+    from: "3f_concourse",
+    to: "3f_east_junction",
     type: "walkway",
-    weight: 70,
+    weight: 60,
+    bidirectional: true,
+    accessible: true,
+  },
+  {
+    id: "e6",
+    from: "3f_concourse",
+    to: "3f_escalator_to_2f",
+    type: "walkway",
+    weight: 40,
+    bidirectional: true,
+    accessible: true,
+  },
+  {
+    id: "e7",
+    from: "3f_concourse",
+    to: "3f_stairs_to_2f",
+    type: "walkway",
+    weight: 40,
+    bidirectional: true,
+    accessible: true,
+  },
+  {
+    id: "e8",
+    from: "3f_west_junction",
+    to: "3f_escalator_to_2f",
+    type: "walkway",
+    weight: 45,
+    bidirectional: true,
+    accessible: true,
+  },
+  {
+    id: "e9",
+    from: "3f_east_junction",
+    to: "3f_stairs_to_2f",
+    type: "walkway",
+    weight: 45,
     bidirectional: true,
     accessible: true,
   },
@@ -81,19 +90,9 @@ export const stationEdges: StationEdge[] = [
   // 3F → 2F — Vertical connections
   // ============================================================
   {
-    id: "e9",
-    from: "3f_west_escalator",
-    to: "2f_escalator_to_3f_west",
-    type: "escalator",
-    weight: 50,
-    bidirectional: true,
-    accessible: false,
-    floorsConnected: ["3F", "2F"],
-  },
-  {
     id: "e10",
-    from: "3f_east_escalator",
-    to: "2f_escalator_to_3f_east",
+    from: "3f_escalator_to_2f",
+    to: "2f_escalator_to_3f",
     type: "escalator",
     weight: 50,
     bidirectional: true,
@@ -102,7 +101,7 @@ export const stationEdges: StationEdge[] = [
   },
   {
     id: "e11",
-    from: "3f_central_stairs",
+    from: "3f_stairs_to_2f",
     to: "2f_stairs_to_3f",
     type: "stairs",
     weight: 45,
@@ -112,10 +111,55 @@ export const stationEdges: StationEdge[] = [
   },
 
   // ============================================================
-  // 2F — Internal walkways
+  // 2F — Internal walkways (JR Platforms / Keio Inokashira)
   // ============================================================
   {
     id: "e12",
+    from: "2f_escalator_to_3f",
+    to: "2f_north_junction",
+    type: "walkway",
+    weight: 30,
+    bidirectional: true,
+    accessible: true,
+  },
+  {
+    id: "e13",
+    from: "2f_stairs_to_3f",
+    to: "2f_north_junction",
+    type: "walkway",
+    weight: 30,
+    bidirectional: true,
+    accessible: true,
+  },
+  {
+    id: "e14",
+    from: "2f_north_junction",
+    to: "jr_yamanote_platform",
+    type: "walkway",
+    weight: 30,
+    bidirectional: true,
+    accessible: true,
+  },
+  {
+    id: "e15",
+    from: "jr_yamanote_platform",
+    to: "2f_jr_concourse_center",
+    type: "walkway",
+    weight: 40,
+    bidirectional: true,
+    accessible: true,
+  },
+  {
+    id: "e16",
+    from: "2f_jr_concourse_center",
+    to: "jr_saikyo_platform",
+    type: "walkway",
+    weight: 40,
+    bidirectional: true,
+    accessible: true,
+  },
+  {
+    id: "e17",
     from: "2f_jr_concourse_west",
     to: "2f_jr_concourse_center",
     type: "walkway",
@@ -124,7 +168,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e13",
+    id: "e18",
     from: "2f_jr_concourse_center",
     to: "2f_jr_concourse_east",
     type: "walkway",
@@ -133,34 +177,34 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e14",
+    id: "e19",
     from: "2f_jr_concourse_center",
-    to: "2f_jr_north_gate",
+    to: "2f_jr_central_gate",
     type: "walkway",
     weight: 35,
     bidirectional: true,
     accessible: true,
   },
   {
-    id: "e15",
-    from: "2f_jr_concourse_center",
-    to: "2f_jr_south_gate",
-    type: "walkway",
-    weight: 35,
-    bidirectional: true,
-    accessible: true,
-  },
-  {
-    id: "e16",
-    from: "2f_jr_north_gate",
-    to: "2f_north_concourse",
+    id: "e20",
+    from: "2f_jr_central_gate",
+    to: "2f_escalator_to_1f",
     type: "passage",
     weight: 20,
     bidirectional: true,
     accessible: true,
   },
   {
-    id: "e17",
+    id: "e21",
+    from: "2f_jr_central_gate",
+    to: "2f_stairs_to_1f",
+    type: "passage",
+    weight: 20,
+    bidirectional: true,
+    accessible: true,
+  },
+  {
+    id: "e22",
     from: "2f_jr_concourse_west",
     to: "keio_inokashira_gate",
     type: "walkway",
@@ -169,7 +213,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e18",
+    id: "e23",
     from: "keio_inokashira_gate",
     to: "keio_inokashira_platform",
     type: "passage",
@@ -178,7 +222,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e19",
+    id: "e24",
     from: "keio_inokashira_gate",
     to: "2f_west_junction",
     type: "walkway",
@@ -187,34 +231,16 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e20",
+    id: "e25",
     from: "2f_west_junction",
-    to: "2f_escalator_to_3f_west",
+    to: "2f_jr_concourse_west",
     type: "walkway",
-    weight: 30,
+    weight: 35,
     bidirectional: true,
     accessible: true,
   },
   {
-    id: "e21",
-    from: "2f_jr_concourse_center",
-    to: "2f_stairs_to_3f",
-    type: "walkway",
-    weight: 30,
-    bidirectional: true,
-    accessible: true,
-  },
-  {
-    id: "e22",
-    from: "2f_jr_concourse_east",
-    to: "2f_escalator_to_3f_east",
-    type: "walkway",
-    weight: 40,
-    bidirectional: true,
-    accessible: true,
-  },
-  {
-    id: "e23",
+    id: "e26",
     from: "2f_jr_concourse_east",
     to: "2f_hikarie_passage",
     type: "walkway",
@@ -223,29 +249,11 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e24",
-    from: "2f_jr_south_gate",
-    to: "2f_escalator_to_1f",
-    type: "walkway",
-    weight: 30,
-    bidirectional: true,
-    accessible: true,
-  },
-  {
-    id: "e25",
-    from: "2f_north_concourse",
-    to: "2f_jr_concourse_center",
-    type: "walkway",
-    weight: 30,
-    bidirectional: true,
-    accessible: true,
-  },
-  {
-    id: "e26",
+    id: "e27",
     from: "2f_west_junction",
-    to: "2f_jr_concourse_west",
+    to: "keio_inokashira_platform",
     type: "walkway",
-    weight: 35,
+    weight: 40,
     bidirectional: true,
     accessible: true,
   },
@@ -254,11 +262,21 @@ export const stationEdges: StationEdge[] = [
   // 2F → 1F — Vertical connections
   // ============================================================
   {
-    id: "e27",
+    id: "e28",
     from: "2f_escalator_to_1f",
     to: "1f_escalator_to_2f",
     type: "escalator",
     weight: 50,
+    bidirectional: true,
+    accessible: false,
+    floorsConnected: ["2F", "1F"],
+  },
+  {
+    id: "e29",
+    from: "2f_stairs_to_1f",
+    to: "1f_north_junction",
+    type: "stairs",
+    weight: 45,
     bidirectional: true,
     accessible: false,
     floorsConnected: ["2F", "1F"],
@@ -268,7 +286,7 @@ export const stationEdges: StationEdge[] = [
   // 1F — Internal walkways
   // ============================================================
   {
-    id: "e28",
+    id: "e30",
     from: "1f_west_concourse",
     to: "1f_central_concourse",
     type: "walkway",
@@ -277,7 +295,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e29",
+    id: "e31",
     from: "1f_central_concourse",
     to: "1f_east_concourse",
     type: "walkway",
@@ -286,7 +304,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e30",
+    id: "e32",
     from: "1f_west_concourse",
     to: "1f_northwest_junction",
     type: "walkway",
@@ -295,7 +313,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e31",
+    id: "e33",
     from: "1f_northwest_junction",
     to: "hachiko_exit",
     type: "walkway",
@@ -304,7 +322,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e32",
+    id: "e34",
     from: "1f_northwest_junction",
     to: "1f_keio_gate",
     type: "walkway",
@@ -313,7 +331,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e33",
+    id: "e35",
     from: "1f_central_concourse",
     to: "1f_north_junction",
     type: "walkway",
@@ -322,7 +340,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e34",
+    id: "e36",
     from: "1f_north_junction",
     to: "central_exit",
     type: "walkway",
@@ -331,7 +349,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e35",
+    id: "e37",
     from: "1f_north_junction",
     to: "1f_escalator_to_2f",
     type: "walkway",
@@ -340,7 +358,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e36",
+    id: "e38",
     from: "1f_central_concourse",
     to: "1f_south_junction",
     type: "walkway",
@@ -349,7 +367,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e37",
+    id: "e39",
     from: "1f_south_junction",
     to: "new_south_exit",
     type: "walkway",
@@ -358,7 +376,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e38",
+    id: "e40",
     from: "1f_central_concourse",
     to: "1f_escalator_to_b1",
     type: "walkway",
@@ -367,7 +385,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e39",
+    id: "e41",
     from: "1f_central_concourse",
     to: "1f_stairs_to_b1",
     type: "walkway",
@@ -376,7 +394,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e40",
+    id: "e42",
     from: "1f_east_concourse",
     to: "1f_east_junction",
     type: "walkway",
@@ -385,7 +403,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e41",
+    id: "e43",
     from: "1f_east_junction",
     to: "miyamasuzaka_exit",
     type: "walkway",
@@ -394,7 +412,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e42",
+    id: "e44",
     from: "1f_south_junction",
     to: "1f_escalator_to_b1",
     type: "walkway",
@@ -403,7 +421,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e43",
+    id: "e45",
     from: "1f_south_junction",
     to: "1f_stairs_to_b1",
     type: "walkway",
@@ -412,7 +430,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e44",
+    id: "e46",
     from: "1f_keio_gate",
     to: "1f_west_concourse",
     type: "passage",
@@ -425,7 +443,7 @@ export const stationEdges: StationEdge[] = [
   // 1F → B1 — Vertical connections
   // ============================================================
   {
-    id: "e45",
+    id: "e47",
     from: "1f_escalator_to_b1",
     to: "b1_escalator_from_1f",
     type: "escalator",
@@ -435,7 +453,7 @@ export const stationEdges: StationEdge[] = [
     floorsConnected: ["1F", "B1"],
   },
   {
-    id: "e46",
+    id: "e48",
     from: "1f_stairs_to_b1",
     to: "b1_stairs_from_1f",
     type: "stairs",
@@ -449,7 +467,7 @@ export const stationEdges: StationEdge[] = [
   // B1 — Internal walkways
   // ============================================================
   {
-    id: "e47",
+    id: "e49",
     from: "b1_escalator_from_1f",
     to: "b1_north_junction",
     type: "walkway",
@@ -458,7 +476,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e48",
+    id: "e50",
     from: "b1_stairs_from_1f",
     to: "b1_north_junction",
     type: "walkway",
@@ -467,7 +485,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e49",
+    id: "e51",
     from: "b1_north_junction",
     to: "b1_central_concourse",
     type: "walkway",
@@ -476,7 +494,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e50",
+    id: "e52",
     from: "b1_west_passage",
     to: "b1_central_concourse",
     type: "walkway",
@@ -485,7 +503,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e51",
+    id: "e53",
     from: "b1_central_concourse",
     to: "b1_east_passage",
     type: "walkway",
@@ -494,7 +512,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e52",
+    id: "e54",
     from: "b1_central_concourse",
     to: "b1_elevator",
     type: "walkway",
@@ -503,7 +521,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e53",
+    id: "e55",
     from: "b1_central_concourse",
     to: "b1_south_junction",
     type: "walkway",
@@ -512,7 +530,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e54",
+    id: "e56",
     from: "b1_south_junction",
     to: "b1_escalator_to_b2",
     type: "walkway",
@@ -521,7 +539,7 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e55",
+    id: "e57",
     from: "b1_south_junction",
     to: "b1_stairs_to_b2",
     type: "walkway",
@@ -534,7 +552,7 @@ export const stationEdges: StationEdge[] = [
   // B1 → B2 — Vertical connections
   // ============================================================
   {
-    id: "e56",
+    id: "e58",
     from: "b1_escalator_to_b2",
     to: "b2_escalator_from_b1",
     type: "escalator",
@@ -544,9 +562,9 @@ export const stationEdges: StationEdge[] = [
     floorsConnected: ["B1", "B2"],
   },
   {
-    id: "e57",
+    id: "e59",
     from: "b1_stairs_to_b2",
-    to: "b2_stairs_from_b1",
+    to: "b2_north_junction",
     type: "stairs",
     weight: 45,
     bidirectional: true,
@@ -554,7 +572,7 @@ export const stationEdges: StationEdge[] = [
     floorsConnected: ["B1", "B2"],
   },
   {
-    id: "e58",
+    id: "e60",
     from: "b1_elevator",
     to: "b2_elevator",
     type: "elevator",
@@ -565,30 +583,12 @@ export const stationEdges: StationEdge[] = [
   },
 
   // ============================================================
-  // B2 — Internal walkways
+  // B2 — Internal walkways (Hanzomon / Den-en-toshi Concourse)
   // ============================================================
   {
-    id: "e59",
-    from: "b2_escalator_from_b1",
-    to: "b2_north_concourse",
-    type: "walkway",
-    weight: 30,
-    bidirectional: true,
-    accessible: true,
-  },
-  {
-    id: "e60",
-    from: "b2_stairs_from_b1",
-    to: "b2_north_concourse",
-    type: "walkway",
-    weight: 30,
-    bidirectional: true,
-    accessible: true,
-  },
-  {
     id: "e61",
-    from: "b2_north_concourse",
-    to: "metro_ginza_platform",
+    from: "b2_escalator_from_b1",
+    to: "b2_north_junction",
     type: "walkway",
     weight: 30,
     bidirectional: true,
@@ -596,8 +596,8 @@ export const stationEdges: StationEdge[] = [
   },
   {
     id: "e62",
-    from: "b2_north_concourse",
-    to: "b2_ginza_gate",
+    from: "b2_north_junction",
+    to: "b2_ticket_gate",
     type: "walkway",
     weight: 30,
     bidirectional: true,
@@ -605,8 +605,8 @@ export const stationEdges: StationEdge[] = [
   },
   {
     id: "e63",
-    from: "metro_ginza_platform",
-    to: "b2_ginza_gate",
+    from: "b2_ticket_gate",
+    to: "b2_hanzomon_concourse",
     type: "passage",
     weight: 20,
     bidirectional: true,
@@ -614,16 +614,7 @@ export const stationEdges: StationEdge[] = [
   },
   {
     id: "e64",
-    from: "b2_ginza_gate",
-    to: "b2_hanzomon_concourse",
-    type: "walkway",
-    weight: 30,
-    bidirectional: true,
-    accessible: true,
-  },
-  {
-    id: "e65",
-    from: "b2_ginza_gate",
+    from: "b2_hanzomon_concourse",
     to: "b2_elevator",
     type: "walkway",
     weight: 30,
@@ -631,8 +622,8 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e66",
-    from: "b2_ginza_gate",
+    id: "e65",
+    from: "b2_hanzomon_concourse",
     to: "b2_west_junction",
     type: "walkway",
     weight: 50,
@@ -640,8 +631,8 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e67",
-    from: "b2_ginza_gate",
+    id: "e66",
+    from: "b2_hanzomon_concourse",
     to: "b2_east_junction",
     type: "walkway",
     weight: 50,
@@ -649,8 +640,17 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
   {
-    id: "e68",
+    id: "e67",
     from: "b2_hanzomon_concourse",
+    to: "b2_south_junction",
+    type: "walkway",
+    weight: 35,
+    bidirectional: true,
+    accessible: true,
+  },
+  {
+    id: "e68",
+    from: "b2_south_junction",
     to: "b2_escalator_to_b3",
     type: "walkway",
     weight: 30,
