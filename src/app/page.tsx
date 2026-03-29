@@ -1,11 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { FloorId } from "@/types/station";
 import { useMapStore } from "@/store/useMapStore";
 import { stationNodes } from "@/data/nodes";
 import { stationEdges } from "@/data/edges";
-import { getFloorPlan } from "@/data/floors";
+import { getFloorPlan, floors } from "@/data/floors";
 import FloorMap from "@/components/map/FloorMap";
 import FloorSelector from "@/components/floor/FloorSelector";
 import NodeTooltip from "@/components/map/NodeTooltip";
@@ -16,6 +16,13 @@ export default function Home() {
   const { currentFloor, selectedNode, activeRoute } = useMapStore();
 
   const floorPlan = getFloorPlan(currentFloor);
+  const prevElevationRef = useRef<number | undefined>(undefined);
+
+  // Track previous floor elevation for slide animation direction
+  const prevElevation = prevElevationRef.current;
+  if (floorPlan) {
+    prevElevationRef.current = floorPlan.elevation;
+  }
 
   // Nodes on the current floor
   const floorNodes = useMemo(
@@ -48,7 +55,7 @@ export default function Home() {
   if (!floorPlan) return null;
 
   return (
-    <div className="h-screen flex flex-col bg-slate-900">
+    <div className="h-dvh flex flex-col bg-slate-900">
       {/* Header */}
       <header className="flex-shrink-0 px-4 py-2.5 bg-slate-800/95 backdrop-blur-sm border-b border-slate-700">
         <div className="flex items-center justify-between">
@@ -70,13 +77,14 @@ export default function Home() {
       </div>
 
       {/* Map viewport */}
-      <div className="flex-1 relative min-h-0">
+      <div className="flex-1 relative min-h-0 overflow-hidden">
         <FloorMap
           floorPlan={floorPlan}
           nodes={floorNodes}
           edges={floorEdges}
           allNodes={stationNodes}
           route={activeRoute}
+          prevElevation={prevElevation}
         />
 
         {/* Node tooltip overlay */}

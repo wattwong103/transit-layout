@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+import { motion } from "framer-motion";
 import { Route, StationNode } from "@/types/station";
 
 interface RoutePathProps {
@@ -9,27 +11,24 @@ interface RoutePathProps {
 }
 
 export default function RoutePath({ route, nodesById, currentFloor }: RoutePathProps) {
-  if (!route) return null;
+  const segments = useMemo(() => {
+    if (!route) return [];
+    const pts: { x: number; y: number }[] = [];
 
-  // Build path segments that are on the current floor
-  const segments: { x: number; y: number }[] = [];
+    for (const step of route.steps) {
+      const fromNode = nodesById.get(step.fromNode);
+      const toNode = nodesById.get(step.toNode);
+      if (!fromNode || !toNode) continue;
 
-  for (const step of route.steps) {
-    const fromNode = nodesById.get(step.fromNode);
-    const toNode = nodesById.get(step.toNode);
-    if (!fromNode || !toNode) continue;
-
-    if (fromNode.floor === currentFloor) {
-      if (segments.length === 0) {
-        segments.push(fromNode.position);
+      if (fromNode.floor === currentFloor) {
+        if (pts.length === 0) pts.push(fromNode.position);
+        if (toNode.floor === currentFloor) pts.push(toNode.position);
+      } else if (toNode.floor === currentFloor && pts.length === 0) {
+        pts.push(toNode.position);
       }
-      if (toNode.floor === currentFloor) {
-        segments.push(toNode.position);
-      }
-    } else if (toNode.floor === currentFloor && segments.length === 0) {
-      segments.push(toNode.position);
     }
-  }
+    return pts;
+  }, [route, nodesById, currentFloor]);
 
   if (segments.length < 2) return null;
 
@@ -40,54 +39,138 @@ export default function RoutePath({ route, nodesById, currentFloor }: RoutePathP
       .map((p) => `L ${p.x} ${p.y}`)
       .join(" ");
 
+  // Calculate approximate total path length for animation
+  let totalLength = 0;
+  for (let i = 1; i < segments.length; i++) {
+    const dx = segments[i].x - segments[i - 1].x;
+    const dy = segments[i].y - segments[i - 1].y;
+    totalLength += Math.sqrt(dx * dx + dy * dy);
+  }
+
   return (
     <g className="route-path">
       {/* Glow effect */}
-      <path
+      <motion.path
         d={pathData}
         fill="none"
         stroke="#3b82f6"
-        strokeWidth={8}
-        strokeOpacity={0.2}
+        strokeWidth={10}
+        strokeOpacity={0.15}
         strokeLinecap="round"
         strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
       />
-      {/* Main path */}
-      <path
+
+      {/* Main animated path */}
+      <motion.path
         d={pathData}
         fill="none"
         stroke="#3b82f6"
         strokeWidth={4}
-        strokeOpacity={0.8}
+        strokeOpacity={0.9}
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeDasharray="8 4"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+      />
+
+      {/* Animated dashes overlay (marching ants after path draws) */}
+      <motion.path
+        d={pathData}
+        fill="none"
+        stroke="#60a5fa"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeDasharray="8 6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.6 }}
+        transition={{ delay: 0.8, duration: 0.3 }}
       >
         <animate
           attributeName="stroke-dashoffset"
-          values="0;-24"
-          dur="1s"
+          values="0;-28"
+          dur="1.5s"
           repeatCount="indefinite"
         />
-      </path>
+      </motion.path>
+
       {/* Start marker */}
-      <circle
+      <motion.circle
         cx={segments[0].x}
         cy={segments[0].y}
-        r={6}
+        r={7}
         fill="#22c55e"
         stroke="#fff"
         strokeWidth={2}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 0.1, type: "spring", stiffness: 400 }}
       />
+
       {/* End marker */}
-      <circle
+      <motion.circle
         cx={segments[segments.length - 1].x}
         cy={segments[segments.length - 1].y}
-        r={6}
+        r={7}
         fill="#ef4444"
         stroke="#fff"
         strokeWidth={2}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 0.8, type: "spring", stiffness: 400 }}
       />
+
+      {/* Floor continuation indicator */}
+      {route &&
+        route.steps
+          .filter(
+            (step) =>
+              step.floorChange &&
+              (step.floor === currentFloor ||
+                step.floorChange.to === currentFloor)
+          )
+          .map((step, i) => {
+            const node =
+              step.floor === currentFloor
+                ? nodesById.get(step.toNode)
+                : nodesById.get(step.fromNode);
+            if (!node || node.floor !== currentFloor) return null;
+
+            const targetFloor = step.floorChange!.to === currentFloor
+              ? step.floorChange!.from
+              : step.floorChange!.to;
+
+            return (
+              <g key={`cont-${i}`}>
+                <rect
+                  x={node.position.x + 10}
+                  y={node.position.y - 10}
+                  width={32}
+                  height={18}
+                  rx={4}
+                  fill="#1e3a5f"
+                  stroke="#3b82f6"
+                  strokeWidth={1}
+                />
+                <text
+                  x={node.position.x + 26}
+                  y={node.position.y + 1}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fill="#60a5fa"
+                  fontSize={9}
+                  fontWeight="bold"
+                  fontFamily="system-ui, sans-serif"
+                >
+                  → {targetFloor}
+                </text>
+              </g>
+            );
+          })}
     </g>
   );
 }
