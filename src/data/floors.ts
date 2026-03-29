@@ -11,7 +11,7 @@ import { regionsF3 } from "./regions/f3";
 export const floors: FloorPlan[] = [
   {
     floor: "3F",
-    label: "3F — Ginza Line Platform",
+    label: "3F — Ginza Line / Central Exit",
     elevation: 3,
     svgViewBox: "0 0 1200 600",
     regions: regionsF3,

@@ -202,7 +202,7 @@ export const stationNodes: StationNode[] = [
   {
     id: "central_exit",
     type: "exit",
-    floor: "1F",
+    floor: "3F",
     label: "Central Exit",
     exitName: "Central Exit",
     position: { x: 500, y: 100 },
@@ -210,10 +210,10 @@ export const stationNodes: StationNode[] = [
   {
     id: "new_south_exit",
     type: "exit",
-    floor: "1F",
+    floor: "2F",
     label: "New South Exit",
     exitName: "New South Exit",
-    position: { x: 500, y: 530 },
+    position: { x: 900, y: 500 },
   },
   {
     id: "miyamasuzaka_exit",

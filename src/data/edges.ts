@@ -341,7 +341,7 @@ export const stationEdges: StationEdge[] = [
   },
   {
     id: "e36",
-    from: "1f_north_junction",
+    from: "3f_concourse",
     to: "central_exit",
     type: "walkway",
     weight: 30,
@@ -368,10 +368,10 @@ export const stationEdges: StationEdge[] = [
   },
   {
     id: "e39",
-    from: "1f_south_junction",
+    from: "2f_jr_concourse_east",
     to: "new_south_exit",
     type: "walkway",
-    weight: 35,
+    weight: 40,
     bidirectional: true,
     accessible: true,
   },
