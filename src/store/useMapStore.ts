@@ -3,18 +3,28 @@
 import { create } from "zustand";
 import { FloorId, StationNode, Route } from "@/types/station";
 
+type ViewMode = "floor" | "overview";
+
 interface MapStore {
+  // View mode
+  viewMode: ViewMode;
+  setViewMode: (mode: ViewMode) => void;
+
   // Current floor being viewed
   currentFloor: FloorId;
   setCurrentFloor: (floor: FloorId) => void;
+
+  // Highlighted floor (overview hover)
+  highlightedFloor: FloorId | null;
+  setHighlightedFloor: (floor: FloorId | null) => void;
 
   // Selected node (tapped marker)
   selectedNode: StationNode | null;
   setSelectedNode: (node: StationNode | null) => void;
 
   // Route planning
-  routeFrom: string | null; // node id
-  routeTo: string | null; // node id
+  routeFrom: string | null;
+  routeTo: string | null;
   setRouteFrom: (nodeId: string | null) => void;
   setRouteTo: (nodeId: string | null) => void;
 
@@ -33,8 +43,15 @@ interface MapStore {
 }
 
 export const useMapStore = create<MapStore>((set) => ({
+  viewMode: "floor",
+  setViewMode: (mode) =>
+    set({ viewMode: mode, transform: { x: 0, y: 0, scale: 1 }, selectedNode: null }),
+
   currentFloor: "1F",
   setCurrentFloor: (floor) => set({ currentFloor: floor, selectedNode: null }),
+
+  highlightedFloor: null,
+  setHighlightedFloor: (floor) => set({ highlightedFloor: floor }),
 
   selectedNode: null,
   setSelectedNode: (node) => set({ selectedNode: node }),
