@@ -2,40 +2,40 @@ import { FloorRegion } from "@/types/station";
 
 export const regionsB5: FloorRegion[] = [
   {
-    id: "b5-platform-fukutoshin",
+    id: "b5-fukutoshin-platform",
     type: "platform_area",
     railwayLine: "metro_fukutoshin",
     svgPath:
-      "M 250 40 L 310 40 L 310 540 L 250 540 Z",
-    label: "Fukutoshin Line Platform 1/2",
+      "M 200 70 L 230 50 L 310 50 L 340 70 L 340 530 L 310 550 L 230 550 L 200 530 Z",
+    label: "Fukutoshin Line",
   },
   {
-    id: "b5-platform-toyoko",
+    id: "b5-toyoko-platform",
     type: "platform_area",
     railwayLine: "tokyu_toyoko",
     svgPath:
-      "M 890 40 L 950 40 L 950 540 L 890 540 Z",
-    label: "Toyoko Line Platform 3/4",
+      "M 860 70 L 890 50 L 970 50 L 1000 70 L 1000 530 L 970 550 L 890 550 L 860 530 Z",
+    label: "Toyoko Line",
   },
   {
-    id: "b5-concourse-center",
+    id: "b5-central-concourse",
     type: "concourse",
     svgPath:
-      "M 310 230 L 890 230 L 890 350 L 310 350 Z",
+      "M 350 230 L 850 230 L 850 380 L 350 380 Z",
     label: "Connecting Concourse",
   },
   {
-    id: "b5-concourse-north",
+    id: "b5-north-passage",
     type: "concourse",
     svgPath:
-      "M 310 40 L 500 40 L 500 100 L 700 100 L 700 40 L 890 40 L 890 100 L 310 100 Z",
+      "M 350 60 L 850 60 L 850 220 L 350 220 Z",
     label: "North Passage",
   },
   {
-    id: "b5-concourse-south",
+    id: "b5-south-passage",
     type: "concourse",
     svgPath:
-      "M 310 490 L 500 490 L 500 540 L 700 540 L 700 490 L 890 490 L 890 540 L 310 540 Z",
+      "M 350 390 L 850 390 L 850 540 L 350 540 Z",
     label: "South Passage",
   },
 ];
