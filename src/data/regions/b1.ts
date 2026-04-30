@@ -2,52 +2,38 @@ import { FloorRegion } from "@/types/station";
 
 export const regionsB1: FloorRegion[] = [
   {
-    id: "b1-concourse-central",
+    id: "b1-central-concourse",
     type: "concourse",
     svgPath:
-      "M 250 140 L 950 140 L 950 440 L 250 440 Z",
+      "M 280 160 L 920 160 L 920 440 L 620 440 L 620 500 L 480 500 L 480 440 L 280 440 Z",
     label: "Central Concourse",
   },
   {
-    id: "b1-passage-west-hachiko",
+    id: "b1-west-passage",
     type: "concourse",
     svgPath:
-      "M 30 220 L 250 220 L 250 360 L 30 360 Z",
-    label: "Underground Passage (West / Hachiko)",
+      "M 50 240 L 270 240 L 270 370 L 50 370 Z",
+    label: "West Passage (Hachiko)",
   },
   {
-    id: "b1-passage-east-hikarie",
+    id: "b1-east-passage",
     type: "concourse",
     svgPath:
-      "M 950 200 L 1170 200 L 1170 380 L 950 380 Z",
-    label: "Underground Passage (East / Hikarie)",
+      "M 930 240 L 1150 240 L 1150 370 L 930 370 Z",
+    label: "East Passage (Hikarie)",
   },
   {
-    id: "b1-commercial-north",
+    id: "b1-commercial",
     type: "commercial",
     svgPath:
-      "M 300 30 L 900 30 L 900 130 L 300 130 Z",
-    label: "Commercial Area",
+      "M 330 50 L 870 50 L 870 150 L 330 150 Z",
+    label: "Shibuya Chikamichi (Shops)",
   },
   {
-    id: "b1-passage-to-ginza",
+    id: "b1-connection-down",
     type: "concourse",
     svgPath:
-      "M 400 440 L 600 440 L 600 570 L 400 570 Z",
-    label: "Passage to B2 / Ginza Line",
-  },
-  {
-    id: "b1-outside-west",
-    type: "outside",
-    svgPath:
-      "M 30 30 L 240 30 L 240 210 L 30 210 Z",
-    label: "Hachiko Square (Above)",
-  },
-  {
-    id: "b1-outside-east",
-    type: "outside",
-    svgPath:
-      "M 960 30 L 1170 30 L 1170 190 L 960 190 Z",
-    label: "Hikarie Side (Above)",
+      "M 450 510 L 650 510 L 650 570 L 450 570 Z",
+    label: "↓B2",
   },
 ];

@@ -2,38 +2,38 @@ import { FloorRegion } from "@/types/station";
 
 export const regionsB4: FloorRegion[] = [
   {
-    id: "b4-concourse-main",
+    id: "b4-ticket-gate",
     type: "concourse",
     svgPath:
-      "M 120 160 L 1080 160 L 1080 420 L 120 420 Z",
+      "M 280 50 L 920 50 L 920 160 L 280 160 Z",
+    label: "Fukutoshin / Toyoko Ticket Gates",
+  },
+  {
+    id: "b4-concourse",
+    type: "concourse",
+    svgPath:
+      "M 180 170 L 1020 170 L 1020 420 L 700 420 L 700 490 L 500 490 L 500 420 L 180 420 Z",
     label: "Main Concourse",
   },
   {
-    id: "b4-ticket-gate-north",
-    type: "concourse",
-    svgPath:
-      "M 200 40 L 1000 40 L 1000 150 L 200 150 Z",
-    label: "Ticket Gate Area (North)",
-  },
-  {
-    id: "b4-commercial-east",
+    id: "b4-shops-west",
     type: "commercial",
     svgPath:
-      "M 820 430 L 1080 430 L 1080 560 L 820 560 Z",
-    label: "East Side Shops",
+      "M 180 430 L 400 430 L 400 560 L 180 560 Z",
+    label: "West Shops",
   },
   {
-    id: "b4-commercial-west",
+    id: "b4-shops-east",
     type: "commercial",
     svgPath:
-      "M 120 430 L 380 430 L 380 560 L 120 560 Z",
-    label: "West Side Shops",
+      "M 800 430 L 1020 430 L 1020 560 L 800 560 Z",
+    label: "East Shops",
   },
   {
-    id: "b4-passage-south",
+    id: "b4-connection-down",
     type: "concourse",
     svgPath:
-      "M 450 420 L 750 420 L 750 560 L 450 560 Z",
-    label: "South Passage to B5",
+      "M 470 500 L 730 500 L 730 560 L 470 560 Z",
+    label: "↓B5",
   },
 ];

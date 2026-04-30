@@ -6,14 +6,14 @@ export const regionsF2: FloorRegion[] = [
     type: "platform_area",
     railwayLine: "jr_yamanote",
     svgPath:
-      "M 200 80 L 1000 80 L 1000 170 L 200 170 Z",
-    label: "JR Yamanote Line Platforms 1/2",
+      "M 280 95 L 310 80 L 890 80 L 920 95 L 920 155 L 890 170 L 310 170 L 280 155 Z",
+    label: "JR Yamanote Line Platforms 1–2",
   },
   {
-    id: "f2-jr-central-concourse",
+    id: "f2-jr-concourse",
     type: "concourse",
     svgPath:
-      "M 250 180 L 950 180 L 950 350 L 250 350 Z",
+      "M 300 185 L 900 185 L 900 370 L 300 370 Z",
     label: "JR Central Concourse",
   },
   {
@@ -21,36 +21,43 @@ export const regionsF2: FloorRegion[] = [
     type: "platform_area",
     railwayLine: "jr_saikyo",
     svgPath:
-      "M 200 360 L 1000 360 L 1000 450 L 200 450 Z",
-    label: "JR Saikyo / Shonan-Shinjuku Line Platforms 3/4",
+      "M 280 385 L 310 370 L 890 370 L 920 385 L 920 445 L 890 460 L 310 460 L 280 445 Z",
+    label: "JR Saikyo / Shonan-Shinjuku Platforms 3–4",
   },
   {
-    id: "f2-keio-inokashira-platform",
+    id: "f2-keio-inokashira",
     type: "platform_area",
     railwayLine: "keio_inokashira",
     svgPath:
-      "M 40 80 L 240 80 L 240 280 L 40 280 Z",
-    label: "Keio Inokashira Line Platform (Mark City)",
+      "M 40 170 L 220 170 L 240 190 L 240 360 L 220 380 L 40 380 Z",
+    label: "Keio Inokashira Line",
   },
   {
-    id: "f2-escalator-stairs-north",
+    id: "f2-new-south-exit",
     type: "concourse",
     svgPath:
-      "M 400 30 L 800 30 L 800 70 L 400 70 Z",
-    label: "Escalators / Stairs (to 3F)",
+      "M 750 470 L 960 470 L 980 490 L 980 550 L 750 550 Z",
+    label: "New South Exit",
   },
   {
-    id: "f2-escalator-stairs-south",
+    id: "f2-hikarie-passage",
     type: "concourse",
     svgPath:
-      "M 400 460 L 800 460 L 800 540 L 400 540 Z",
-    label: "Escalators / Stairs (to 1F)",
+      "M 930 220 L 1150 220 L 1150 340 L 930 340 Z",
+    label: "Hikarie Passage",
   },
   {
-    id: "f2-connection-hikarie",
+    id: "f2-escalator-up",
     type: "concourse",
     svgPath:
-      "M 960 180 L 1170 180 L 1170 340 L 960 340 Z",
-    label: "Hikarie Connecting Passage",
+      "M 380 30 L 530 30 L 530 70 L 380 70 Z",
+    label: "↑3F",
+  },
+  {
+    id: "f2-escalator-down",
+    type: "concourse",
+    svgPath:
+      "M 380 470 L 530 470 L 530 530 L 380 530 Z",
+    label: "↓1F",
   },
 ];
