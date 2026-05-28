@@ -258,6 +258,57 @@ export const stationEdges: StationEdge[] = [
     accessible: true,
   },
 
+  // 2F — New South Exit (far west end of Saikyo)
+  {
+    id: "e109",
+    from: "jr_saikyo_platform",
+    to: "new_south_exit",
+    type: "walkway",
+    weight: 90,
+    bidirectional: true,
+    accessible: true,
+  },
+
+  // 2F — South Gate (south of concourse)
+  {
+    id: "e110",
+    from: "2f_jr_concourse_center",
+    to: "south_gate",
+    type: "walkway",
+    weight: 45,
+    bidirectional: true,
+    accessible: true,
+  },
+  {
+    id: "e111",
+    from: "jr_saikyo_platform",
+    to: "south_gate",
+    type: "walkway",
+    weight: 30,
+    bidirectional: true,
+    accessible: true,
+  },
+
+  // 2F — Tamagawa Gate (connects JR concourse to Keio area)
+  {
+    id: "e112",
+    from: "tamagawa_gate",
+    to: "2f_jr_concourse_west",
+    type: "walkway",
+    weight: 35,
+    bidirectional: true,
+    accessible: true,
+  },
+  {
+    id: "e113",
+    from: "tamagawa_gate",
+    to: "keio_inokashira_gate",
+    type: "passage",
+    weight: 25,
+    bidirectional: true,
+    accessible: true,
+  },
+
   // ============================================================
   // 2F → 1F — Vertical connections
   // ============================================================
@@ -368,10 +419,10 @@ export const stationEdges: StationEdge[] = [
   },
   {
     id: "e39",
-    from: "2f_jr_concourse_east",
+    from: "2f_jr_concourse_west",
     to: "new_south_exit",
     type: "walkway",
-    weight: 40,
+    weight: 90,
     bidirectional: true,
     accessible: true,
   },
