@@ -6,7 +6,7 @@ export const regionsF2: FloorRegion[] = [
     type: "track_bed",
     railwayLine: "keio_inokashira",
     svgPath:
-      "M 10 45 Q 10 40 15 40 L 20 40 Q 25 40 25 45 L 25 265 Q 25 270 20 270 L 15 270 Q 10 270 10 265 Z",
+      "M 43 148 L 297 148 Q 300 148 300 151 L 300 152 Q 300 155 297 155 L 43 155 Q 40 155 40 152 L 40 151 Q 40 148 43 148 Z",
     label: "",
   },
   {
@@ -14,7 +14,7 @@ export const regionsF2: FloorRegion[] = [
     type: "platform_area",
     railwayLine: "keio_inokashira",
     svgPath:
-      "M 30 48 Q 30 40 38 40 L 202 40 Q 210 40 216 46 L 224 54 Q 230 60 230 68 L 230 242 Q 230 250 224 256 L 216 264 Q 210 270 202 270 L 38 270 Q 30 270 30 262 Z",
+      "M 40 166 Q 40 158 48 158 L 292 158 Q 300 158 300 166 L 300 217 Q 300 225 292 225 L 48 225 Q 40 225 40 217 Z",
     label: "Keio Inokashira Line",
   },
   {
@@ -22,14 +22,14 @@ export const regionsF2: FloorRegion[] = [
     type: "track_bed",
     railwayLine: "keio_inokashira",
     svgPath:
-      "M 235 45 Q 235 40 240 40 L 245 40 Q 250 40 250 45 L 250 265 Q 250 270 245 270 L 240 270 Q 235 270 235 265 Z",
+      "M 43 225 L 297 225 Q 300 225 300 228 L 300 229 Q 300 232 297 232 L 43 232 Q 40 232 40 229 L 40 228 Q 40 225 43 225 Z",
     label: "",
   },
   {
     id: "f2-tamagawa-corridor",
     type: "concourse",
     svgPath:
-      "M 240 148 Q 240 140 248 140 L 312 140 Q 320 140 320 148 L 320 212 Q 320 220 312 220 L 248 220 Q 240 220 240 212 Z",
+      "M 308 175 L 372 175 Q 380 175 380 183 L 380 227 Q 380 235 372 235 L 308 235 Q 300 235 300 227 L 300 183 Q 300 175 308 175 Z",
     label: "Tamagawa Gate",
   },
   {
@@ -37,7 +37,7 @@ export const regionsF2: FloorRegion[] = [
     type: "track_bed",
     railwayLine: "jr_yamanote",
     svgPath:
-      "M 310 45 Q 310 40 315 40 L 925 40 Q 930 40 930 45 L 930 50 Q 930 55 925 55 L 315 55 Q 310 55 310 50 Z",
+      "M 508 90 L 509 90 Q 512 90 512 93 L 512 507 Q 512 510 509 510 L 508 510 Q 505 510 505 507 L 505 93 Q 505 90 508 90 Z",
     label: "",
   },
   {
@@ -45,22 +45,22 @@ export const regionsF2: FloorRegion[] = [
     type: "platform_area",
     railwayLine: "jr_yamanote",
     svgPath:
-      "M 310 83 Q 310 75 317 71 L 333 64 Q 340 60 348 60 L 892 60 Q 900 60 907 64 L 923 71 Q 930 75 930 83 L 930 127 Q 930 135 923 139 L 907 146 Q 900 150 892 150 L 348 150 Q 340 150 333 146 L 317 139 Q 310 135 310 127 Z",
-    label: "JR Yamanote Line Platforms 1–2",
+      "M 528 90 Q 520 90 520 98 L 520 502 Q 520 510 528 510 L 592 510 Q 600 510 600 502 L 600 98 Q 600 90 592 90 Z",
+    label: "JR Yamanote 1–2",
   },
   {
     id: "f2-yamanote-trackbed-south",
     type: "track_bed",
     railwayLine: "jr_yamanote",
     svgPath:
-      "M 310 160 Q 310 155 315 155 L 925 155 Q 930 155 930 160 L 930 165 Q 930 170 925 170 L 315 170 Q 310 170 310 165 Z",
+      "M 611 90 L 612 90 Q 615 90 615 93 L 615 507 Q 615 510 612 510 L 611 510 Q 608 510 608 507 L 608 93 Q 608 90 611 90 Z",
     label: "",
   },
   {
     id: "f2-jr-concourse",
     type: "concourse",
     svgPath:
-      "M 330 168 Q 330 160 338 160 L 902 160 Q 910 160 910 168 L 910 322 Q 910 330 902 330 L 338 330 Q 330 330 330 322 Z",
+      "M 468 250 L 752 250 Q 760 250 760 258 L 760 332 Q 760 340 752 340 L 468 340 Q 460 340 460 332 L 460 258 Q 460 250 468 250 Z",
     label: "JR Central Concourse",
   },
   {
@@ -68,7 +68,7 @@ export const regionsF2: FloorRegion[] = [
     type: "track_bed",
     railwayLine: "jr_saikyo",
     svgPath:
-      "M 140 320 Q 140 315 145 315 L 925 315 Q 930 315 930 320 L 930 325 Q 930 330 925 330 L 145 330 Q 140 330 140 325 Z",
+      "M 628 90 L 629 90 Q 632 90 632 93 L 632 507 Q 632 510 629 510 L 628 510 Q 625 510 625 507 L 625 93 Q 625 90 628 90 Z",
     label: "",
   },
   {
@@ -76,50 +76,50 @@ export const regionsF2: FloorRegion[] = [
     type: "platform_area",
     railwayLine: "jr_saikyo",
     svgPath:
-      "M 140 358 Q 140 350 147 346 L 163 339 Q 170 335 178 335 L 892 335 Q 900 335 907 339 L 923 346 Q 930 350 930 358 L 930 402 Q 930 410 923 414 L 907 421 Q 900 425 892 425 L 178 425 Q 170 425 163 421 L 147 414 Q 140 410 140 402 Z",
-    label: "JR Saikyo / Shonan-Shinjuku Platforms 3–4",
+      "M 648 90 Q 640 90 640 98 L 640 502 Q 640 510 648 510 L 712 510 Q 720 510 720 502 L 720 98 Q 720 90 712 90 Z",
+    label: "JR Saikyo 3–4",
   },
   {
     id: "f2-saikyo-trackbed-south",
     type: "track_bed",
     railwayLine: "jr_saikyo",
     svgPath:
-      "M 140 435 Q 140 430 145 430 L 925 430 Q 930 430 930 435 L 930 440 Q 930 445 925 445 L 145 445 Q 140 445 140 440 Z",
+      "M 731 90 L 732 90 Q 735 90 735 93 L 735 507 Q 735 510 732 510 L 731 510 Q 728 510 728 507 L 728 93 Q 728 90 731 90 Z",
     label: "",
   },
   {
     id: "f2-south-gate",
     type: "concourse",
     svgPath:
-      "M 460 443 Q 460 435 468 435 L 652 435 Q 660 435 660 443 L 660 492 Q 660 500 652 500 L 468 500 Q 460 500 460 492 Z",
+      "M 508 500 L 652 500 Q 660 500 660 508 L 660 552 Q 660 560 652 560 L 508 560 Q 500 560 500 552 L 500 508 Q 500 500 508 500 Z",
     label: "South Gate",
   },
   {
     id: "f2-new-south-exit",
     type: "concourse",
     svgPath:
-      "M 40 438 Q 40 430 48 430 L 142 430 Q 150 430 150 438 L 150 512 Q 150 520 142 520 L 57 520 Q 50 520 45 515 L 45 515 Q 40 510 40 503 Z",
+      "M 248 500 L 372 500 Q 380 500 380 508 L 380 552 Q 380 560 372 560 L 248 560 Q 240 560 240 552 L 240 508 Q 240 500 248 500 Z",
     label: "New South Exit",
   },
   {
     id: "f2-hikarie-passage",
     type: "concourse",
     svgPath:
-      "M 940 198 Q 940 190 948 190 L 1142 190 Q 1150 190 1150 198 L 1150 302 Q 1150 310 1142 310 L 948 310 Q 940 310 940 302 Z",
+      "M 948 220 L 1142 220 Q 1150 220 1150 228 L 1150 292 Q 1150 300 1142 300 L 948 300 Q 940 300 940 292 L 940 228 Q 940 220 948 220 Z",
     label: "Hikarie Passage",
   },
   {
     id: "f2-escalator-up",
     type: "concourse",
     svgPath:
-      "M 400 23 Q 400 15 408 15 L 542 15 Q 550 15 550 23 L 550 42 Q 550 50 542 50 L 408 50 Q 400 50 400 42 Z",
+      "M 518 30 L 592 30 Q 600 30 600 38 L 600 62 Q 600 70 592 70 L 518 70 Q 510 70 510 62 L 510 38 Q 510 30 518 30 Z",
     label: "↑3F",
   },
   {
     id: "f2-escalator-down",
     type: "concourse",
     svgPath:
-      "M 680 443 Q 680 435 688 435 L 822 435 Q 830 435 830 443 L 830 492 Q 830 500 822 500 L 688 500 Q 680 500 680 492 Z",
+      "M 548 430 L 632 430 Q 640 430 640 438 L 640 482 Q 640 490 632 490 L 548 490 Q 540 490 540 482 L 540 438 Q 540 430 548 430 Z",
     label: "↓1F",
   },
 ];
