@@ -53,7 +53,7 @@ export default function FloorMap({
         <MapViewport viewBox={floorPlan.svgViewBox}>
           <MapDefs />
           {/* Background */}
-          <rect width="1200" height="600" fill="#0f172a" />
+          <rect width="1200" height="600" fill="#0d1117" />
 
           {/* Floor regions (platforms, concourses) */}
           <RegionLayer regions={floorPlan.regions} />

@@ -105,22 +105,26 @@ export default function Home() {
             <RoutePanel route={activeRoute} />
 
             {/* Legend */}
-            <div className="absolute top-3 right-3 bg-slate-800/90 backdrop-blur-sm rounded-lg px-3 py-2 text-[10px] text-slate-400 space-y-1">
+            <div className="absolute top-3 right-3 bg-slate-800/90 backdrop-blur-sm rounded-lg px-3 py-2.5 text-[11px] text-slate-300 space-y-1.5">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
+                <span className="w-3 h-3 rounded bg-green-500" />
                 Exit
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
+                <span className="w-3 h-3 rounded bg-yellow-500" />
                 Ticket Gate
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-blue-400" />
+                <span className="w-3 h-3 rounded bg-blue-500" />
                 Escalator / Stairs
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-purple-400" />
+                <span className="w-3 h-3 rounded bg-purple-400" />
                 Elevator
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-0.5 rounded bg-yellow-400" />
+                Platform Edge
               </div>
             </div>
           </>

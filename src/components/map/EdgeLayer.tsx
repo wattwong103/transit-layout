@@ -9,7 +9,7 @@ interface EdgeLayerProps {
 }
 
 const edgeColors: Record<StationEdge["type"], string> = {
-  walkway: "#475569",
+  walkway: "#94a3b8",
   escalator: "#3b82f6",
   stairs: "#60a5fa",
   elevator: "#8b5cf6",
@@ -40,16 +40,29 @@ export default function EdgeLayer({ edges, nodesById, currentFloor }: EdgeLayerP
 
         return (
           <g key={edge.id}>
-            {/* Casing (wider light stroke for walkways) */}
+            {/* Glow line for passages */}
+            {isDashed && !isInterFloor && (
+              <line
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke={color}
+                strokeWidth={8}
+                strokeOpacity={0.1}
+                strokeLinecap="round"
+              />
+            )}
+            {/* Casing for walkways */}
             {isWalkway && !isInterFloor && (
               <line
                 x1={x1}
                 y1={y1}
                 x2={x2}
                 y2={y2}
-                stroke="#1e293b"
-                strokeWidth={4}
-                strokeOpacity={0.5}
+                stroke="#2d3748"
+                strokeWidth={5}
+                strokeOpacity={0.6}
                 strokeLinecap="round"
               />
             )}
@@ -60,9 +73,9 @@ export default function EdgeLayer({ edges, nodesById, currentFloor }: EdgeLayerP
               x2={x2}
               y2={y2}
               stroke={color}
-              strokeWidth={isWalkway ? 2 : isInterFloor ? 1 : 1.5}
-              strokeOpacity={isInterFloor ? 0.3 : 0.6}
-              strokeDasharray={isDashed ? "6 4" : undefined}
+              strokeWidth={isWalkway ? 2 : isInterFloor ? 1.5 : 2}
+              strokeOpacity={isInterFloor ? 0.5 : 0.7}
+              strokeDasharray={isDashed ? "8 5" : undefined}
               strokeLinecap="round"
             />
           </g>

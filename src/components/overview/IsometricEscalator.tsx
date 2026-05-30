@@ -77,10 +77,10 @@ export default function IsometricEscalator({
             <path
               d={ramp.quad.path}
               fill={color}
-              fillOpacity={0.25}
+              fillOpacity={0.35}
               stroke={color}
-              strokeWidth={0.8}
-              strokeOpacity={0.6}
+              strokeWidth={1}
+              strokeOpacity={0.7}
             />
 
             {/* Step hatch lines */}
@@ -99,7 +99,7 @@ export default function IsometricEscalator({
                   y2={sy - ny}
                   stroke={color}
                   strokeWidth={0.5}
-                  strokeOpacity={0.5}
+                  strokeOpacity={0.6}
                 />
               );
             })}
@@ -110,10 +110,10 @@ export default function IsometricEscalator({
                 d={`M ${(ramp.midPt.x - dx / len * 4).toFixed(1)} ${(ramp.midPt.y - dy / len * 4).toFixed(1)} L ${ramp.midPt.x.toFixed(1)} ${ramp.midPt.y.toFixed(1)} L ${(ramp.midPt.x + dy / len * 3).toFixed(1)} ${(ramp.midPt.y - dx / len * 3).toFixed(1)}`}
                 fill="none"
                 stroke="#93c5fd"
-                strokeWidth={1.2}
+                strokeWidth={1.8}
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                opacity={0.7}
+                opacity={0.8}
               />
             )}
           </g>

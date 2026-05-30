@@ -99,7 +99,7 @@ export default function IsometricFloorSlab({
       {/* Top face */}
       <path
         d={slab.topPath}
-        fill={isHighlighted ? "#1a2744" : "#0f172a"}
+        fill={isHighlighted ? "#1a2744" : "#0d1117"}
         fillOpacity={isHighlighted ? 0.95 : 0.85}
         stroke={strokeColor}
         strokeWidth={strokeW}
@@ -112,14 +112,17 @@ export default function IsometricFloorSlab({
         const lineColor = isRailway
           ? getLineColor(region.railwayLine!)
           : undefined;
-        const fillColor = lineColor ?? "#1e3a5f";
-        const fillOp = isRailway
-          ? isHighlighted
-            ? 0.45
-            : 0.3
-          : isHighlighted
+        const isTrackBed = region.type === "track_bed";
+        const fillColor = isTrackBed ? "#111827" : lineColor ?? "#21262d";
+        const fillOp = isTrackBed
           ? 0.6
-          : 0.45;
+          : isRailway
+          ? isHighlighted
+            ? 0.5
+            : 0.35
+          : isHighlighted
+          ? 0.65
+          : 0.5;
 
         return (
           <g key={region.id} pointerEvents="none">
@@ -128,11 +131,11 @@ export default function IsometricFloorSlab({
               fill={fillColor}
               fillOpacity={fillOp}
               stroke={lineColor ?? "#334155"}
-              strokeWidth={isRailway ? 1.2 : 0.4}
+              strokeWidth={isTrackBed ? 0.3 : isRailway ? 1.5 : 0.6}
               strokeOpacity={0.6}
             />
             {/* Hatch overlay for platforms */}
-            {isRailway && (
+            {isRailway && !isTrackBed && (
               <path
                 d={region.isoPath}
                 fill={`url(#${PATTERN_PLATFORM_HATCH})`}
@@ -146,7 +149,7 @@ export default function IsometricFloorSlab({
 
       {/* Colored line bars along platform regions */}
       {isoRegions
-        .filter((r) => r.railwayLine)
+        .filter((r) => r.railwayLine && r.type !== "track_bed")
         .map((region) => {
           const color = getLineColor(region.railwayLine!);
           const { minX, maxX, minY, maxY, cy } = region.bounds;
@@ -171,9 +174,9 @@ export default function IsometricFloorSlab({
               x2={barEnd.x}
               y2={barEnd.y}
               stroke={color}
-              strokeWidth={4}
+              strokeWidth={6}
               strokeLinecap="round"
-              opacity={isHighlighted ? 0.9 : 0.7}
+              opacity={isHighlighted ? 0.9 : 0.75}
               pointerEvents="none"
             />
           );
@@ -193,20 +196,20 @@ export default function IsometricFloorSlab({
             <g key={node.id} pointerEvents="none">
               {/* Yellow exit badge */}
               <rect
-                x={pos.x - 16}
-                y={pos.y - 7}
-                width={32}
-                height={14}
-                rx={3}
-                fill="#eab308"
-                stroke="#0f172a"
-                strokeWidth={0.8}
+                x={pos.x - 20}
+                y={pos.y - 9}
+                width={40}
+                height={18}
+                rx={9}
+                fill="#FFD700"
+                stroke="#0d1117"
+                strokeWidth={1}
                 opacity={0.95}
               />
               <text
                 x={pos.x}
-                y={pos.y + 3.5}
-                fontSize={8}
+                y={pos.y + 4}
+                fontSize={10}
                 fontWeight="bold"
                 fill="#0f172a"
                 fontFamily="system-ui, sans-serif"
@@ -267,11 +270,11 @@ export default function IsometricFloorSlab({
       {/* Big floor tag in left margin */}
       <g pointerEvents="none">
         <rect
-          x={labelPos.x - 28}
-          y={labelPos.y - 10}
-          width={50}
-          height={20}
-          rx={4}
+          x={labelPos.x - 30}
+          y={labelPos.y - 12}
+          width={56}
+          height={24}
+          rx={6}
           fill={isOnRoute ? "#1e40af" : isHighlighted ? "#1e3a5f" : "#0f172a"}
           fillOpacity={0.9}
           stroke={isOnRoute ? "#3b82f6" : isHighlighted ? "#60a5fa" : "#334155"}
@@ -280,7 +283,7 @@ export default function IsometricFloorSlab({
         <text
           x={labelPos.x - 3}
           y={labelPos.y + 4.5}
-          fontSize={14}
+          fontSize={16}
           fontWeight="bold"
           fill={isOnRoute ? "#93c5fd" : isHighlighted ? "#fff" : "#94a3b8"}
           fontFamily="system-ui, sans-serif"

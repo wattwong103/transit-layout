@@ -75,7 +75,7 @@ export default function IsometricColumns({
   );
 
   return (
-    <g className="columns" pointerEvents="none" opacity={0.65}>
+    <g className="columns" pointerEvents="none" opacity={0.75}>
       {/* Decorative structural columns */}
       {decorativeBoxes.map((col) => (
         <g key={col.id}>
@@ -100,7 +100,7 @@ export default function IsometricColumns({
           <path
             d={col.box.frontPath}
             fill={shadeFace("#6b4fad", "front")}
-            fillOpacity={0.5}
+            fillOpacity={0.6}
             stroke="#8b5cf6"
             strokeWidth={0.5}
             strokeOpacity={0.4}
@@ -108,7 +108,7 @@ export default function IsometricColumns({
           <path
             d={col.box.sidePath}
             fill={shadeFace("#6b4fad", "side")}
-            fillOpacity={0.5}
+            fillOpacity={0.6}
             stroke="#8b5cf6"
             strokeWidth={0.5}
             strokeOpacity={0.4}

@@ -46,13 +46,22 @@ export function transformSvgPath(
   svgPath: string,
   elevation: number
 ): string {
-  return svgPath.replace(
+  let result = svgPath.replace(
     /([ML])\s*([\d.]+)[,\s]+([\d.]+)/gi,
     (_match, cmd, xStr, yStr) => {
       const pt = toIsometric(parseFloat(xStr), parseFloat(yStr), elevation);
       return `${cmd} ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`;
     }
   );
+  result = result.replace(
+    /Q\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/gi,
+    (_match, cx, cy, ex, ey) => {
+      const cp = toIsometric(parseFloat(cx), parseFloat(cy), elevation);
+      const ep = toIsometric(parseFloat(ex), parseFloat(ey), elevation);
+      return `Q ${cp.x.toFixed(1)} ${cp.y.toFixed(1)} ${ep.x.toFixed(1)} ${ep.y.toFixed(1)}`;
+    }
+  );
+  return result;
 }
 
 export function getFloorSlabCorners(
@@ -238,15 +247,26 @@ export function getPathBounds(svgPath: string): {
     minY = Infinity,
     maxX = -Infinity,
     maxY = -Infinity;
-  const regex = /[ML]\s*([\d.]+)[,\s]+([\d.]+)/gi;
+  const mlRegex = /[ML]\s*([\d.]+)[,\s]+([\d.]+)/gi;
   let match;
-  while ((match = regex.exec(svgPath)) !== null) {
+  while ((match = mlRegex.exec(svgPath)) !== null) {
     const x = parseFloat(match[1]);
     const y = parseFloat(match[2]);
     minX = Math.min(minX, x);
     minY = Math.min(minY, y);
     maxX = Math.max(maxX, x);
     maxY = Math.max(maxY, y);
+  }
+  const qRegex = /Q\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/gi;
+  while ((match = qRegex.exec(svgPath)) !== null) {
+    for (let i = 1; i <= 3; i += 2) {
+      const x = parseFloat(match[i]);
+      const y = parseFloat(match[i + 1]);
+      minX = Math.min(minX, x);
+      minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x);
+      maxY = Math.max(maxY, y);
+    }
   }
   return { minX, minY, maxX, maxY, cx: (minX + maxX) / 2, cy: (minY + maxY) / 2 };
 }

@@ -76,7 +76,7 @@ export default function IsometricOverview({
       <MapDefs />
 
       {/* Dark background */}
-      <rect x="-1200" y="-1200" width="4000" height="4000" fill="#080d18" />
+      <rect x="-1200" y="-1200" width="4000" height="4000" fill="#060a12" />
 
       {/* Faint long-distance passage lines (behind everything) */}
       <IsometricVerticalConnectors edges={allEdges} nodesById={nodesById} />
