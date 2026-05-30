@@ -35,6 +35,8 @@ export interface StationNode {
   label: string;
   railwayLine?: RailwayLine;
   exitName?: string;
+  exitCode?: string;
+  escalatorDirection?: "up" | "down" | "both";
   position: { x: number; y: number };
   accessible?: boolean;
 }
@@ -60,7 +62,7 @@ export interface FloorPlan {
 
 export interface FloorRegion {
   id: string;
-  type: "platform_area" | "concourse" | "commercial" | "outside";
+  type: "platform_area" | "concourse" | "commercial" | "outside" | "track_bed";
   railwayLine?: RailwayLine;
   svgPath: string;
   label: string;
