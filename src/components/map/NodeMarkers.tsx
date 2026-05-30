@@ -3,20 +3,21 @@
 import { StationNode } from "@/types/station";
 import { getLineColor } from "@/data/lines";
 import { useMapStore } from "@/store/useMapStore";
+import NodeGlyph from "@/components/svg/NodeGlyphs";
 
 interface NodeMarkersProps {
   nodes: StationNode[];
 }
 
-const nodeIcons: Record<StationNode["type"], { symbol: string; size: number }> = {
-  platform: { symbol: "🚉", size: 10 },
-  concourse: { symbol: "", size: 6 },
-  ticket_gate: { symbol: "🎫", size: 8 },
-  escalator: { symbol: "△", size: 7 },
-  stairs: { symbol: "▤", size: 7 },
-  elevator: { symbol: "▣", size: 8 },
-  exit: { symbol: "🚪", size: 10 },
-  junction: { symbol: "", size: 4 },
+const NODE_SIZES: Record<StationNode["type"], number> = {
+  platform: 10,
+  concourse: 6,
+  ticket_gate: 8,
+  escalator: 7,
+  stairs: 7,
+  elevator: 8,
+  exit: 10,
+  junction: 4,
 };
 
 export default function NodeMarkers({ nodes }: NodeMarkersProps) {
@@ -25,13 +26,12 @@ export default function NodeMarkers({ nodes }: NodeMarkersProps) {
   return (
     <g className="node-markers">
       {nodes.map((node) => {
-        const { size } = nodeIcons[node.type];
+        const size = NODE_SIZES[node.type];
         const isSelected = selectedNode?.id === node.id;
         const color = node.railwayLine
           ? getLineColor(node.railwayLine)
           : getNodeColor(node.type);
 
-        // Skip junction nodes visually (they're just graph connectors)
         if (node.type === "junction") return null;
 
         return (
@@ -43,13 +43,14 @@ export default function NodeMarkers({ nodes }: NodeMarkersProps) {
             }}
             className="cursor-pointer"
           >
-            {/* Hit area (larger invisible circle for easier tapping) */}
+            {/* Hit area */}
             <circle
               cx={node.position.x}
               cy={node.position.y}
               r={size + 8}
               fill="transparent"
             />
+
             {/* Selection ring */}
             {isSelected && (
               <circle
@@ -75,33 +76,61 @@ export default function NodeMarkers({ nodes }: NodeMarkersProps) {
                 />
               </circle>
             )}
-            {/* Main marker */}
-            <circle
-              cx={node.position.x}
-              cy={node.position.y}
-              r={size}
-              fill={color}
-              stroke={isSelected ? "#fff" : "#1e293b"}
-              strokeWidth={isSelected ? 2 : 1.5}
-              opacity={0.9}
+
+            {/* Glyph icon */}
+            <NodeGlyph
+              type={node.type}
+              x={node.position.x}
+              y={node.position.y}
+              color={color}
+              size={size}
             />
-            {/* Label for important nodes */}
-            {(node.type === "platform" ||
-              node.type === "exit" ||
-              node.type === "ticket_gate") && (
+
+            {/* Exit badge */}
+            {node.type === "exit" && (
+              <g>
+                <rect
+                  x={node.position.x - 24}
+                  y={node.position.y + size + 4}
+                  width={48}
+                  height={16}
+                  rx={4}
+                  fill="#eab308"
+                  stroke="#0f172a"
+                  strokeWidth={0.8}
+                />
+                <text
+                  x={node.position.x}
+                  y={node.position.y + size + 15}
+                  textAnchor="middle"
+                  fill="#0f172a"
+                  fontSize={9}
+                  fontWeight="bold"
+                  fontFamily="system-ui, sans-serif"
+                  pointerEvents="none"
+                >
+                  {node.exitCode || node.exitName || node.label}
+                </text>
+              </g>
+            )}
+
+            {/* Label for platforms and ticket gates */}
+            {(node.type === "platform" || node.type === "ticket_gate") && (
               <text
                 x={node.position.x}
                 y={node.position.y + size + 14}
                 textAnchor="middle"
                 fill="#e2e8f0"
                 fontSize={10}
-                fontWeight={node.type === "exit" ? "bold" : "normal"}
+                fontWeight={node.type === "platform" ? "bold" : "normal"}
                 fontFamily="system-ui, sans-serif"
                 pointerEvents="none"
+                opacity={0.85}
               >
-                {node.exitName || node.label}
+                {node.label}
               </text>
             )}
+
             {/* Accessibility badge */}
             {node.accessible && (
               <text
@@ -128,7 +157,7 @@ function getNodeColor(type: StationNode["type"]): string {
     case "ticket_gate":
       return "#eab308";
     case "escalator":
-      return "#60a5fa";
+      return "#3b82f6";
     case "stairs":
       return "#60a5fa";
     case "elevator":

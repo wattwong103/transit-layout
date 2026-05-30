@@ -32,6 +32,7 @@ export const stationNodes: StationNode[] = [
     floor: "3F",
     label: "Central Exit",
     exitName: "Central Exit",
+    exitCode: "A8",
     position: { x: 620, y: 105 },
   },
   {
@@ -39,6 +40,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "3F",
     label: "3F Escalator (to 2F)",
+    escalatorDirection: "down",
     position: { x: 475, y: 475 },
   },
   {
@@ -138,6 +140,7 @@ export const stationNodes: StationNode[] = [
     floor: "2F",
     label: "South Gate",
     exitName: "South Gate",
+    exitCode: "South",
     position: { x: 560, y: 468 },
   },
   {
@@ -146,6 +149,7 @@ export const stationNodes: StationNode[] = [
     floor: "2F",
     label: "New South Exit",
     exitName: "New South Exit",
+    exitCode: "New South",
     position: { x: 95, y: 475 },
   },
   {
@@ -153,6 +157,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "2F",
     label: "2F Escalator (to 3F)",
+    escalatorDirection: "up",
     position: { x: 450, y: 33 },
   },
   {
@@ -167,6 +172,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "2F",
     label: "2F Escalator (to 1F)",
+    escalatorDirection: "down",
     position: { x: 720, y: 468 },
   },
   {
@@ -228,6 +234,7 @@ export const stationNodes: StationNode[] = [
     floor: "1F",
     label: "Hachiko Exit",
     exitName: "Hachiko Exit",
+    exitCode: "Hachiko",
     position: { x: 150, y: 305 },
   },
   {
@@ -236,6 +243,7 @@ export const stationNodes: StationNode[] = [
     floor: "1F",
     label: "Miyamasuzaka Exit",
     exitName: "Miyamasuzaka Exit",
+    exitCode: "A7",
     position: { x: 990, y: 295 },
   },
   {
@@ -250,6 +258,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "1F",
     label: "1F Escalator (to 2F)",
+    escalatorDirection: "up",
     position: { x: 530, y: 120 },
   },
   {
@@ -257,6 +266,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "1F",
     label: "1F Escalator (to B1)",
+    escalatorDirection: "down",
     position: { x: 550, y: 490 },
   },
   {
@@ -324,6 +334,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "B1",
     label: "B1 Escalator (from 1F)",
+    escalatorDirection: "down",
     position: { x: 520, y: 180 },
   },
   {
@@ -331,6 +342,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "B1",
     label: "B1 Escalator (to B2)",
+    escalatorDirection: "down",
     position: { x: 530, y: 465 },
   },
   {
@@ -392,6 +404,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "B2",
     label: "B2 Escalator (from B1)",
+    escalatorDirection: "down",
     position: { x: 520, y: 110 },
   },
   {
@@ -399,6 +412,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "B2",
     label: "B2 Escalator (to B3)",
+    escalatorDirection: "down",
     position: { x: 550, y: 515 },
   },
   {
@@ -476,6 +490,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "B3",
     label: "B3 Escalator (from B2)",
+    escalatorDirection: "down",
     position: { x: 550, y: 100 },
   },
   {
@@ -483,6 +498,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "B3",
     label: "B3 Escalator (to B4)",
+    escalatorDirection: "down",
     position: { x: 570, y: 440 },
   },
   {
@@ -544,6 +560,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "B4",
     label: "B4 Escalator (from B3)",
+    escalatorDirection: "down",
     position: { x: 520, y: 80 },
   },
   {
@@ -551,6 +568,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "B4",
     label: "B4 Escalator (to B5)",
+    escalatorDirection: "down",
     position: { x: 580, y: 460 },
   },
   {
@@ -621,6 +639,7 @@ export const stationNodes: StationNode[] = [
     type: "escalator",
     floor: "B5",
     label: "B5 Escalator (from B4)",
+    escalatorDirection: "down",
     position: { x: 600, y: 140 },
   },
   {

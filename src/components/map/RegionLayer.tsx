@@ -2,6 +2,10 @@
 
 import { FloorRegion } from "@/types/station";
 import { getLineColor } from "@/data/lines";
+import {
+  FILTER_INNER_SHADOW,
+  PATTERN_PLATFORM_HATCH,
+} from "@/components/svg/MapDefs";
 
 interface RegionLayerProps {
   regions: FloorRegion[];
@@ -18,30 +22,54 @@ export default function RegionLayer({ regions }: RegionLayerProps) {
   return (
     <g className="region-layer">
       {regions.map((region) => {
-        const fillColor = region.railwayLine
-          ? getLineColor(region.railwayLine)
-          : regionColors[region.type];
-        const fillOpacity = region.railwayLine ? 0.25 : 0.4;
+        const isRailway = !!region.railwayLine;
+        const lineColor = isRailway ? getLineColor(region.railwayLine!) : undefined;
+        const fillColor = lineColor ?? regionColors[region.type];
+        const fillOpacity = isRailway ? 0.2 : 0.35;
+        const center = getPathCenter(region.svgPath);
+        const bounds = getPathBounds(region.svgPath);
 
         return (
           <g key={region.id}>
+            {/* Region fill with inner shadow */}
             <path
               d={region.svgPath}
-              fill={fillColor}
+              fill={isRailway ? `url(#lineGrad_${region.railwayLine})` : fillColor}
               fillOpacity={fillOpacity}
-              stroke={region.railwayLine ? getLineColor(region.railwayLine) : "#334155"}
-              strokeWidth={region.railwayLine ? 2 : 1}
+              stroke={lineColor ?? "#334155"}
+              strokeWidth={isRailway ? 2 : 1}
               strokeOpacity={0.6}
+              filter={`url(#${FILTER_INNER_SHADOW})`}
             />
+
+            {/* Hatch overlay for platforms */}
+            {isRailway && (
+              <path
+                d={region.svgPath}
+                fill={`url(#${PATTERN_PLATFORM_HATCH})`}
+                fillOpacity={0.6}
+                stroke="none"
+                pointerEvents="none"
+              />
+            )}
+
+            {/* Colored platform bar */}
+            {isRailway && lineColor && (
+              <PlatformBar bounds={bounds} color={lineColor} />
+            )}
+
+            {/* Region label */}
             <text
-              x={getPathCenter(region.svgPath).x}
-              y={getPathCenter(region.svgPath).y}
+              x={center.x}
+              y={center.y}
               textAnchor="middle"
               dominantBaseline="central"
-              fill="#94a3b8"
-              fontSize={12}
+              fill={isRailway ? lineColor : "#94a3b8"}
+              fontSize={isRailway ? 11 : 12}
+              fontWeight={isRailway ? "bold" : "normal"}
               fontFamily="system-ui, sans-serif"
               pointerEvents="none"
+              opacity={0.85}
             >
               {region.label}
             </text>
@@ -52,7 +80,44 @@ export default function RegionLayer({ regions }: RegionLayerProps) {
   );
 }
 
-/** Rough center of an SVG path by averaging the M and L coordinates */
+function PlatformBar({
+  bounds,
+  color,
+}: {
+  bounds: { minX: number; maxX: number; minY: number; maxY: number; cx: number; cy: number };
+  color: string;
+}) {
+  const isHorizontal = bounds.maxX - bounds.minX > bounds.maxY - bounds.minY;
+  if (isHorizontal) {
+    return (
+      <line
+        x1={bounds.minX + 15}
+        y1={bounds.cy}
+        x2={bounds.maxX - 15}
+        y2={bounds.cy}
+        stroke={color}
+        strokeWidth={5}
+        strokeLinecap="round"
+        opacity={0.5}
+        pointerEvents="none"
+      />
+    );
+  }
+  return (
+    <line
+      x1={bounds.cx}
+      y1={bounds.minY + 15}
+      x2={bounds.cx}
+      y2={bounds.maxY - 15}
+      stroke={color}
+      strokeWidth={5}
+      strokeLinecap="round"
+      opacity={0.5}
+      pointerEvents="none"
+    />
+  );
+}
+
 function getPathCenter(svgPath: string): { x: number; y: number } {
   const coords: { x: number; y: number }[] = [];
   const regex = /[ML]\s*([\d.]+)[,\s]+([\d.]+)/gi;
@@ -64,4 +129,22 @@ function getPathCenter(svgPath: string): { x: number; y: number } {
   const sumX = coords.reduce((s, c) => s + c.x, 0);
   const sumY = coords.reduce((s, c) => s + c.y, 0);
   return { x: sumX / coords.length, y: sumY / coords.length };
+}
+
+function getPathBounds(svgPath: string) {
+  let minX = Infinity,
+    minY = Infinity,
+    maxX = -Infinity,
+    maxY = -Infinity;
+  const regex = /[ML]\s*([\d.]+)[,\s]+([\d.]+)/gi;
+  let match;
+  while ((match = regex.exec(svgPath)) !== null) {
+    const x = parseFloat(match[1]);
+    const y = parseFloat(match[2]);
+    minX = Math.min(minX, x);
+    minY = Math.min(minY, y);
+    maxX = Math.max(maxX, x);
+    maxY = Math.max(maxY, y);
+  }
+  return { minX, minY, maxX, maxY, cx: (minX + maxX) / 2, cy: (minY + maxY) / 2 };
 }

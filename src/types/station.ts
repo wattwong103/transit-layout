@@ -35,6 +35,8 @@ export interface StationNode {
   label: string;
   railwayLine?: RailwayLine;
   exitName?: string;
+  exitCode?: string;
+  escalatorDirection?: "up" | "down" | "both";
   position: { x: number; y: number };
   accessible?: boolean;
 }

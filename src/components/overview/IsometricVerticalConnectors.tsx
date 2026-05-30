@@ -9,24 +9,22 @@ interface IsometricVerticalConnectorsProps {
   nodesById: Map<string, StationNode>;
 }
 
-const connectorColors: Record<string, string> = {
-  escalator: "#3b82f6",
-  stairs: "#60a5fa",
-  elevator: "#a78bfa",
-};
-
 export default function IsometricVerticalConnectors({
   edges,
   nodesById,
 }: IsometricVerticalConnectorsProps) {
-  const interFloorEdges = useMemo(
-    () => edges.filter((e) => e.floorsConnected !== undefined),
+  const longPassages = useMemo(
+    () =>
+      edges.filter(
+        (e) =>
+          e.floorsConnected !== undefined && e.type === "passage"
+      ),
     [edges]
   );
 
   return (
     <g className="vertical-connectors" pointerEvents="none">
-      {interFloorEdges.map((edge) => {
+      {longPassages.map((edge) => {
         const fromNode = nodesById.get(edge.from);
         const toNode = nodesById.get(edge.to);
         if (!fromNode || !toNode) return null;
@@ -44,9 +42,6 @@ export default function IsometricVerticalConnectors({
           toElev
         );
 
-        const color = connectorColors[edge.type] ?? "#475569";
-        const isDashed = edge.type === "stairs";
-
         return (
           <line
             key={edge.id}
@@ -54,10 +49,10 @@ export default function IsometricVerticalConnectors({
             y1={from.y}
             x2={to.x}
             y2={to.y}
-            stroke={color}
-            strokeWidth={1.5}
-            strokeOpacity={0.4}
-            strokeDasharray={isDashed ? "3 2" : undefined}
+            stroke="#eab308"
+            strokeWidth={1}
+            strokeOpacity={0.25}
+            strokeDasharray="4 3"
           />
         );
       })}

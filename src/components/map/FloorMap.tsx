@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FloorPlan, StationNode, StationEdge, Route } from "@/types/station";
 import MapViewport from "./MapViewport";
+import MapDefs from "@/components/svg/MapDefs";
 import RegionLayer from "./RegionLayer";
 import EdgeLayer from "./EdgeLayer";
 import NodeMarkers from "./NodeMarkers";
@@ -50,6 +51,7 @@ export default function FloorMap({
         transition={{ duration: 0.25, ease: "easeInOut" }}
       >
         <MapViewport viewBox={floorPlan.svgViewBox}>
+          <MapDefs />
           {/* Background */}
           <rect width="1200" height="600" fill="#0f172a" />
 
