@@ -17,7 +17,7 @@ function formatTotalTime(seconds: number): string {
 
 export default function RoutePanel({ route }: RoutePanelProps) {
   const { setCurrentFloor, resetTransform } = useMapStore();
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const handleStepTap = (floor: FloorId) => {
     setCurrentFloor(floor);

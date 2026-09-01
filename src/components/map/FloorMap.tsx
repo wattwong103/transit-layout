@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FloorPlan, StationNode, StationEdge, Route } from "@/types/station";
+import { useMapStore } from "@/store/useMapStore";
 import MapViewport from "./MapViewport";
 import MapDefs from "@/components/svg/MapDefs";
 import RegionLayer from "./RegionLayer";
@@ -27,10 +28,12 @@ export default function FloorMap({
   route,
   prevElevation,
 }: FloorMapProps) {
+  const setSelectedNode = useMapStore((s) => s.setSelectedNode);
   const nodesById = useMemo(
     () => new Map(allNodes.map((n) => [n.id, n])),
     [allNodes]
   );
+  const [, , vw, vh] = floorPlan.svgViewBox.split(" ").map(Number);
 
   // Determine vertical slide direction
   const slideDirection =
@@ -52,8 +55,12 @@ export default function FloorMap({
       >
         <MapViewport viewBox={floorPlan.svgViewBox}>
           <MapDefs />
-          {/* Background */}
-          <rect width="1200" height="600" fill="#0d1117" />
+          <rect
+            width={vw}
+            height={vh}
+            fill="#0d1117"
+            onClick={() => setSelectedNode(null)}
+          />
 
           {/* Floor regions (platforms, concourses) */}
           <RegionLayer regions={floorPlan.regions} />

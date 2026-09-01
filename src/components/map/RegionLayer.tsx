@@ -116,11 +116,15 @@ export default function RegionLayer({ regions }: RegionLayerProps) {
             )}
 
             {/* Region label with badge background */}
-            {region.label && (
+            {shouldShowRegionLabel(region.label, bounds) && (
               <RegionLabel
                 label={region.label}
-                x={center.x}
-                y={center.y}
+                x={isRailway && !isTrackBed ? bounds.cx : center.x}
+                y={
+                  isRailway && !isTrackBed
+                    ? bounds.minY + 12
+                    : center.y
+                }
                 color={isRailway ? lineColor! : "#cbd5e1"}
                 isBold={isRailway}
               />
@@ -290,6 +294,25 @@ function RegionLabel({
       </text>
     </g>
   );
+}
+
+function shouldShowRegionLabel(
+  label: string,
+  bounds: { minX: number; maxX: number; minY: number; maxY: number }
+): boolean {
+  if (!label) return false;
+  // Exit / gate names are already on badges and glyphs.
+  if (/\bexit\b/i.test(label)) return false;
+  if (/\bgate\b/i.test(label) && !/area|ticket gates/i.test(label)) return false;
+  if (/^[↑↓][A-Z0-9]+$/.test(label)) return false;
+  // Thin / generic corridors usually have a stair/escalator glyph on the centroid.
+  if (/^(north|south) passage$/i.test(label)) return false;
+  if (/passage/i.test(label)) {
+    const w = bounds.maxX - bounds.minX;
+    const h = bounds.maxY - bounds.minY;
+    if (Math.min(w, h) < 110) return false;
+  }
+  return true;
 }
 
 function getPathCenter(svgPath: string): { x: number; y: number } {

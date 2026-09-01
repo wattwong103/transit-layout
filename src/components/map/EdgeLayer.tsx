@@ -38,6 +38,10 @@ export default function EdgeLayer({ edges, nodesById, currentFloor }: EdgeLayerP
         const isInterFloor = edge.floorsConnected !== undefined;
         const isWalkway = edge.type === "walkway";
 
+        // Same-floor walkways just recreate the graph as a spider-web on top
+        // of concourse regions. Keep passages and vertical connectors.
+        if (isWalkway && !isInterFloor) return null;
+
         return (
           <g key={edge.id}>
             {/* Glow line for passages */}

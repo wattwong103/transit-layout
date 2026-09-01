@@ -8,31 +8,29 @@ import { stationEdges } from "@/data/edges";
 import { getFloorPlan } from "@/data/floors";
 import FloorMap from "@/components/map/FloorMap";
 import FloorSelector from "@/components/floor/FloorSelector";
-import ViewModeToggle from "@/components/floor/ViewModeToggle";
 import NodeTooltip from "@/components/map/NodeTooltip";
+import MapLegend from "@/components/map/MapLegend";
+import ZoomControls from "@/components/map/ZoomControls";
 import RoutePlanner from "@/components/route/RoutePlanner";
 import RoutePanel from "@/components/route/RoutePanel";
 import IsometricOverview from "@/components/overview/IsometricOverview";
 
 export default function Home() {
-  const { currentFloor, selectedNode, activeRoute, viewMode } = useMapStore();
+  const { currentFloor, selectedNode, activeRoute } = useMapStore();
 
   const floorPlan = getFloorPlan(currentFloor);
   const prevElevationRef = useRef<number | undefined>(undefined);
 
-  // Track previous floor elevation for slide animation direction
   const prevElevation = prevElevationRef.current;
   if (floorPlan) {
     prevElevationRef.current = floorPlan.elevation;
   }
 
-  // Nodes on the current floor
   const floorNodes = useMemo(
     () => stationNodes.filter((n) => n.floor === currentFloor),
     [currentFloor]
   );
 
-  // Edges relevant to current floor (at least one endpoint on this floor)
   const floorEdges = useMemo(() => {
     const nodeIds = new Set(floorNodes.map((n) => n.id));
     return stationEdges.filter(
@@ -40,55 +38,53 @@ export default function Home() {
     );
   }, [floorNodes]);
 
-  // Floors that are part of the active route
   const routeFloors = useMemo(() => {
     if (!activeRoute) return undefined;
-    const floors = new Set<FloorId>();
+    const floorsOnRoute = new Set<FloorId>();
     for (const step of activeRoute.steps) {
-      floors.add(step.floor);
+      floorsOnRoute.add(step.floor);
       if (step.floorChange) {
-        floors.add(step.floorChange.from);
-        floors.add(step.floorChange.to);
+        floorsOnRoute.add(step.floorChange.from);
+        floorsOnRoute.add(step.floorChange.to);
       }
     }
-    return floors;
+    return floorsOnRoute;
   }, [activeRoute]);
 
   if (!floorPlan) return null;
 
-  const isFloorMode = viewMode === "floor";
-
   return (
-    <div className="h-dvh flex flex-col bg-slate-900">
-      {/* Header */}
-      <header className="flex-shrink-0 px-4 py-2.5 bg-slate-800/95 backdrop-blur-sm border-b border-slate-700">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-bold text-white tracking-tight">
-              Shibuya Station
-            </h1>
-            <p className="text-xs text-slate-400">
-              {isFloorMode ? floorPlan.label : "3D Overview — tap a floor to explore"}
-            </p>
-          </div>
-          <ViewModeToggle />
+    <div className="h-dvh flex flex-col bg-[#0d1117]">
+      <header className="flex-shrink-0 px-3 py-2 bg-slate-900/80 backdrop-blur-sm border-b border-slate-800 z-30">
+        <div className="min-w-0">
+          <h1 className="text-base font-bold text-white tracking-tight">
+            Shibuya Station
+          </h1>
+          <p className="text-[11px] text-slate-400 truncate">
+            {floorPlan.label}
+            <span className="text-slate-500"> · 2D plan + 3D stack</span>
+          </p>
         </div>
       </header>
 
-      {/* Route planner */}
-      <RoutePlanner />
+      <div className="flex-1 min-h-0 flex flex-col md:flex-row">
+        {/* 3D — building context */}
+        <section className="relative flex-shrink-0 h-[34%] min-h-[200px] md:h-auto md:min-h-0 md:w-[40%] md:max-w-[520px] bg-[#f4f1ea] border-b md:border-b-0 md:border-r border-stone-300">
+          <div className="absolute top-1.5 left-2 z-10 pointer-events-none">
+            <span className="text-[10px] font-bold tracking-wide uppercase text-stone-500 bg-white/80 rounded px-1.5 py-0.5 border border-stone-300/80">
+              3D
+            </span>
+          </div>
+          <IsometricOverview
+            allNodes={stationNodes}
+            allEdges={stationEdges}
+            route={activeRoute}
+          />
+        </section>
 
-      {/* Floor selector (only in floor mode) */}
-      {isFloorMode && (
-        <div className="flex-shrink-0 border-b border-slate-700">
-          <FloorSelector routeFloors={routeFloors} />
-        </div>
-      )}
-
-      {/* Map viewport */}
-      <div className="flex-1 relative min-h-0 overflow-hidden">
-        {isFloorMode ? (
-          <>
+        {/* 2D — current floor */}
+        <section className="relative flex-1 min-h-0 bg-[#0d1117]">
+          <div className="absolute top-[6.75rem] left-[3.75rem] right-2 bottom-2 md:top-2 md:left-16 md:right-14 md:bottom-2">
             <FloorMap
               floorPlan={floorPlan}
               nodes={floorNodes}
@@ -97,44 +93,30 @@ export default function Home() {
               route={activeRoute}
               prevElevation={prevElevation}
             />
+          </div>
 
-            {/* Node tooltip overlay */}
-            <NodeTooltip node={selectedNode} />
+          <div className="absolute z-20 top-2 left-[4.25rem] right-14 md:left-16 md:right-auto md:w-[380px]">
+            <RoutePlanner />
+          </div>
 
-            {/* Route panel (bottom sheet) */}
-            <RoutePanel route={activeRoute} />
+          <div className="absolute left-2 top-[6.75rem] bottom-3 md:top-2 md:bottom-2 z-20 flex items-center">
+            <FloorSelector routeFloors={routeFloors} />
+          </div>
 
-            {/* Legend */}
-            <div className="absolute top-3 right-3 bg-slate-800/90 backdrop-blur-sm rounded-lg px-3 py-2.5 text-[11px] text-slate-300 space-y-1.5">
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded bg-green-500" />
-                Exit
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded bg-yellow-500" />
-                Ticket Gate
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded bg-blue-500" />
-                Escalator / Stairs
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded bg-purple-400" />
-                Elevator
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-3 h-0.5 rounded bg-yellow-400" />
-                Platform Edge
-              </div>
-            </div>
-          </>
-        ) : (
-          <IsometricOverview
-            allNodes={stationNodes}
-            allEdges={stationEdges}
-            route={activeRoute}
-          />
-        )}
+          <div className="absolute top-2 right-2 z-20">
+            <span className="text-[10px] font-bold tracking-wide uppercase text-slate-400 bg-slate-800/90 rounded px-1.5 py-0.5 border border-slate-700">
+              2D · {currentFloor}
+            </span>
+          </div>
+
+          <div className="absolute right-2 bottom-3 md:top-10 md:bottom-auto z-20 flex flex-col items-end gap-2">
+            <MapLegend />
+            <ZoomControls />
+          </div>
+
+          <NodeTooltip node={selectedNode} />
+          <RoutePanel route={activeRoute} />
+        </section>
       </div>
     </div>
   );

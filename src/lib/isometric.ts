@@ -1,13 +1,16 @@
 import { FloorId } from "@/types/station";
 
 /** Scale factor applied to floor coordinates before isometric projection */
-export const ISO_SCALE = 0.45;
+export const ISO_SCALE = 0.55;
 
 /** Vertical spacing between floors in pixels */
-export const FLOOR_SPACING = 100;
+export const FLOOR_SPACING = 118;
 
 /** Slab thickness as fraction of FLOOR_SPACING */
-export const SLAB_THICKNESS = 0.18;
+export const SLAB_THICKNESS = 0.14;
+
+/** Flatten the isometric Y so plates read more like a printed 立体図 */
+const ISO_Y_FLAT = 0.78;
 
 /** Isometric angles */
 const COS_30 = Math.cos(Math.PI / 6); // 0.866
@@ -38,7 +41,7 @@ export function toIsometric(
   const sy = y * ISO_SCALE;
   return {
     x: (sx - sy) * COS_30,
-    y: (sx + sy) * SIN_30 - elevation * FLOOR_SPACING,
+    y: (sx + sy) * SIN_30 * ISO_Y_FLAT - elevation * FLOOR_SPACING,
   };
 }
 
@@ -66,8 +69,8 @@ export function transformSvgPath(
 
 export function getFloorSlabCorners(
   elevation: number,
-  width: number = 1200,
-  height: number = 600
+  width: number = 1400,
+  height: number = 900
 ): { x: number; y: number }[] {
   return [
     toIsometric(0, 0, elevation),
@@ -291,6 +294,6 @@ export function computeIsometricViewBox(): string {
   const drop = SLAB_THICKNESS * FLOOR_SPACING;
   maxY += drop;
 
-  const padding = 100;
+  const padding = 80;
   return `${(minX - padding).toFixed(0)} ${(minY - padding).toFixed(0)} ${(maxX - minX + padding * 2).toFixed(0)} ${(maxY - minY + padding * 2).toFixed(0)}`;
 }

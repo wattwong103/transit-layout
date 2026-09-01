@@ -90,67 +90,41 @@ export default function NodeMarkers({ nodes }: NodeMarkersProps) {
             {/* Exit badge */}
             {node.type === "exit" && (
               <g filter={`url(#${FILTER_SOFT_SHADOW})`}>
-                <rect
-                  x={node.position.x - 28}
-                  y={node.position.y + size + 6}
-                  width={56}
-                  height={20}
-                  rx={10}
-                  fill="#FFD700"
-                  stroke="#0d1117"
-                  strokeWidth={1}
-                />
-                <text
-                  x={node.position.x}
-                  y={node.position.y + size + 19}
-                  textAnchor="middle"
-                  fill="#0d1117"
-                  fontSize={11}
-                  fontWeight="bold"
-                  fontFamily="system-ui, sans-serif"
-                  pointerEvents="none"
-                >
-                  {node.exitCode || node.exitName || node.label}
-                </text>
-              </g>
-            )}
-
-            {/* Label for platforms and ticket gates */}
-            {(node.type === "platform" || node.type === "ticket_gate") && (
-              <g pointerEvents="none">
                 {(() => {
-                  const label = node.label;
-                  const estW = label.length * 5 + 12;
-                  const lx = node.position.x;
-                  const ly = node.position.y + size + 16;
+                  const text = node.exitCode || node.exitName || node.label;
+                  const w = Math.max(40, text.length * 6.6 + 14);
+                  const y = node.position.y + size + 6;
                   return (
                     <>
                       <rect
-                        x={lx - estW / 2}
-                        y={ly - 8}
-                        width={estW}
-                        height={16}
-                        rx={8}
-                        fill="#0d1117"
-                        fillOpacity={0.7}
+                        x={node.position.x - w / 2}
+                        y={y}
+                        width={w}
+                        height={18}
+                        rx={9}
+                        fill="#FFD700"
+                        stroke="#0d1117"
+                        strokeWidth={1}
                       />
                       <text
-                        x={lx}
-                        y={ly + 4}
+                        x={node.position.x}
+                        y={y + 13}
                         textAnchor="middle"
-                        fill="#e2e8f0"
+                        fill="#0d1117"
                         fontSize={10}
-                        fontWeight={node.type === "platform" ? "bold" : "normal"}
+                        fontWeight="bold"
                         fontFamily="system-ui, sans-serif"
-                        opacity={0.9}
+                        pointerEvents="none"
                       >
-                        {label}
+                        {text}
                       </text>
                     </>
                   );
                 })()}
               </g>
             )}
+
+            {/* Platform / ticket-gate names live on the region layer to avoid collisions */}
 
             {/* Accessibility badge */}
             {node.accessible && (

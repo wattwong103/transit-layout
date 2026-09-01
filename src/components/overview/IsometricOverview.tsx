@@ -6,9 +6,7 @@ import { floors } from "@/data/floors";
 import { useMapStore } from "@/store/useMapStore";
 import { computeIsometricViewBox } from "@/lib/isometric";
 import MapViewport from "@/components/map/MapViewport";
-import MapDefs from "@/components/svg/MapDefs";
 import IsometricFloorSlab from "./IsometricFloorSlab";
-import IsometricVerticalConnectors from "./IsometricVerticalConnectors";
 import IsometricColumns from "./IsometricColumns";
 import IsometricEscalator from "./IsometricEscalator";
 import IsometricRoutePath from "./IsometricRoutePath";
@@ -25,10 +23,10 @@ export default function IsometricOverview({
   route,
 }: IsometricOverviewProps) {
   const {
+    currentFloor,
     highlightedFloor,
     setHighlightedFloor,
     setCurrentFloor,
-    setViewMode,
     resetTransform,
   } = useMapStore();
 
@@ -62,8 +60,7 @@ export default function IsometricOverview({
 
   const handleFloorClick = (floor: FloorId) => {
     setCurrentFloor(floor);
-    setViewMode("floor");
-    resetTransform();
+    resetTransform("floor");
   };
 
   const sortedFloors = useMemo(
@@ -72,38 +69,48 @@ export default function IsometricOverview({
   );
 
   return (
-    <MapViewport viewBox={viewBox}>
-      <MapDefs />
+    <div className="relative w-full h-full">
+      <MapViewport viewBox={viewBox} className="bg-[#f4f1ea]" pane="overview">
+        <rect x="-2000" y="-2000" width="6000" height="6000" fill="#f4f1ea" />
 
-      {/* Dark background */}
-      <rect x="-1200" y="-1200" width="4000" height="4000" fill="#060a12" />
+        {sortedFloors.map((floorPlan) => (
+          <IsometricFloorSlab
+            key={floorPlan.floor}
+            floorPlan={floorPlan}
+            nodes={nodesByFloor.get(floorPlan.floor) ?? []}
+            isCurrent={currentFloor === floorPlan.floor}
+            isHighlighted={highlightedFloor === floorPlan.floor}
+            isOnRoute={routeFloors.has(floorPlan.floor)}
+            onClick={() => handleFloorClick(floorPlan.floor)}
+            onHover={(hovering) =>
+              setHighlightedFloor(hovering ? floorPlan.floor : null)
+            }
+          />
+        ))}
 
-      {/* Faint long-distance passage lines (behind everything) */}
-      <IsometricVerticalConnectors edges={allEdges} nodesById={nodesById} />
+        <IsometricColumns edges={allEdges} nodesById={nodesById} />
+        <IsometricEscalator edges={allEdges} nodesById={nodesById} />
+        <IsometricRoutePath route={route} nodesById={nodesById} />
+      </MapViewport>
 
-      {/* Floor slabs bottom-up for painter's order occlusion */}
-      {sortedFloors.map((floorPlan) => (
-        <IsometricFloorSlab
-          key={floorPlan.floor}
-          floorPlan={floorPlan}
-          nodes={nodesByFloor.get(floorPlan.floor) ?? []}
-          isHighlighted={highlightedFloor === floorPlan.floor}
-          isOnRoute={routeFloors.has(floorPlan.floor)}
-          onClick={() => handleFloorClick(floorPlan.floor)}
-          onHover={(hovering) =>
-            setHighlightedFloor(hovering ? floorPlan.floor : null)
-          }
-        />
-      ))}
+      <div className="absolute bottom-2 left-2 right-2 pointer-events-none flex flex-wrap gap-1.5 text-[10px] font-medium text-slate-600">
+        <LegendChip color="#efe4c8" label="Concourse" />
+        <LegendChip color="#c4623a" label="Stairs" />
+        <LegendChip color="#4f8fd0" label="Elevator" />
+        <LegendChip color="#f5c518" label="Exit" />
+      </div>
+    </div>
+  );
+}
 
-      {/* Structural columns + elevator shafts (semi-transparent, span floors) */}
-      <IsometricColumns edges={allEdges} nodesById={nodesById} />
-
-      {/* Diagonal escalator/stairs ramps (on top of slabs) */}
-      <IsometricEscalator edges={allEdges} nodesById={nodesById} />
-
-      {/* Route path (always on top) */}
-      <IsometricRoutePath route={route} nodesById={nodesById} />
-    </MapViewport>
+function LegendChip({ color, label }: { color: string; label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1 bg-white/80 backdrop-blur-sm rounded-md px-1.5 py-0.5 border border-stone-300/80">
+      <span
+        className="w-2.5 h-2.5 rounded-sm border border-black/10"
+        style={{ backgroundColor: color }}
+      />
+      {label}
+    </span>
   );
 }

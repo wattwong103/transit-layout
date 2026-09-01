@@ -56,13 +56,12 @@ export default function IsometricRoutePath({
 
   return (
     <g className="iso-route-path" pointerEvents="none">
-      {/* Glow */}
+      {/* Casing for contrast on the light poster */}
       <motion.path
         d={pathData.d}
         fill="none"
-        stroke="#3b82f6"
-        strokeWidth={6}
-        strokeOpacity={0.15}
+        stroke="#fff"
+        strokeWidth={10}
         strokeLinecap="round"
         strokeLinejoin="round"
         initial={{ pathLength: 0 }}
@@ -74,9 +73,9 @@ export default function IsometricRoutePath({
       <motion.path
         d={pathData.d}
         fill="none"
-        stroke="#3b82f6"
-        strokeWidth={3}
-        strokeOpacity={0.8}
+        stroke="#1d4ed8"
+        strokeWidth={4.5}
+        strokeOpacity={0.95}
         strokeLinecap="round"
         strokeLinejoin="round"
         initial={{ pathLength: 0 }}

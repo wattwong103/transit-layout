@@ -65,7 +65,9 @@ export default function StationPicker({
     return pickableNodes.filter(
       (n) =>
         n.label.toLowerCase().includes(q) ||
-        (n.exitName && n.exitName.toLowerCase().includes(q))
+        n.floor.toLowerCase().includes(q) ||
+        (n.exitName && n.exitName.toLowerCase().includes(q)) ||
+        (n.exitCode && n.exitCode.toLowerCase().includes(q))
     );
   }, [pickableNodes, search]);
 
@@ -92,7 +94,7 @@ export default function StationPicker({
       {/* Trigger button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-700/60 hover:bg-slate-700 border border-slate-600 text-left transition-colors"
+        className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-slate-700/60 hover:bg-slate-700 border border-slate-600/80 text-left transition-colors"
       >
         <span
           className="w-2.5 h-2.5 rounded-full flex-shrink-0"
@@ -117,7 +119,7 @@ export default function StationPicker({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-1 z-50 bg-slate-800 border border-slate-600 rounded-lg shadow-xl max-h-64 overflow-hidden flex flex-col">
+        <div className="absolute top-full left-0 right-0 mt-1 z-[60] bg-slate-800 border border-slate-600 rounded-lg shadow-xl max-h-64 overflow-hidden flex flex-col">
           {/* Search input */}
           <div className="p-2 border-b border-slate-700">
             <input

@@ -2,16 +2,26 @@
 
 import React, { useRef, useCallback } from "react";
 import { useGesture } from "@use-gesture/react";
-import { useMapStore } from "@/store/useMapStore";
+import { MapPane, useMapStore } from "@/store/useMapStore";
 
 interface MapViewportProps {
   children: React.ReactNode;
   viewBox: string;
+  className?: string;
+  pane?: MapPane;
 }
 
-export default function MapViewport({ children, viewBox }: MapViewportProps) {
+export default function MapViewport({
+  children,
+  viewBox,
+  className,
+  pane = "floor",
+}: MapViewportProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { transform, setTransform } = useMapStore();
+  const transform = useMapStore((s) =>
+    pane === "overview" ? s.overviewTransform : s.floorTransform
+  );
+  const setTransform = useMapStore((s) => s.setTransform);
 
   const clampScale = useCallback((s: number) => Math.min(Math.max(s, 0.5), 4), []);
 
@@ -19,28 +29,37 @@ export default function MapViewport({ children, viewBox }: MapViewportProps) {
     {
       onDrag: ({ delta: [dx, dy], event }) => {
         event.preventDefault();
-        setTransform({
-          x: transform.x + dx,
-          y: transform.y + dy,
-          scale: transform.scale,
-        });
+        setTransform(
+          {
+            x: transform.x + dx,
+            y: transform.y + dy,
+            scale: transform.scale,
+          },
+          pane
+        );
       },
       onPinch: ({ offset: [s], event }) => {
         event.preventDefault();
-        setTransform({
-          x: transform.x,
-          y: transform.y,
-          scale: clampScale(s),
-        });
+        setTransform(
+          {
+            x: transform.x,
+            y: transform.y,
+            scale: clampScale(s),
+          },
+          pane
+        );
       },
       onWheel: ({ delta: [, dy], event }) => {
         event.preventDefault();
         const newScale = clampScale(transform.scale - dy * 0.002);
-        setTransform({
-          x: transform.x,
-          y: transform.y,
-          scale: newScale,
-        });
+        setTransform(
+          {
+            x: transform.x,
+            y: transform.y,
+            scale: newScale,
+          },
+          pane
+        );
       },
     },
     {
@@ -54,10 +73,13 @@ export default function MapViewport({ children, viewBox }: MapViewportProps) {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full overflow-hidden touch-none bg-slate-900 cursor-grab active:cursor-grabbing"
+      className={`relative w-full h-full overflow-hidden touch-none cursor-grab active:cursor-grabbing ${
+        className ?? "bg-[#0d1117]"
+      }`}
     >
       <svg
         viewBox={viewBox}
+        preserveAspectRatio="xMidYMid meet"
         className="w-full h-full"
         style={{
           transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,

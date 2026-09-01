@@ -20,12 +20,12 @@ const typeLabels: Record<StationNode["type"], string> = {
 };
 
 export default function NodeTooltip({ node }: NodeTooltipProps) {
-  const { setSelectedNode, setRouteFrom, setRouteTo, routeFrom } = useMapStore();
+  const { setSelectedNode, setRouteFrom, setRouteTo } = useMapStore();
 
   if (!node) return null;
 
   return (
-    <div className="absolute bottom-4 left-4 right-4 bg-slate-800 border border-slate-600 rounded-xl p-4 shadow-2xl z-50 max-w-sm mx-auto">
+    <div className="absolute bottom-4 left-4 right-4 md:left-auto md:right-16 md:w-80 bg-slate-800 border border-slate-600 rounded-xl p-4 shadow-2xl z-50 max-w-sm mx-auto md:mx-0">
       {/* Close button */}
       <button
         onClick={() => setSelectedNode(null)}
@@ -81,12 +81,7 @@ export default function NodeTooltip({ node }: NodeTooltipProps) {
             setRouteTo(node.id);
             setSelectedNode(null);
           }}
-          className={`flex-1 text-xs font-medium py-2 px-3 rounded-lg transition-colors ${
-            routeFrom
-              ? "bg-blue-700 hover:bg-blue-600 text-white"
-              : "bg-slate-700 text-slate-400 cursor-not-allowed"
-          }`}
-          disabled={!routeFrom}
+          className="flex-1 text-xs font-medium py-2 px-3 rounded-lg bg-red-700 hover:bg-red-600 text-white transition-colors"
         >
           Set as Destination
         </button>

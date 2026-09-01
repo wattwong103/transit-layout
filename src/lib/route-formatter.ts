@@ -1,13 +1,14 @@
 import { Route, RouteStep, StationNode, StationEdge, FloorId } from "@/types/station";
 import { PathResult } from "./pathfinding";
 
-const edgeVerbs: Record<StationEdge["type"], string> = {
-  walkway: "Walk to",
-  escalator: "Take the escalator to",
-  stairs: "Take the stairs to",
-  elevator: "Take the elevator to",
-  passage: "Pass through",
-};
+const LANDMARK_TYPES = new Set<StationNode["type"]>([
+  "exit",
+  "platform",
+  "ticket_gate",
+  "escalator",
+  "stairs",
+  "elevator",
+]);
 
 /**
  * Converts a raw pathfinding result into human-readable route steps.
@@ -29,10 +30,8 @@ export function formatRoute(
         ? { from: fromNode.floor, to: toNode.floor }
         : undefined;
 
-    const instruction = buildInstruction(edge, fromNode, toNode, floorChange);
-
     steps.push({
-      instruction,
+      instruction: buildInstruction(edge, toNode, floorChange),
       fromNode: fromNode.id,
       toNode: toNode.id,
       edgeType: edge.type,
@@ -42,8 +41,7 @@ export function formatRoute(
     });
   }
 
-  // Merge consecutive walkway steps on the same floor
-  const merged = mergeWalkways(steps, nodesById);
+  const merged = rewriteWalkways(mergeWalkways(steps), nodesById);
 
   return {
     totalTime: path.totalWeight,
@@ -51,28 +49,44 @@ export function formatRoute(
   };
 }
 
+function landmarkName(node: StationNode): string {
+  if (node.type === "exit") return node.exitName || node.label;
+  if (node.type === "platform") return node.label;
+  if (node.type === "ticket_gate") return node.label;
+  if (node.type === "escalator") return "the escalator";
+  if (node.type === "stairs") return "the stairs";
+  if (node.type === "elevator") return "the elevator";
+  return "";
+}
+
 function buildInstruction(
   edge: StationEdge,
-  from: StationNode,
   to: StationNode,
   floorChange?: { from: FloorId; to: FloorId }
 ): string {
-  const verb = edgeVerbs[edge.type];
-  const destination = to.exitName || to.label;
-
   if (floorChange) {
     const direction =
       floorElevation(floorChange.to) > floorElevation(floorChange.from)
         ? "up"
         : "down";
-    return `${verb} ${destination} (${direction} to ${floorChange.to})`;
+    if (
+      edge.type === "escalator" ||
+      edge.type === "stairs" ||
+      edge.type === "elevator"
+    ) {
+      return `Take the ${edge.type} ${direction} to ${floorChange.to}`;
+    }
+    return `Go ${direction} to ${floorChange.to}`;
   }
 
+  const dest = landmarkName(to);
   if (edge.type === "passage") {
-    return `${verb} ${destination}`;
+    return dest ? `Pass through ${dest}` : "Pass through the gate";
   }
-
-  return `${verb} ${destination}`;
+  if (edge.type === "walkway") {
+    return dest ? `Walk to ${dest}` : "Walk ahead";
+  }
+  return dest ? `Continue to ${dest}` : "Continue ahead";
 }
 
 function floorElevation(floor: FloorId): number {
@@ -89,13 +103,7 @@ function floorElevation(floor: FloorId): number {
   return map[floor];
 }
 
-/**
- * Merge consecutive walkway steps on the same floor into one step.
- */
-function mergeWalkways(
-  steps: RouteStep[],
-  nodesById: Map<string, StationNode>
-): RouteStep[] {
+function mergeWalkways(steps: RouteStep[]): RouteStep[] {
   const merged: RouteStep[] = [];
 
   for (const step of steps) {
@@ -109,15 +117,42 @@ function mergeWalkways(
       !step.floorChange &&
       prev.floor === step.floor
     ) {
-      // Merge: extend the previous step
-      const toNode = nodesById.get(step.toNode);
       prev.toNode = step.toNode;
       prev.duration += step.duration;
-      prev.instruction = `Walk to ${toNode?.exitName || toNode?.label || step.toNode}`;
     } else {
       merged.push({ ...step });
     }
   }
 
   return merged;
+}
+
+function rewriteWalkways(
+  steps: RouteStep[],
+  nodesById: Map<string, StationNode>
+): RouteStep[] {
+  return steps.map((step, i) => {
+    if (step.edgeType !== "walkway" || step.floorChange) return step;
+
+    const to = nodesById.get(step.toNode);
+    if (to && LANDMARK_TYPES.has(to.type)) {
+      const dest = landmarkName(to);
+      return { ...step, instruction: dest ? `Walk to ${dest}` : step.instruction };
+    }
+
+    const next = steps[i + 1];
+    if (next) {
+      const nextFrom = nodesById.get(next.fromNode);
+      const hintNode =
+        nextFrom && LANDMARK_TYPES.has(nextFrom.type)
+          ? nextFrom
+          : nodesById.get(next.toNode);
+      const hint = hintNode ? landmarkName(hintNode) : "";
+      if (hint) {
+        return { ...step, instruction: `Walk to ${hint}` };
+      }
+    }
+
+    return { ...step, instruction: `Walk on ${step.floor}` };
+  });
 }

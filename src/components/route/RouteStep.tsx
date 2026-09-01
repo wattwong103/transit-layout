@@ -9,12 +9,12 @@ interface RouteStepProps {
   onTap: () => void;
 }
 
-const edgeIcons: Record<string, string> = {
-  walkway: "→",
-  escalator: "△",
-  stairs: "▤",
-  elevator: "▣",
-  passage: "⊞",
+const edgeLabels: Record<string, string> = {
+  walkway: "Walk",
+  escalator: "Escalator",
+  stairs: "Stairs",
+  elevator: "Elevator",
+  passage: "Passage",
 };
 
 function formatDuration(seconds: number): string {
@@ -51,7 +51,7 @@ export default function RouteStep({ step, index, isLast, onTap }: RouteStepProps
         <p className="text-sm text-slate-200">{step.instruction}</p>
         <div className="flex items-center gap-2 mt-1">
           <span className="text-[10px] text-slate-500">
-            {edgeIcons[step.edgeType]} {step.edgeType}
+            {edgeLabels[step.edgeType] ?? step.edgeType}
           </span>
           <span className="text-[10px] text-slate-500">
             ~{formatDuration(step.duration)}
