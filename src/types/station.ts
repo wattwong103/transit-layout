@@ -77,6 +77,8 @@ export interface RailwayLineInfo {
 
 export interface Route {
   totalTime: number;
+  /** Complete ordered path geometry, independent of merged instructions. */
+  nodeIds: string[];
   steps: RouteStep[];
 }
 

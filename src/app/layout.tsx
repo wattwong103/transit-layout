@@ -1,20 +1,16 @@
-import type { Metadata, Viewport } from "next";
+﻿import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Shibuya Station Navigator",
+  title: "Shibuya — Station & Neighborhood",
   description:
-    "Interactive map for navigating Shibuya Station — find platforms, exits, and routes across all floors.",
+    "Explore Shibuya Station in a rotatable schematic model and matching floor plans, with source-linked exit connections to surrounding buildings.",
 };
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   viewportFit: "cover",
 };
-
 export default function RootLayout({
   children,
 }: {

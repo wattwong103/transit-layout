@@ -33,7 +33,7 @@ export default function FloorMap({
     () => new Map(allNodes.map((n) => [n.id, n])),
     [allNodes]
   );
-  const [, , vw, vh] = floorPlan.svgViewBox.split(" ").map(Number);
+  const [minX, minY, vw, vh] = floorPlan.svgViewBox.split(/[,\s]+/).map(Number);
 
   // Determine vertical slide direction
   const slideDirection =
@@ -56,6 +56,8 @@ export default function FloorMap({
         <MapViewport viewBox={floorPlan.svgViewBox}>
           <MapDefs />
           <rect
+            x={minX}
+            y={minY}
             width={vw}
             height={vh}
             fill="#0d1117"

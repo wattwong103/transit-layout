@@ -45,6 +45,7 @@ export function formatRoute(
 
   return {
     totalTime: path.totalWeight,
+    nodeIds: [...path.nodeIds],
     steps: merged,
   };
 }

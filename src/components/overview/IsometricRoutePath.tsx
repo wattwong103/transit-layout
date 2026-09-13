@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Route, StationNode } from "@/types/station";
-import { toIsometric, getElevation } from "@/lib/isometric";
+import { getIsometricRoutePoints } from "@/lib/route-display";
 
 interface IsometricRoutePathProps {
   route: Route | null;
@@ -17,26 +17,7 @@ export default function IsometricRoutePath({
   const pathData = useMemo(() => {
     if (!route) return null;
 
-    const points: { x: number; y: number }[] = [];
-
-    for (let i = 0; i < route.steps.length; i++) {
-      const step = route.steps[i];
-      const fromNode = nodesById.get(step.fromNode);
-      const toNode = nodesById.get(step.toNode);
-      if (!fromNode || !toNode) continue;
-
-      if (points.length === 0) {
-        const fromElev = getElevation(fromNode.floor);
-        points.push(
-          toIsometric(fromNode.position.x, fromNode.position.y, fromElev)
-        );
-      }
-
-      const toElev = getElevation(toNode.floor);
-      points.push(
-        toIsometric(toNode.position.x, toNode.position.y, toElev)
-      );
-    }
+    const points = getIsometricRoutePoints(route, nodesById);
 
     if (points.length < 2) return null;
 

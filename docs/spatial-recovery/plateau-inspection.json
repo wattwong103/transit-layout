@@ -1,0 +1,78 @@
+{
+  "sourceId": "plateau-uc24-13-shibuya-west",
+  "archiveSha256": "59d54794dd17c6b258ea171a561d3a94b201ab356a9583a51fe1c3cfe23327fc",
+  "archiveBytes": 1172724,
+  "uncompressedBytes": 5686561,
+  "tilesetVersion": "1.0",
+  "tileCount": 59,
+  "leafTileCount": 40,
+  "b3dmCount": 59,
+  "missingReferences": [],
+  "citygmlFiles": [],
+  "licenseFiles": [],
+  "rootRegionRadiansAndEllipsoidMetres": [
+    2.4382359883211095,
+    0.6223341880690216,
+    2.438247740935526,
+    0.622344136574722,
+    43.66685554648243,
+    55.06041684413134
+  ],
+  "allTileBoundsDegreesAndEllipsoidMetres": [
+    139.70063158770867,
+    35.65712242305577,
+    139.70130496291296,
+    35.65769243044486,
+    43.66685554648243,
+    55.370419135330195
+  ],
+  "rootGeometricError": 56.91558169761909,
+  "geometricErrorMeaning": "Tile refinement threshold, not survey or registration accuracy.",
+  "totalBatchEntriesAcrossRefinementLevels": 646,
+  "uniqueFeatureCount": 343,
+  "uniqueFeatureTypes": {
+    "bldg:BuildingInstallation": 30,
+    "bldg:CeilingSurface": 7,
+    "bldg:FloorSurface": 10,
+    "bldg:GroundSurface": 11,
+    "bldg:IntBuildingInstallation": 122,
+    "bldg:InteriorWallSurface": 35,
+    "bldg:OuterCeilingSurface": 6,
+    "bldg:OuterFloorSurface": 11,
+    "bldg:Room": 4,
+    "bldg:WallSurface": 107
+  },
+  "roomIds": [
+    "room_2819cbae-8dca-42a8-8dac-b9c8f7cdf795",
+    "room_3975db54-9a56-4ce7-afce-b35f027b0b1d",
+    "room_49f77b99-b32f-40b8-8e8b-c2a94fc111fb",
+    "room_e0689409-f75a-4a24-a467-ce69623db041"
+  ],
+  "buildingIds": [
+    "bldg_733c949b-e1c5-4e5a-ad2e-74eb4065cda1"
+  ],
+  "sourceMeshcodes": [
+    "Sakura Underground.gml"
+  ],
+  "attributeKeys": [
+    "ancestors",
+    "feature_type",
+    "gml:id",
+    "meshcode",
+    "uro:BuildingIDAttribute"
+  ],
+  "gltfExtensions": [
+    "CESIUM_RTC",
+    "KHR_draco_mesh_compression"
+  ],
+  "gltfGenerators": [
+    "FME 2024.2.2.0"
+  ],
+  "rtcCenterCount": 55,
+  "sampleRtcCenter": [
+    -3957028.048332298,
+    3355654.1198093668,
+    3697377.026464261
+  ],
+  "scope": "Metadata/header inspection only; meshes not decoded or registered to the prototype."
+}

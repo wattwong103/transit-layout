@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "pilot-west-exit-source-envelope",
+        "sourceId": "plateau-uc24-13-shibuya-west",
+        "status": "provisional-source-envelope",
+        "representedDate": "2024-12",
+        "verifiedPublicBoundary": false,
+        "note": "Union of tile bounds; not an exit inventory, walking area, or full station boundary"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              139.70063158770867,
+              35.65712242305577
+            ],
+            [
+              139.70130496291296,
+              35.65712242305577
+            ],
+            [
+              139.70130496291296,
+              35.65769243044486
+            ],
+            [
+              139.70063158770867,
+              35.65769243044486
+            ],
+            [
+              139.70063158770867,
+              35.65712242305577
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
