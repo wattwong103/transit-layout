@@ -11,6 +11,10 @@ const mime = {
   ".js": "text/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8",
   ".json": "application/json",
+  ".glb": "model/gltf-binary",
+  ".wasm": "application/wasm",
+  ".jpg": "image/jpeg",
+  ".webp": "image/webp",
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".ico": "image/x-icon",
@@ -45,8 +49,9 @@ createServer(async (request, response) => {
       response.writeHead(403).end();
       return;
     }
-    if ((await stat(target)).isDirectory())
-      target = resolve(target, "index.html");
+    const info = await stat(target).catch(() => null);
+    if (info?.isDirectory()) target = resolve(target, "index.html");
+    else if (!info && !extname(target)) target += ".html";
     const body = await readFile(target);
     response.writeHead(200, {
       "Content-Type": mime[extname(target)] ?? "application/octet-stream",

@@ -1,4 +1,5 @@
 import type { ExplorerDataset, ExplorerSpace, Point2 } from "../types/explorer";
+import { applySourceCorrections } from "./sourceCorrections";
 
 const stationMap =
   "https://www.tokyu.co.jp/railway/station_map/pdf/ty01-shibuya_2.pdf";
@@ -58,7 +59,7 @@ const space = (
  * All boundaries, positions, heights and connector placements are schematic.
  * Destination associations carry their own evidence. No metric registration is implied.
  */
-export const explorerData: ExplorerDataset = {
+const v1Diagram: ExplorerDataset = {
   levels: [
     { id: "3F", order: 2, label: "3F", description: "Ginza Line" },
     {
@@ -689,7 +690,7 @@ export const explorerData: ExplorerDataset = {
     {
       ...space(
         "toyoko-west-platform",
-        "Toyoko · Fukutoshin",
+        "Platforms 5 · 6",
         "B5",
         [
           [47, -85],
@@ -724,7 +725,7 @@ export const explorerData: ExplorerDataset = {
     {
       ...space(
         "toyoko-east-platform",
-        "Platforms 5 · 6",
+        "Platforms 3 · 4",
         "B5",
         [
           [78, -86],
@@ -1078,7 +1079,7 @@ export const explorerData: ExplorerDataset = {
       code: "A1",
       name: "Dogenzaka",
       levelId: "B1",
-      position: [-151, -32],
+      position: [-150, -32],
       spaceId: "b1-west-spine",
       destinations: [],
       sourceUrl: stationMap,
@@ -1332,3 +1333,5 @@ export const explorerData: ExplorerDataset = {
     },
   ],
 };
+
+export const explorerData = applySourceCorrections(v1Diagram);

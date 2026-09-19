@@ -6,25 +6,20 @@ import {
   getVisibleFeatures,
   getSpaceOpenings,
   placeBuildingLabels,
+  connectorLevels,
 } from "../src/lib/explorer";
 import type { ExplorerDataset, ExplorerSpace } from "../src/types/explorer";
 
 test("Hikarie and Scramble Square labels clear their exit badges at desktop and mobile scales", () => {
   const before = JSON.stringify(data);
-  const visible = getVisibleFeatures(data, "both", "B2");
-  for (const scale of [0.75, 1.6, 3]) {
-    const positions = placeBuildingLabels(
-      visible.buildings,
-      visible.exits,
-      scale,
-    );
-    for (const code of ["B5", "B6"]) {
-      const exit = visible.exits.find((item) => item.code === code)!;
+  for (const code of ["B5", "B6"]) {
+    const exit = data.exits.find(item => item.code === code)!;
+    const visible = getVisibleFeatures(data, "both", exit.levelId);
+    for (const scale of [0.75, 1.6, 3]) {
+      const positions = placeBuildingLabels(visible.buildings, visible.exits, scale);
       const label = positions.get(exit.destinations[0].buildingId)!;
-      assert.ok(
-        Math.abs(label[1] - exit.position[1]) * scale >= 20,
-        `${code} badge must not cover its destination name at scale ${scale}`,
-      );
+      assert.ok(Math.abs(label[1] - exit.position[1]) * scale >= 20,
+        `${code} badge must not cover its destination name at scale ${scale}`);
     }
   }
   assert.equal(
@@ -40,6 +35,7 @@ test("all selectable features resolve and all exit destinations and floor refere
     ...data.connectors,
     ...data.buildings,
     ...data.exits,
+    ...(data.facilities ?? []),
   ];
   assert.equal(
     new Set(features.map((item) => item.id)).size,
@@ -53,7 +49,7 @@ test("all selectable features resolve and all exit destinations and floor refere
       selection.exit ||
         selection.space ||
         selection.building ||
-        selection.connector,
+        selection.connector || selection.facility,
       `Unresolved pick: ${feature.id}`,
     );
   }
@@ -130,8 +126,7 @@ test("context toggles retain canonical coordinates and selected floor exits", ()
       assert.ok(
         visible.connectors.every(
           (connector) =>
-            connector.from.levelId === level.id ||
-            connector.to.levelId === level.id,
+            connectorLevels(connector).includes(level.id),
         ),
       );
       assert.equal(

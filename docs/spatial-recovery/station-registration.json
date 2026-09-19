@@ -1,0 +1,165 @@
+{
+  "status": "provisional building-centre registration; not surveyed entrance alignment",
+  "coordinateFrame": "WGS84-derived local east/up/south metres, shared with the PLATEAU passage",
+  "transform": {
+    "a": 1.785863744624917,
+    "b": 0.09716273281163655,
+    "tx": 7.787717959424884,
+    "tz": -168.6777021333848,
+    "scale": 1.7885049373745536,
+    "rmse": 25.700238037519288,
+    "residuals": [
+      {
+        "id": "hikarie",
+        "fitted": [
+          257.99614720791914,
+          -207.9036441054082
+        ],
+        "target": [
+          243.9755870551233,
+          -186.00555761040175
+        ],
+        "distance": 26.001967216750167
+      },
+      {
+        "id": "stream",
+        "fitted": [
+          170.47434467797927,
+          34.51329924114742
+        ],
+        "target": [
+          199.3834773203347,
+          21.535245220761585
+        ],
+        "distance": 31.688607357997803
+      },
+      {
+        "id": "mark-city",
+        "fitted": [
+          -196.43713303886426,
+          -85.75350024907412
+        ],
+        "target": [
+          -211.32570552842384,
+          -94.67353272369473
+        ],
+        "distance": 17.35616807147121
+      }
+    ]
+  },
+  "controls": [
+    {
+      "id": "hikarie",
+      "diagram": [
+        138.5,
+        -29.5
+      ],
+      "target": [
+        243.9755870551233,
+        -186.00555761040175
+      ],
+      "source": {
+        "featureId": "bldg_9ad5b600-360f-4627-8a89-fca39aad5576",
+        "name": "渋谷ヒカリエ",
+        "longitude": 139.703662645024,
+        "latitude": 35.65908383706123,
+        "measuredHeight": 173.6,
+        "bounds": [
+          139.70293654153244,
+          35.6586659663051,
+          139.70438874851553,
+          35.65950170781737,
+          17.11,
+          202
+        ],
+        "lod": 2,
+        "surveyYear": "2021",
+        "sourceTile": "data/data502.b3dm",
+        "explorerId": "hikarie",
+        "label": "Hikarie",
+        "matchEvidence": "Exact named feature in PLATEAU building metadata; source coordinates retained."
+      }
+    },
+    {
+      "id": "stream",
+      "diagram": [
+        97,
+        108.5
+      ],
+      "target": [
+        199.3834773203347,
+        21.535245220761585
+      ],
+      "source": {
+        "featureId": "bldg_1db9c375-4ff6-4e3a-8c05-3a5c37e4580d",
+        "name": "渋谷ストリーム",
+        "longitude": 139.70317013608624,
+        "latitude": 35.65721331262664,
+        "measuredHeight": 171.3,
+        "bounds": [
+          139.70258874707474,
+          35.65681183234219,
+          139.70375152509774,
+          35.65761479291108,
+          12.42,
+          194.901
+        ],
+        "lod": 2,
+        "surveyYear": "2021",
+        "sourceTile": "data/data504.b3dm",
+        "explorerId": "stream",
+        "label": "Stream",
+        "matchEvidence": "Exact named feature in PLATEAU building metadata; source coordinates retained."
+      }
+    },
+    {
+      "id": "mark-city",
+      "diagram": [
+        -111.5,
+        52.5
+      ],
+      "target": [
+        -211.32570552842384,
+        -94.67353272369473
+      ],
+      "source": {
+        "featureId": "bldg_884b7aea-8fa7-4447-8d45-d691cfec7237",
+        "name": "マークシティ",
+        "longitude": 139.6986345019023,
+        "latitude": 35.658260682678446,
+        "measuredHeight": 98,
+        "bounds": [
+          139.69721833096247,
+          35.65758104372298,
+          139.70005067284208,
+          35.65894032163392,
+          15.578,
+          129.167
+        ],
+        "lod": 2,
+        "surveyYear": "2021",
+        "sourceTile": "data/data520.b3dm",
+        "explorerId": "mark-city",
+        "label": "Mark City",
+        "matchEvidence": "Exact named feature in PLATEAU building metadata; source coordinates retained."
+      }
+    }
+  ],
+  "leaveOneOut": [
+    {
+      "id": "hikarie",
+      "distanceM": 76.20603045291864
+    },
+    {
+      "id": "stream",
+      "distanceM": 62.530570787464846
+    },
+    {
+      "id": "mark-city",
+      "distanceM": 114.16729184666738
+    }
+  ],
+  "independentSurveyedCheckpoints": 0,
+  "stationVerticalRegistration": "Unknown; floor separation remains illustrative",
+  "limitations": "Envelope centres are approximate correspondences. Leave-one-out checks reuse the same three building identities and are not independent survey validation. No shear or local warping is applied. Source-supported floor/topology corrections are included; measured station geometry and elevations remain unresolved."
+}

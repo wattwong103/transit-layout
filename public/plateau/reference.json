@@ -1,0 +1,238 @@
+{
+  "title": "Shibuya west-exit underground passage",
+  "sourceUrl": "https://assets.cms.plateau.reearth.io/assets/ae/508f8a-0e19-4be2-bdcc-a21483d44575/uc24-13_shibuyaku_chikagai.zip",
+  "catalogUrl": "https://www.geospatial.jp/ckan/dataset/plateau-uc24-13",
+  "sourceSha256": "59d54794dd17c6b258ea171a561d3a94b201ab356a9583a51fe1c3cfe23327fc",
+  "resourceId": "8e5c37d1-4749-416d-988a-4d15f0fb926c",
+  "sourceSurvey": "2024-12",
+  "checkedOn": "2026-09-19",
+  "originWgs84": [
+    139.7009682753108,
+    35.65740742675032,
+    0.0
+  ],
+  "axes": "X east, Y up, Z south; meters",
+  "heightDatum": "WGS84 ellipsoidal; not floor elevation or sea-level height",
+  "leafTiles": 40,
+  "features": 342,
+  "triangles": 24903,
+  "featureTypes": {
+    "bldg:BuildingInstallation": 30,
+    "bldg:CeilingSurface": 7,
+    "bldg:FloorSurface": 10,
+    "bldg:GroundSurface": 11,
+    "bldg:IntBuildingInstallation": 122,
+    "bldg:InteriorWallSurface": 35,
+    "bldg:OuterCeilingSurface": 6,
+    "bldg:OuterFloorSurface": 10,
+    "bldg:Room": 4,
+    "bldg:WallSurface": 107
+  },
+  "roomIds": [
+    "room_2819cbae-8dca-42a8-8dac-b9c8f7cdf795",
+    "room_3975db54-9a56-4ce7-afce-b35f027b0b1d",
+    "room_49f77b99-b32f-40b8-8e8b-c2a94fc111fb",
+    "room_e0689409-f75a-4a24-a467-ce69623db041"
+  ],
+  "boundsMeters": {
+    "min": [
+      -30.48797352031784,
+      43.6667187386677,
+      -31.622239312555504
+    ],
+    "max": [
+      30.488066954244555,
+      55.370340259540185,
+      31.62211567152601
+    ]
+  },
+  "extentMeters": [
+    60.976040474562396,
+    11.703621520872488,
+    63.24435498408151
+  ],
+  "boundsWgs84": {
+    "min": [
+      139.70063158770802,
+      35.65712242305311,
+      43.666855558753014
+    ],
+    "max": [
+      139.70130496291407,
+      35.65769243044563,
+      55.370419193059206
+    ]
+  },
+  "tileChecks": [
+    {
+      "tile": "data/data0.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data1.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data2.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data4.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data5.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data6.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data7.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data8.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data10.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data11.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data12.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data13.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data16.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data18.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data19.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data21.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data23.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data24.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data25.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data26.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data28.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data29.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data30.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data32.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data34.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data36.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data38.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data39.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data40.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data41.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data42.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data43.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data44.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data45.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data47.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data51.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data52.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data53.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data54.b3dm",
+      "verticesOutsideRegion": 0
+    },
+    {
+      "tile": "data/data55.b3dm",
+      "verticesOutsideRegion": 0
+    }
+  ],
+  "registration": {
+    "status": "unregistered",
+    "explorerVersion": "v1.0.0",
+    "controlPoints": 0,
+    "rmseMeters": null
+  },
+  "processing": "Finest REPLACE leaves only; Draco decoded; Y-up converted to Z-up before RTC ECEF translation; ECEF converted to local east/up/south. Source feature IDs retained; source colors replaced. Parent LOD meshes omitted. No geometry smoothing, rescaling, or floor assignment.",
+  "attribution": "Derived from MLIT Project PLATEAU UC24-13 (Shibuya west-exit underground passage). Processed and recolored by transit-layout.",
+  "licenseUrl": "https://www.mlit.go.jp/plateau/site-policy/",
+  "modelSha256": "7fbfe23760e6c582db6dc0ac53cf90fbcf9960568e5a58ecf3f4921df088c638"
+}

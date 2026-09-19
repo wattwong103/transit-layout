@@ -1,0 +1,56 @@
+{
+  "year": 2025,
+  "checkedOn": "2026-09-19",
+  "cityCode": "13113",
+  "city": "Shibuya ward",
+  "catalogApi": "https://api.plateauview.mlit.go.jp/datacatalog/plateau-datasets",
+  "catalogSha256": "f81de93adfb2c62bb04f1df36213a625a7055e68b2fc991a9fc2aedf39cb7ebc",
+  "layers": [
+    {
+      "id": "buildings",
+      "label": "Buildings",
+      "catalogId": "13113_bldg_lod2",
+      "url": "https://assets.cms.plateau.reearth.io/assets/16/b016d3-42ef-4428-ad99-d229310b39fd/13113_shibuya-ku_pref_2025_citygml_1_op_bldg_3dtiles_13113_shibuya-ku_lod2/tileset.json",
+      "compositeUrl": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-bldg-lod2-texture-2025/tileset.json",
+      "lod": "2",
+      "texture": true,
+      "catalogBytes": 143645400
+    },
+    {
+      "id": "roads",
+      "label": "Detailed roads",
+      "catalogId": "13113_tran_lod3",
+      "url": "https://assets.cms.plateau.reearth.io/assets/ba/3b3ca7-270b-4fd9-b355-27b1ea7d7df5/13113_shibuya-ku_pref_2025_citygml_1_op_tran_3dtiles_lod3/tileset.json",
+      "compositeUrl": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-tran-lod3-texture-2025/tileset.json",
+      "lod": "3",
+      "texture": true,
+      "catalogBytes": 3630506
+    },
+    {
+      "id": "bridges",
+      "label": "Bridges",
+      "catalogId": "13113_brid_lod2",
+      "url": "https://assets.cms.plateau.reearth.io/assets/37/acee1e-84d2-457d-a6a6-486d52cdb1a1/13113_shibuya-ku_pref_2025_citygml_1_op_brid_3dtiles_lod2/tileset.json",
+      "compositeUrl": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-brid-lod2-texture-2025/tileset.json",
+      "lod": "2",
+      "texture": true,
+      "catalogBytes": 10608969
+    },
+    {
+      "id": "underground",
+      "label": "Underground spaces",
+      "catalogId": "13113_ubld_lod4",
+      "url": "https://assets.cms.plateau.reearth.io/assets/ea/284655-a1e2-46c1-bdb5-ee4a66af67a3/13113_shibuya-ku_pref_2025_citygml_1_op_ubld_3dtiles_lod4/tileset.json",
+      "compositeUrl": "https://api.plateauview.mlit.go.jp/datacatalog/3dtiles/13113-ubld-lod4-texture-2025/tileset.json",
+      "lod": "4",
+      "texture": true,
+      "catalogBytes": 2747807
+    }
+  ],
+  "terrainUrl": "https://tile.plateauview.mlit.go.jp/terrain",
+  "terrainDocumentation": "https://docs.plateauview.mlit.go.jp/datasets/terrain/",
+  "mapUrl": "https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png",
+  "photoUrl": "https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg",
+  "mapAttributionUrl": "https://maps.gsi.go.jp/development/ichiran.html",
+  "licenseUrl": "https://www.mlit.go.jp/plateau/site-policy/"
+}

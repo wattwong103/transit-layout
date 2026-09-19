@@ -7,6 +7,10 @@ import {
   getVisibleFeatures,
   getSpaceOpenings,
   placeBuildingLabels,
+  connectorStops,
+  connectorLevels,
+  connectorName,
+  facilitySymbol,
 } from "@/lib/explorer";
 
 const polygonPoints = (points: Point2[]) =>
@@ -295,12 +299,8 @@ export default function Explorer2D({
           </g>
         ))}
         {visible.connectors.map((connector) => {
-          const endpoint =
-            connector.from.levelId === activeLevel
-              ? connector.from
-              : connector.to;
-          const other =
-            endpoint === connector.from ? connector.to : connector.from;
+          const endpoint = connectorStops(connector).find(s => s.levelId === activeLevel) ?? connector.from;
+          const closed = connector.access?.status === "closed-in-source";
           return (
             <g
               key={connector.id}
@@ -308,7 +308,7 @@ export default function Explorer2D({
               className="plan-connector plan-target"
               {...interactive(
                 connector.id,
-                `${connector.kind} between ${connector.from.levelId} and ${connector.to.levelId}`,
+                `${connectorName(connector)} · ${connectorLevels(connector).join(", ")}${closed ? " · Closed in source" : ""}`,
               )}
             >
               {selectedId === connector.id && (
@@ -321,7 +321,7 @@ export default function Explorer2D({
                 />
               )}
               <title>
-                {connector.kind} to {other.levelId}; schematic position
+                {connectorName(connector)} · {connectorLevels(connector).join(", ")}; schematic position
               </title>
               <rect
                 x="-2.5"
@@ -329,7 +329,7 @@ export default function Explorer2D({
                 width="5"
                 height="7"
                 rx=".5"
-                fill={connector.kind === "lift" ? "#a6e4ee" : "#faf4d6"}
+                fill={closed ? "#e4d9d5" : connector.kind === "lift" ? "#a6e4ee" : "#faf4d6"}
                 stroke={connector.kind === "lift" ? "#228eaa" : "#9c926d"}
                 strokeWidth=".5"
               />
@@ -340,6 +340,8 @@ export default function Explorer2D({
                   fill="none"
                   strokeWidth=".5"
                 />
+              ) : connector.kind === "slope" ? (
+                <path d="M-2,2 L2,-2" stroke="#777455" strokeWidth=".7" />
               ) : (
                 [-2, -0.5, 1, 2.5].map((y) => (
                   <path
@@ -350,9 +352,19 @@ export default function Explorer2D({
                   />
                 ))
               )}
+              {closed && <path d="M-3,-4 L3,4 M3,-4 L-3,4" stroke="#b64530" strokeWidth="1" />}
             </g>
           );
         })}
+        {visible.facilities.map(f => (
+          <g key={f.id} transform={`translate(${f.position.join(" ")})`} className="plan-target"
+            {...interactive(f.id, `${f.name}, ${f.levelId}`)}>
+            <title>{f.name} · schematic position</title>
+            <rect x={-8 / scale} y={-7 / scale} width={16 / scale} height={14 / scale} rx={2 / scale}
+              fill={selectedId === f.id ? "#c7ece5" : "#fffefa"} stroke={f.kind === "works" ? "#b64530" : "#4b7674"} strokeWidth={.7 / scale} />
+            <text textAnchor="middle" dominantBaseline="central" fontSize={8 / scale} fill="#355859">{facilitySymbol(f.kind)}</text>
+          </g>
+        ))}
         {contextMode !== "station" &&
           selection.connections
             .filter((link) => visibleExits.has(link.exit.id))

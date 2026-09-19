@@ -1,0 +1,68 @@
+{
+  "sourceLeafTiles": 528,
+  "uniqueBuildings": 41809,
+  "lodCounts": {
+    "1": 37234,
+    "2": 4575
+  },
+  "surveyYearCounts": {
+    "0001": 3589,
+    "2021": 38220
+  },
+  "landmarkCandidates": [
+    {
+      "featureId": "bldg_9ad5b600-360f-4627-8a89-fca39aad5576",
+      "name": "渋谷ヒカリエ",
+      "longitude": 139.703662645024,
+      "latitude": 35.65908383706123,
+      "measuredHeight": 173.6,
+      "bounds": [
+        139.70293654153244,
+        35.6586659663051,
+        139.70438874851553,
+        35.65950170781737,
+        17.11,
+        202.0
+      ],
+      "lod": 2,
+      "surveyYear": "2021",
+      "sourceTile": "data/data502.b3dm"
+    },
+    {
+      "featureId": "bldg_1db9c375-4ff6-4e3a-8c05-3a5c37e4580d",
+      "name": "渋谷ストリーム",
+      "longitude": 139.70317013608624,
+      "latitude": 35.65721331262664,
+      "measuredHeight": 171.3,
+      "bounds": [
+        139.70258874707474,
+        35.65681183234219,
+        139.70375152509774,
+        35.65761479291108,
+        12.42,
+        194.901
+      ],
+      "lod": 2,
+      "surveyYear": "2021",
+      "sourceTile": "data/data504.b3dm"
+    },
+    {
+      "featureId": "bldg_884b7aea-8fa7-4447-8d45-d691cfec7237",
+      "name": "マークシティ",
+      "longitude": 139.6986345019023,
+      "latitude": 35.658260682678446,
+      "measuredHeight": 98,
+      "bounds": [
+        139.69721833096247,
+        35.65758104372298,
+        139.70005067284208,
+        35.65894032163392,
+        15.578,
+        129.167
+      ],
+      "lod": 2,
+      "surveyYear": "2021",
+      "sourceTile": "data/data520.b3dm"
+    }
+  ]
+}

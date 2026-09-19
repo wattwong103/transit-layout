@@ -1,11 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useState } from "react";
 import { explorerData as data } from "@/data/explorer";
-import { getSelection } from "@/lib/explorer";
+import { getSelection, connectorName, connectorLevels } from "@/lib/explorer";
 import type { ContextMode, ExplorerLevelId } from "@/types/explorer";
 import Explorer2D from "./Explorer2D";
+import FeatureDetails from "./FeatureDetails";
 
 const Explorer3D = dynamic(() => import("./Explorer3D"), {
   ssr: false,
@@ -43,7 +45,7 @@ export default function StationExplorer() {
   const [showLabels, setShowLabels] = useState(true);
   const [resetKey, setResetKey] = useState(0);
   const [query, setQuery] = useState("");
-  const [listTab, setListTab] = useState<"places" | "exits">("places");
+  const [listTab, setListTab] = useState<"places" | "exits" | "access">("places");
   const [panelOpen, setPanelOpen] = useState(false);
   const selection = getSelection(data, selectedId);
   const level = data.levels.find((item) => item.id === activeLevel);
@@ -63,6 +65,11 @@ export default function StationExplorer() {
   const exits = data.exits.filter((item) =>
     `${item.code} ${item.name}`.toLowerCase().includes(search),
   );
+  const accessItems = [
+    ...data.connectors.map(c => ({id:c.id, name:connectorName(c), detail:`${c.kind} · ${connectorLevels(c).join(" / ")}${c.access?.status === "closed-in-source" ? " · closed in source" : ""}`})),
+    ...(data.facilities ?? []).map(f => ({id:f.id, name:f.name, detail:`${f.kind} · ${f.levelId}`})),
+  ].filter(item => `${item.name} ${item.detail}`.toLowerCase().includes(search));
+  const selectedFeature = selection.connector ?? selection.facility ?? selection.exit ?? selection.space;
 
   function select(id: string | null) {
     setSelectedId(id);
@@ -78,14 +85,20 @@ export default function StationExplorer() {
         setContextMode((mode) => (mode === "station" ? "both" : mode));
       if (activeLevel !== "all" || view === "2d")
         setActiveLevel(next.exit.levelId);
-    } else if ((next.space || next.connector) && contextMode === "buildings")
-      setContextMode("both");
+    } else if (next.space || next.connector || next.facility) {
+      if (contextMode === "buildings") setContextMode("both");
+      if (activeLevel !== "all" || view === "2d") {
+        const floors = next.connector ? connectorLevels(next.connector) : [next.facility?.levelId ?? next.space!.levelId];
+        if (!floors.includes(activeLevel as ExplorerLevelId)) setActiveLevel(floors[0]);
+      }
+    }
   }
   function switchView(next: "3d" | "2d") {
     setView(next);
     if (next === "2d" && activeLevel === "all")
       setActiveLevel(
         selection.exit?.levelId ??
+          selection.facility?.levelId ??
           selection.space?.levelId ??
           selection.connector?.from.levelId ??
           selection.exits[0]?.levelId ??
@@ -166,6 +179,12 @@ export default function StationExplorer() {
               <span>Out into Shibuya.</span>
             </h1>
             <p>Explore the levels, then follow an exit to the neighborhood.</p>
+            <Link href="/area" prefetch={false} className="mt-3 block text-xs underline underline-offset-4">
+              Unified city + station · lightweight PLATEAU ↗
+            </Link>
+            <Link href="/verification" prefetch={false} className="mt-3 inline-block text-xs underline underline-offset-4">
+              Sources & real-world reference ↗
+            </Link>
           </div>
           <div className="context-control">
             <span className="control-label">Show on map</span>
@@ -207,23 +226,20 @@ export default function StationExplorer() {
                     ? "NEIGHBORHOOD"
                     : selection.connector
                       ? "BETWEEN LEVELS"
-                      : `${selection.space?.levelId ?? ""} · STATION`}
+                      : `${selection.facility?.levelId ?? selection.space?.levelId ?? ""} · STATION`}
               </span>
               <h2>
                 {selection.exit?.name ??
                   selection.building?.name ??
+                  selection.facility?.name ??
                   selection.space?.name ??
                   (selection.connector &&
-                    `${selection.connector.kind === "lift" ? "Lift" : selection.connector.kind === "stairs" ? "Stairs" : "Escalator"} · ${selection.connector.from.levelId} ↔ ${selection.connector.to.levelId}`)}
+                    connectorName(selection.connector))}
               </h2>
-              {selection.connector && (
-                <p>
-                  Illustrative connection between{" "}
-                  {selection.connector.from.levelId} and{" "}
-                  {selection.connector.to.levelId}. Its position and
-                  availability have not been verified for navigation.
-                </p>
-              )}
+              <Link href="/verification#public-review" prefetch={false} className="mb-3 inline-block text-xs underline underline-offset-4">
+                Check floors, equipment & source evidence ↗
+              </Link>
+              {selectedFeature && <FeatureDetails feature={selectedFeature} />}
               {selection.building && <p>{selection.building.description}</p>}
               {selection.space && (
                 <>
@@ -304,8 +320,8 @@ export default function StationExplorer() {
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Find a building or exit…"
-              aria-label="Find a building or exit"
+              placeholder="Find a place, exit or lift…"
+              aria-label="Find a place, exit or lift"
             />
             {query && (
               <button onClick={() => setQuery("")} aria-label="Clear search">
@@ -313,7 +329,7 @@ export default function StationExplorer() {
               </button>
             )}
           </label>
-          <div className="list-tabs" aria-label="Browse places or exits">
+          <div className="list-tabs" aria-label="Browse places, exits or access">
             <button
               aria-pressed={listTab === "places"}
               onClick={() => setListTab("places")}
@@ -325,6 +341,9 @@ export default function StationExplorer() {
               onClick={() => setListTab("exits")}
             >
               Exits <span>{exits.length}</span>
+            </button>
+            <button aria-pressed={listTab === "access"} onClick={() => setListTab("access")}>
+              Access <span>{accessItems.length}</span>
             </button>
           </div>
           <div className="place-list">
@@ -363,7 +382,13 @@ export default function StationExplorer() {
                     </button>
                   );
                 })
-              : exits.map((exit) => (
+              : listTab === "access" ? accessItems.map(item => (
+                <button key={item.id} className={`place-row ${selectedId === item.id ? "selected" : ""}`}
+                  onClick={() => select(item.id)} aria-pressed={selectedId === item.id}>
+                  <span className="place-info"><strong>{item.name}</strong><small>{item.detail}</small></span>
+                  <span className="row-arrow">↗</span>
+                </button>
+              )) : exits.map((exit) => (
                   <button
                     key={exit.id}
                     className={`place-row ${selectedId === exit.id ? "selected" : ""}`}
@@ -383,7 +408,7 @@ export default function StationExplorer() {
                     <span className="row-arrow">↗</span>
                   </button>
                 ))}
-            {(listTab === "places" ? buildings : exits).length === 0 && (
+            {(listTab === "places" ? buildings : listTab === "access" ? accessItems : exits).length === 0 && (
               <p className="empty-results">
                 No {listTab} match “{query}”. Try the{" "}
                 {listTab === "places" ? "Exits" : "Places"} tab.
@@ -401,11 +426,12 @@ export default function StationExplorer() {
             <p>
               Exit destinations are linked to operator and building sources.
               Lines show associations, not turn-by-turn paths. Building
-              interiors, accessible routes and current closures are not mapped.
+              interiors and complete accessible routes are not mapped. Published
+              closures and hours appear with the affected feature.
             </p>
             <p>
-              Visual reference: station illustration dated November 2025. Source
-              dates are shown with each connection.
+              Updated from operator plans reviewed 19 September 2026. Positions
+              remain schematic; floor labels are not measured elevations.
             </p>
           </details>
         </aside>
@@ -418,7 +444,7 @@ export default function StationExplorer() {
               {activeLevel === "all"
                 ? contextMode === "buildings"
                   ? "Around Shibuya Station."
-                  : "Eight levels. One station."
+                  : `${data.levels.length} levels. One station.`
                 : `${activeLevel} · ${level?.description}`}
             </h2>
             <p>
@@ -438,6 +464,7 @@ export default function StationExplorer() {
                 ? `${selection.exit.code} · ${selection.exit.name}`
                 : (selection.building?.shortName ??
                   selection.space?.name ??
+                  selection.facility?.name ??
                   selection.connector?.kind)}
               <span>Details ↗</span>
             </button>

@@ -1,0 +1,4 @@
+DracoPy==2.1.0
+numpy==1.26.4
+pyproj==3.7.2
+shapely==2.0.2

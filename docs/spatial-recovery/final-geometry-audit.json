@@ -1,0 +1,35 @@
+{
+  "station": [
+    {
+      "frame": "drawing",
+      "validSlabs": 59,
+      "validOpenings": 65,
+      "validBuildingPolygons": 8,
+      "attachedExitAnchors": 20,
+      "supportedConnectorStops": 135,
+      "supportedFacilities": 35
+    },
+    {
+      "frame": "registered",
+      "validSlabs": 59,
+      "validOpenings": 65,
+      "validBuildingPolygons": 8,
+      "attachedExitAnchors": 20,
+      "supportedConnectorStops": 135,
+      "supportedFacilities": 35
+    }
+  ],
+  "city": {
+    "checkedSourceTiles": 122,
+    "checkedBuildings": 3101,
+    "validPolygonParts": 3123,
+    "decodedSourceTriangles": 469945,
+    "maxVerticalQuantizationM": 0.0049979097782753,
+    "maxEnvelopeBoundsDifferenceM": 0.20686070550833335,
+    "sourceHashesMatch": true,
+    "payloadBytes": 645153,
+    "payloadSha256": "3394a1eea2d253a53782b5be952fbf30e50231e2a4b70847cbc3fb27b7dc83b9"
+  },
+  "stationFitRmsM": 25.700238037519288,
+  "interpretation": "Internal geometry checks pass. Station geographic accuracy is provisional; no independent surveyed checkpoints or floor elevations are established."
+}

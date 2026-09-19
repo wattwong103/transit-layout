@@ -6,6 +6,9 @@
 # testing
 /coverage
 /.test-dist/
+/.cache/
+__pycache__/
+/public/cesium/
 
 # next.js
 /.next/

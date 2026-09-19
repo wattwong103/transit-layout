@@ -1,0 +1,3250 @@
+{
+  "schemaVersion": 2,
+  "checkedOn": "2026-09-19",
+  "baseline": "v1.1.0, source corrections reviewed 19 September 2026",
+  "modelSha256": "7122937f26ec07028a0b91d44e22b9b7d009a558fe451b55fd5ea58312fa872a",
+  "scope": "All 186 current model features have a source-review entry. Documented identities and floor relationships are distinguished from inferred bank correspondence and unmeasured geometry. This is not an exhaustive inventory of every physical station asset.",
+  "geometryVerified": false,
+  "independentSurveyCheckpoints": 0,
+  "sourcePolicy": "Use operator diagrams for equipment and floors, dated work notices for closures, facility guides for destination links, and PLATEAU/GSI for geographic context. Preserve publication, observation and proposed-completion dates separately.",
+  "sources": [
+    {
+      "id": "tokyu-plan",
+      "title": "Tokyu floor plans and isometric map",
+      "publisher": "Tokyu",
+      "url": "https://www.tokyu.co.jp/railway/station_map/pdf/ty01-shibuya_2.pdf",
+      "documentDate": "2026-08-21",
+      "checkedOn": "2026-09-19",
+      "scope": "B1–B5 plans, exit codes, lift identifiers, escalator arrows, gates and amenities.",
+      "caveat": "Exit-direction inset is dated 2024-08-30. Diagram coordinates are not survey coordinates.",
+      "bytes": 875321,
+      "sha256": "14e91d59894df2b4e4bc20e28c0db1ff0c6151b74b4908cb16dab23affe9823c",
+      "inspectionMethod": "Visual diagram inspection",
+      "artifactUrl": "https://www.tokyu.co.jp/railway/station_map/pdf/ty01-shibuya_2.pdf"
+    },
+    {
+      "id": "metro-map",
+      "title": "Metro isometric station map",
+      "publisher": "Tokyo Metro",
+      "url": "https://www.tokyometro.jp/station/yardmap_img/figure_yardmap_shibuya_all.jpg",
+      "documentDate": "2025-08",
+      "checkedOn": "2026-09-19",
+      "scope": "Ginza 3F/2F and the underground station stack.",
+      "caveat": "Older than Tokyu’s plan; the user’s English illustration is dated 2025-11. Retrieved through the official page after direct-download 403.",
+      "bytes": 1596015,
+      "sha256": "1c98c89e7d967050eb989f12dd3797fa88ad1bd81ed5545b05814e7f95714e84",
+      "inspectionMethod": "Visual diagram inspection",
+      "artifactUrl": "https://www.tokyometro.jp/station/yardmap_img/figure_yardmap_shibuya_all.jpg"
+    },
+    {
+      "id": "metro-access",
+      "title": "Station accessibility facilities",
+      "publisher": "Tokyo Metro",
+      "url": "https://www.tokyometro.jp/station/shibuya/accessibility/index.html",
+      "documentDate": null,
+      "checkedOn": "2026-09-19",
+      "scope": "Lift routes, escalator directions and accessible toilet facilities.",
+      "caveat": "Underground text still uses legacy exit numbers such as 13a and 15. Do not equate them with current A/B/C codes without a dated crosswalk.",
+      "bytes": null,
+      "sha256": null,
+      "inspectionMethod": "Official page text or browser inspection"
+    },
+    {
+      "id": "jr-map",
+      "title": "JR Shibuya 1F–3F floor plan",
+      "publisher": "JR East",
+      "url": "https://www.jreast.co.jp/estation/stations/img/floormap/0808_1f-3f.png",
+      "documentDate": "2026-06",
+      "checkedOn": "2026-09-19",
+      "scope": "Platforms, four named gates, lifts A–F, escalators, stairs, accessible toilets and construction areas.",
+      "caveat": "Printed warning: station works can alter the plan. Retrieved through the official page after direct-download 403.",
+      "bytes": 291035,
+      "sha256": "01c183ca3b85dab91a30e7b10324ac26bfe38fb8c735399acb439f1afb113c2a",
+      "inspectionMethod": "Visual diagram inspection",
+      "artifactUrl": "https://www.jreast.co.jp/estation/stations/img/floormap/0808_1f-3f.png"
+    },
+    {
+      "id": "jr-station",
+      "title": "JR Shibuya station facilities",
+      "publisher": "JR East",
+      "url": "https://www.jreast.co.jp/estation/stations/808.html",
+      "documentDate": null,
+      "checkedOn": "2026-09-19",
+      "scope": "Current diagram and facility presence; inspected in the browser.",
+      "caveat": "Senior-car route restrictions are specific to that equipment, not a general ban on all wheelchair routes.",
+      "bytes": null,
+      "sha256": null,
+      "inspectionMethod": "Official page text or browser inspection"
+    },
+    {
+      "id": "keio-floor",
+      "title": "Keio station floor plan",
+      "publisher": "Keio",
+      "url": "https://www.keio.co.jp/train/station/station_map/pdf/in01_shibuya_floor_map.pdf",
+      "documentDate": "2026-03",
+      "checkedOn": "2026-09-19",
+      "scope": "1F West, 2F Central, 4F Avenue gate, platform arrangement, stair letters and amenities.",
+      "caveat": "Printed end-March 2026; read together with the separate west-lift construction notice.",
+      "bytes": 160728,
+      "sha256": "08369e8d5ccb8d64f007c75e1bfafb802c9494acf459f4c177a5495fb63ed839",
+      "inspectionMethod": "Visual diagram inspection",
+      "artifactUrl": "https://www.keio.co.jp/train/station/station_map/pdf/in01_shibuya_floor_map.pdf"
+    },
+    {
+      "id": "keio-map",
+      "title": "Keio isometric map with closure overlay",
+      "publisher": "Keio",
+      "url": "https://www.keio.co.jp/train/station/station_map/pdf/in01_shibuya.pdf",
+      "documentDate": "2025-03 base / 2025-08-25 closure",
+      "checkedOn": "2026-09-19",
+      "scope": "Station levels and west-end stair closure marked in red.",
+      "caveat": "The newer floor-plan publication date does not establish completion of the lift works.",
+      "bytes": 261014,
+      "sha256": "83e0f05046865e17ba14cca74a504c5df85c75edbb9189e1df0db58d2b3ae43d",
+      "inspectionMethod": "Visual diagram inspection",
+      "artifactUrl": "https://www.keio.co.jp/train/station/station_map/pdf/in01_shibuya.pdf"
+    },
+    {
+      "id": "keio-works",
+      "title": "West-exit lift construction notice",
+      "publisher": "Keio",
+      "url": "https://www.keio.co.jp/news/update/announce/announce2025/pdf/0807_shibuya.pdf",
+      "documentDate": "2025-08-25 to 2026-09-end planned",
+      "checkedOn": "2026-09-19",
+      "scope": "Stairs removed for new lift construction; planned construction interval.",
+      "caveat": "As checked on 2026-09-19, the planned finish is still in the future. No completion or opening confirmation established.",
+      "bytes": 263130,
+      "sha256": "1e06e5c3e5ee925e3e393d456860fe4b14aa6ea288559c2268c1eca21c311dd0",
+      "inspectionMethod": "Visual diagram inspection",
+      "artifactUrl": "https://www.keio.co.jp/news/update/announce/announce2025/pdf/0807_shibuya.pdf"
+    },
+    {
+      "id": "city-map",
+      "title": "Shibuya City guide map",
+      "publisher": "Shibuya City",
+      "url": "https://www.city.shibuya.tokyo.jp/shisetsu/annaizu/maps/annaizu.html",
+      "documentDate": "2026-02",
+      "checkedOn": "2026-09-19",
+      "scope": "1:10,000 city map: roads, railways, destinations and surrounding district.",
+      "caveat": "Map title says 2025; footer says issued February 2026. Downloaded PDF is a raster page without a /VP geospatial transform; no entrance coordinates were extracted.",
+      "bytes": 18550740,
+      "sha256": "4996ed8efd264c5d270a8a12413e623ff5b4ba3548d5b50b3ce6bcbc844a30cd",
+      "inspectionMethod": "Visual diagram inspection",
+      "artifactUrl": "https://files.city.shibuya.tokyo.jp/assets/12995aba8b194961be709ba879857f70/ca8a2bc642154ebe9a9daec52330830c/R7_annaizu_map.pdf"
+    },
+    {
+      "id": "city-infrastructure",
+      "title": "Walkable City Shibuya infrastructure booklet",
+      "publisher": "Shibuya City",
+      "url": "https://files.city.shibuya.tokyo.jp/assets/12995aba8b194961be709ba879857f70/ec34a04613e2431887e9d824225c7bda/kiban_book.pdf",
+      "documentDate": "2024-11",
+      "checkedOn": "2026-09-19",
+      "scope": "Printed pp.12–15 show district connections, proposed decks and free passages; pp.16–17 describe vertical circulation.",
+      "caveat": "Completion illustrations include future works, some labelled FY2027 onward. Do not convert the illustrated future network into current open routes.",
+      "bytes": 20217700,
+      "sha256": "8629a9f5853c166b785a37969293e79a133c0ed4e88eb233c41cb1a30ed8d8ea",
+      "inspectionMethod": "Visual diagram inspection",
+      "artifactUrl": "https://files.city.shibuya.tokyo.jp/assets/12995aba8b194961be709ba879857f70/ec34a04613e2431887e9d824225c7bda/kiban_book.pdf"
+    },
+    {
+      "id": "city-bf-plan",
+      "title": "Barrier-free implementation plan, revised edition",
+      "publisher": "Shibuya City",
+      "url": "https://files.city.shibuya.tokyo.jp/assets/12995aba8b194961be709ba879857f70/f3cc2ca1df1d4458a4d6f90743bf1aa6/R7_barrier_free_koso.pdf",
+      "documentDate": "2026-03",
+      "checkedOn": "2026-09-19",
+      "scope": "Printed pp.5–6 (PDF pp.11–12): JR, Keio, Tokyu and Ginza station improvement entries.",
+      "caveat": "Station section explicitly reports status as of end-January 2024. A March 2026 cover is not a 2026 equipment-status survey.",
+      "bytes": 3378153,
+      "sha256": "11477b047c388274deba3ede66144bb11d669d85dc7de037321f970ceee151aa",
+      "inspectionMethod": "Visual diagram inspection",
+      "artifactUrl": "https://files.city.shibuya.tokyo.jp/assets/12995aba8b194961be709ba879857f70/f3cc2ca1df1d4458a4d6f90743bf1aa6/R7_barrier_free_koso.pdf"
+    },
+    {
+      "id": "city-bf-map",
+      "title": "Shibuya barrier-free map guide",
+      "publisher": "Shibuya City",
+      "url": "https://www.city.shibuya.tokyo.jp/kenko/shogai-seikatsu/shien-kaigo-seikatsu/barrier-free-map.html",
+      "documentDate": "2025-06-06 page update",
+      "checkedOn": "2026-09-19",
+      "scope": "Public map guide and sampled live-map lift record near Hikarie, including its displayed provenance and update date.",
+      "caveat": "Official facility markers and user contributions differ. Sampled Hikarie priority-lift record is a WheeLog contribution last updated 2019-02-08; not accepted as a current surveyed control. Individual map records were not exhaustively checked.",
+      "bytes": 82274,
+      "sha256": "945329cc8c75b961ef24d18fbbc042b973d7caf60d911df8f67ce465ddadd4db",
+      "inspectionMethod": "Official page text or browser inspection",
+      "artifactUrl": "https://www.city.shibuya.tokyo.jp/kenko/shogai-seikatsu/shien-kaigo-seikatsu/barrier-free-map.html"
+    },
+    {
+      "id": "mlit-network",
+      "title": "Public pedestrian spatial network catalog",
+      "publisher": "MLIT / G Spatial Information Center",
+      "url": "https://www.geospatial.jp/ckan/dataset/0401",
+      "documentDate": "Shibuya south 2020-03-01 / Shibuya district 2017-12-22",
+      "checkedOn": "2026-09-19",
+      "scope": "Downloaded Shibuya south GeoJSON: 1,641 nodes and 1,823 links with floor and accessibility attribute codes.",
+      "caveat": "Historic network; no current exit or lift IDs in node attributes. Zero independently matched control points accepted. Raw coded attributes were not interpreted as metres or equipment counts.",
+      "bytes": 150272,
+      "sha256": "b989423ba0b7d3d7c99020dbd1551b03cdf69506c1b2a8d2ecb632cdb1b3030c",
+      "inspectionMethod": "Downloaded data and metadata inspection",
+      "artifactUrl": "https://www.geospatial.jp/ckan/dataset/0401"
+    },
+    {
+      "id": "plateau-city",
+      "title": "PLATEAU Shibuya ward 2025 release",
+      "publisher": "MLIT Project PLATEAU",
+      "url": "https://api.plateauview.mlit.go.jp/datacatalog/plateau-datasets",
+      "documentDate": "2025 release / named landmarks surveyed 2021",
+      "checkedOn": "2026-09-19",
+      "scope": "Existing city import and reviewed Hikarie, Stream and Mark City feature identities.",
+      "caveat": "Three building-centre fit controls give 25.7 m RMS mismatch, not independent entrance accuracy. Five other destination feature identities remain unresolved.",
+      "bytes": null,
+      "sha256": null,
+      "inspectionMethod": "Existing geographic source audit"
+    },
+    {
+      "id": "plateau-passage",
+      "title": "PLATEAU west-exit underground reference",
+      "publisher": "MLIT Project PLATEAU",
+      "url": "https://www.geospatial.jp/ckan/dataset/plateau-uc24-13",
+      "documentDate": "2024-12 source condition",
+      "checkedOn": "2026-09-19",
+      "scope": "Existing decoded west-passage mesh and source coordinate audit.",
+      "caveat": "Limited roughly 61 × 63 m coverage. Named station-floor correspondence and current route access remain unverified.",
+      "bytes": null,
+      "sha256": null,
+      "inspectionMethod": "Existing geographic source audit"
+    },
+    {
+      "id": "gsi-map",
+      "title": "GSI map tile reference",
+      "publisher": "Geospatial Information Authority of Japan",
+      "url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "documentDate": null,
+      "checkedOn": "2026-09-19",
+      "scope": "Existing geographic background for the shared city/station view.",
+      "caveat": "Flat map presentation, not surveyed station floor elevations or validation of entrance positions.",
+      "bytes": null,
+      "sha256": null,
+      "inspectionMethod": "Existing geographic source audit"
+    },
+    {
+      "id": "hikarie-access",
+      "title": "Hikarie access guide",
+      "publisher": "Shibuya Hikarie",
+      "url": "https://www.hikarie.jp/access/index.php",
+      "documentDate": null,
+      "checkedOn": "2026-09-19",
+      "scope": "B5 direct connection and facility-specific levels of elevated connections.",
+      "caveat": "A facility floor label does not by itself establish a shared absolute elevation. Rechecked on the review date.",
+      "bytes": null,
+      "sha256": null,
+      "inspectionMethod": "Official page text or browser inspection"
+    },
+    {
+      "id": "markcity-access",
+      "title": "Mark City access guide",
+      "publisher": "Shibuya Mark City",
+      "url": "https://www.s-markcity.co.jp/access/",
+      "documentDate": null,
+      "checkedOn": "2026-09-19",
+      "scope": "Keio Central–East Mall 2F, Avenue–Restaurants Avenue 4F, West–West Mall 1F.",
+      "caveat": "These are gate connections; they are not evidence for a direct A5 indoor link. Rechecked on the review date.",
+      "bytes": null,
+      "sha256": null,
+      "inspectionMethod": "Official page text or browser inspection"
+    },
+    {
+      "id": "square-access",
+      "title": "Scramble Square access guide",
+      "publisher": "Shibuya Scramble Square",
+      "url": "https://www.shibuya-scramble-square.com/sky/access/",
+      "documentDate": null,
+      "checkedOn": "2026-09-19",
+      "scope": "B6 building association retained from the previous recorded review.",
+      "caveat": "This pass could not refetch the page; do not call it a fresh page verification. Tokyu’s current plan supports the B6 exit inventory.",
+      "bytes": null,
+      "sha256": null,
+      "inspectionMethod": "Retained prior evidence; fresh retrieval not established"
+    },
+    {
+      "id": "stream-access",
+      "title": "Stream access guide",
+      "publisher": "Shibuya Stream",
+      "url": "https://shibuyastream.jp/access/",
+      "documentDate": null,
+      "checkedOn": "2026-09-19",
+      "scope": "Current access page located; C2 relationship independently appears on Tokyu’s plan.",
+      "caveat": "C2 is an exit code, not floor B2. No surveyed path dimensions established.",
+      "bytes": null,
+      "sha256": null,
+      "inspectionMethod": "Official page text or browser inspection"
+    },
+    {
+      "id": "magnet-access",
+      "title": "MAGNET facility operator release",
+      "publisher": "SHIBUYA109 Entertainment",
+      "url": "https://www.shibuya109.co.jp/wp-content/uploads/2025/08/250815%E3%80%90PressRelease%E3%80%919%E6%9C%8819%E6%97%A5%E9%96%8B%E5%82%AC%E3%80%8CAnisong-Scramble%E3%80%8D_%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B%E5%85%88%E7%84%A1.pdf",
+      "documentDate": "2025-08-15",
+      "checkedOn": "2026-09-19",
+      "scope": "A12 direct connection retained from the recorded destination review.",
+      "caveat": "Release not downloaded again this pass. Current Tokyu plan separately labels A12 at MAGNET on B2.",
+      "bytes": null,
+      "sha256": null,
+      "inspectionMethod": "Retained prior evidence; fresh retrieval not established"
+    },
+    {
+      "id": "fukuras-access",
+      "title": "Fukuras access guide",
+      "publisher": "Shibuya Fukuras",
+      "url": "https://shibuya-fukuras.jp/access/",
+      "documentDate": null,
+      "checkedOn": "2026-09-19",
+      "scope": "Walking access from JR South Gate / west side; supports a destination relationship.",
+      "caveat": "Search-indexed official text inspected after direct page timeout. No direct A5 indoor connection verified.",
+      "bytes": null,
+      "sha256": null,
+      "inspectionMethod": "Official page text or browser inspection"
+    }
+  ],
+  "findings": [
+    {
+      "id": "hikarie-floor",
+      "status": "Corrected",
+      "title": "Hikarie gates and slope",
+      "detail": "Moved the Hikarie gate concourse, B5 interface and adjoining circulation to B3, separated the B2 Miyamasuzaka area, and added the B2–B3 slope. Reconnected the B4 banks and public transitions. Shapes and slope gradients remain illustrative.",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "featureIds": [
+        "hikarie-gates-b3",
+        "miyamasuzaka-b2",
+        "miyamasuzaka-hikarie-slope",
+        "hikarie1-b4-escalator",
+        "hikarie2-b4-escalator",
+        "exit-b5"
+      ]
+    },
+    {
+      "id": "exit-floors",
+      "status": "Corrected",
+      "title": "Exit landing floors",
+      "detail": "A12 now has a B2 branch; exit B1 has a B3 approach plus lifts 20a/20b; B5 meets Hikarie at B3; B7 has its own B1 landing. C1/C2/C3 branches are distinct. C3 floor correspondence remains provisional.",
+      "sourceIds": [
+        "tokyu-plan",
+        "metro-map"
+      ],
+      "featureIds": [
+        "exit-a12",
+        "exit-b1",
+        "exit-b5",
+        "exit-b7",
+        "exit-c1",
+        "exit-c2",
+        "exit-c3"
+      ]
+    },
+    {
+      "id": "platform-numbers",
+      "status": "Corrected",
+      "title": "B5 platform numbering",
+      "detail": "Corrected the shared dataset: western island 5–6, eastern island 3–4. Both the 2D diagram and 3D views inherit these labels; geometry remains schematic.",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "featureIds": [
+        "toyoko-west-platform",
+        "toyoko-east-platform"
+      ]
+    },
+    {
+      "id": "jr-gates",
+      "status": "Corrected",
+      "title": "JR gate floors and lifts",
+      "detail": "Central and New South gate areas are on 3F; Hachiko and South are on 1F. Added six source-lettered lifts A–F with explicit stops, platform connections and gate markers. These are schematic relationships, not an as-built circulation graph.",
+      "sourceIds": [
+        "jr-map",
+        "jr-station"
+      ],
+      "featureIds": [
+        "jr-central-concourse",
+        "jr-new-south",
+        "jr-hachiko-concourse",
+        "ground-jr",
+        "jr-lift-A",
+        "jr-lift-B",
+        "jr-lift-C",
+        "jr-lift-D",
+        "jr-lift-E",
+        "jr-lift-F"
+      ]
+    },
+    {
+      "id": "keio-levels",
+      "status": "Corrected",
+      "title": "Keio levels and published closures",
+      "detail": "Added West 1F, Central 2F, Avenue 4F, the arrival-only platform, external Central lift and stairs A–F. C/D are visibly closed in the source; Avenue hours are recorded. West lift works remain a planned marker, not an open lift.",
+      "sourceIds": [
+        "keio-floor",
+        "keio-map",
+        "keio-works",
+        "markcity-access"
+      ],
+      "featureIds": [
+        "keio-west-gate",
+        "keio-central-gate",
+        "keio-avenue-gate",
+        "keio-arrival-platform",
+        "keio-central-lift",
+        "keio-stair-C",
+        "keio-stair-D",
+        "keio-west-works"
+      ]
+    },
+    {
+      "id": "exit-coverage",
+      "status": "Inventory checked",
+      "title": "All 20 drawn exit codes matched",
+      "detail": "A0–A8, A12, B1–B7 and C1–C3 match the reviewed Tokyu plan. This corrects the earlier claim that the plan contained additional exit groups. Twenty badges do not enumerate every physical doorway, approach level or JR/Keio gate.",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "featureIds": []
+    },
+    {
+      "id": "equipment",
+      "status": "Partially corrected",
+      "title": "Equipment identities, stops and access rules",
+      "detail": "Source-identified lifts and lettered stairs are represented, with explicit stops or range endpoints, published hours and closure state. Lift 21 does not appear on B1. Ginza paid and unpaid lifts are separate. Generic banks still lack an individual asset match; directions and live availability remain incomplete.",
+      "sourceIds": [
+        "tokyu-plan",
+        "jr-map",
+        "keio-floor",
+        "metro-access"
+      ],
+      "featureIds": [
+        "tokyu-lift-21",
+        "metro-ginza-paid-lift",
+        "metro-ginza-unpaid-lift"
+      ]
+    },
+    {
+      "id": "amenities",
+      "status": "Partially corrected",
+      "title": "Gates and station facilities",
+      "detail": "Added 15 named gates and 19 amenity markers covering toilets, baby care, AEDs, lockers, tickets and information, plus one construction marker. These are selected identifiable features; a complete amenity, tactile-guidance and continuous paid-boundary survey is still needed.",
+      "sourceIds": [
+        "tokyu-plan",
+        "jr-map",
+        "keio-floor",
+        "metro-access"
+      ],
+      "featureIds": [
+        "gate-tokyu-hikarie1",
+        "gate-tokyu-hikarie2",
+        "jr-south-wc",
+        "keio-central-wc",
+        "tokyu-lounge-wc"
+      ]
+    },
+    {
+      "id": "dates",
+      "status": "Date conflict",
+      "title": "Current-looking pages can contain old data",
+      "detail": "Metro’s underground accessibility text uses legacy exit numbers. The city’s March 2026 barrier-free plan reports station status from January 2024. The November 2024 infrastructure booklet includes future completion diagrams.",
+      "sourceIds": [
+        "metro-access",
+        "city-bf-plan",
+        "city-infrastructure"
+      ],
+      "featureIds": []
+    },
+    {
+      "id": "alignment",
+      "status": "Provisional",
+      "title": "Geographic registration remains unverified",
+      "detail": "City maps and historic pedestrian GeoJSON add geographic context, but no independently matched entrance or corner was established. The existing PLATEAU fit remains 25.7 m RMS across three building centres; floor heights are illustrative.",
+      "sourceIds": [
+        "city-map",
+        "mlit-network",
+        "plateau-city",
+        "plateau-passage",
+        "gsi-map"
+      ],
+      "featureIds": []
+    }
+  ],
+  "features": [
+    {
+      "id": "ginza-platform",
+      "kind": "space",
+      "label": "Ginza Line",
+      "modelLevel": "3F",
+      "status": "Partial",
+      "sourceIds": [
+        "metro-map"
+      ],
+      "note": "3F is supported; dimensions and track geometry remain illustrative."
+    },
+    {
+      "id": "ginza-gates",
+      "kind": "space",
+      "label": "Ginza Scramble Square gate area",
+      "modelLevel": "3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "metro-map"
+      ],
+      "note": "3F Scramble Square gate beside JR approach. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "ginza-west-landing",
+      "kind": "space",
+      "label": "West landing",
+      "modelLevel": "2F",
+      "status": "Unresolved",
+      "sourceIds": [
+        "metro-map"
+      ],
+      "note": "2F landing is plausible in the diagram; exact gate-side correspondence has not been established."
+    },
+    {
+      "id": "ginza-east-landing",
+      "kind": "space",
+      "label": "Ginza Meiji-dori gate area",
+      "modelLevel": "2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "metro-map"
+      ],
+      "note": "2F Meiji-dori gate and paid lift. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "ginza-jr-bridge",
+      "kind": "space",
+      "label": "JR Central elevated approach",
+      "modelLevel": "3F",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "3F Central public approach; external geometry schematic. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-west-platform",
+      "kind": "space",
+      "label": "JR Yamanote",
+      "modelLevel": "2F",
+      "status": "Partial",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Yamanote platform floor 2F agrees; curvature, length and landing locations are not verified."
+    },
+    {
+      "id": "jr-east-platform",
+      "kind": "space",
+      "label": "JR Saikyo",
+      "modelLevel": "2F",
+      "status": "Partial",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Saikyo/Shonan-Shinjuku platform floor 2F agrees; exact platform geometry is not verified."
+    },
+    {
+      "id": "jr-central-concourse",
+      "kind": "space",
+      "label": "JR Central gate concourse",
+      "modelLevel": "3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "June 2026 / 3F Central Gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-platform",
+      "kind": "space",
+      "label": "Keio Inokashira",
+      "modelLevel": "2F",
+      "status": "Partial",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Main 2F platform retained; a separate arrival-only platform and the three gate levels are now represented. Track spacing and length are illustrative."
+    },
+    {
+      "id": "keio-transfer",
+      "kind": "space",
+      "label": "Keio transfer passage",
+      "modelLevel": "2F",
+      "status": "Partial",
+      "sourceIds": [
+        "keio-floor",
+        "markcity-access"
+      ],
+      "note": "2F Central approach retained. West 1F and Avenue 4F branches are now separate features; external passage geometry remains schematic."
+    },
+    {
+      "id": "ground-west",
+      "kind": "space",
+      "label": "Hachiko square",
+      "modelLevel": "1F",
+      "status": "Partial",
+      "sourceIds": [
+        "city-map",
+        "jr-map"
+      ],
+      "note": "Hachiko plaza context supported; construction boundaries and metric shape are unverified."
+    },
+    {
+      "id": "ground-east",
+      "kind": "space",
+      "label": "East square",
+      "modelLevel": "1F",
+      "status": "Partial",
+      "sourceIds": [
+        "city-map",
+        "city-infrastructure"
+      ],
+      "note": "East-side plaza context supported; proposed city plaza boundaries are not current geometry."
+    },
+    {
+      "id": "ground-jr",
+      "kind": "space",
+      "label": "JR South gate concourse",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "1F South Gate / lifts A,F. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "b1-west-spine",
+      "kind": "space",
+      "label": "West underground passage",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B1 west-side passages exist; the simplified spine is not a surveyed circulation graph."
+    },
+    {
+      "id": "b1-109-branch",
+      "kind": "space",
+      "label": "SHIBUYA109 approach",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "A2/109 approach exists, with access from more than one level. One branch does not capture that topology."
+    },
+    {
+      "id": "b1-qfront-branch",
+      "kind": "space",
+      "label": "QFRONT approach",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "A6 toward QFRONT supported; no direct interior connection established."
+    },
+    {
+      "id": "b1-hachiko-branch",
+      "kind": "space",
+      "label": "Hachiko passage",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "A7/A8 B1 branch retained. A12 is now attached to its own B2 approach."
+    },
+    {
+      "id": "b1-dogenzaka-branch",
+      "kind": "space",
+      "label": "Dogenzaka passage",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "A0 B1 approach retained, with its overnight hours stored on the exit."
+    },
+    {
+      "id": "b1-markcity-branch",
+      "kind": "space",
+      "label": "West exit passage",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan",
+        "markcity-access"
+      ],
+      "note": "A4/A5 west passage supported as a direction, not a verified indoor Mark City route."
+    },
+    {
+      "id": "b1-east-spine",
+      "kind": "space",
+      "label": "East underground passage",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B2/B3/B4 exit approaches appear on B1; drawn branches are simplified."
+    },
+    {
+      "id": "b1-exit-approach-b3",
+      "kind": "space",
+      "label": "Exit B1 · lower approach",
+      "modelLevel": "B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Exit B1 corridor labelled B3. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "b2-west-concourse",
+      "kind": "space",
+      "label": "Shibuya Chikamichi",
+      "modelLevel": "B2",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B2 gate markers, lift stops and selected amenities are represented. Continuous paid/unpaid boundary geometry remains unresolved."
+    },
+    {
+      "id": "hikarie-gates-b3",
+      "kind": "space",
+      "label": "Hikarie 1 & 2 gate concourse",
+      "modelLevel": "B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B2/B3 plan: Hikarie 1 and 2. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "hikarie-link-b3",
+      "kind": "space",
+      "label": "B5 · Hikarie",
+      "modelLevel": "B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B5/Hikarie B3 interface. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "b2-square-link",
+      "kind": "space",
+      "label": "B6 · Scramble Square",
+      "modelLevel": "B2",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan",
+        "square-access"
+      ],
+      "note": "B6 approach retained; lifts 23 are separate shafts and B7 has a separate B1 landing. Exact facility floor elevations remain unknown."
+    },
+    {
+      "id": "b2-stream-link",
+      "kind": "space",
+      "label": "C2 · Stream",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "South public corridor to C1/C2/C3. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "hanzomon-platform",
+      "kind": "space",
+      "label": "Hanzomon · Den-en-toshi",
+      "modelLevel": "B3",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B3 Den-en-toshi/Hanzomon platform agrees; exact geometry is not verified."
+    },
+    {
+      "id": "hikarie-public-b3",
+      "kind": "space",
+      "label": "Hikarie outside-gate passage",
+      "modelLevel": "B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Unpaid circulation around Hikarie gates. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "b4-concourse",
+      "kind": "space",
+      "label": "Toyoko · Fukutoshin concourse",
+      "modelLevel": "B4",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B4 transfer level and additional west branch are represented with explicit lift stops. Other stair and escalator banks remain illustrative."
+    },
+    {
+      "id": "toyoko-west-platform",
+      "kind": "space",
+      "label": "Platforms 5 · 6",
+      "modelLevel": "B5",
+      "status": "Corrected",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Western island label corrected to platforms 5–6; B5 floor supported."
+    },
+    {
+      "id": "toyoko-east-platform",
+      "kind": "space",
+      "label": "Platforms 3 · 4",
+      "modelLevel": "B5",
+      "status": "Corrected",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Eastern island label corrected to platforms 3–4; B5 floor supported."
+    },
+    {
+      "id": "miyamasuzaka-b2",
+      "kind": "space",
+      "label": "Miyamasuzaka gates",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B2 Miyamasuzaka Central/East; simplified extent includes both sides of the gates. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "hanzomon-b4-transfer",
+      "kind": "space",
+      "label": "Hanzomon transfer branch",
+      "modelLevel": "B4",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B4 west branch to Den-en-toshi platform. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "a6-surface-landing",
+      "kind": "space",
+      "label": "A6-side lift landing",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Surface landing of lift 1. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "magnet-link-b2",
+      "kind": "space",
+      "label": "A12 · MAGNET approach",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "A12 on B2. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "b1-exit-landing-b2",
+      "kind": "space",
+      "label": "Exit B1 · B2 lift landing",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "20b / B2 landing. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "b1-exit-surface",
+      "kind": "space",
+      "label": "Exit B1 · surface landing",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B1 surface / 20a. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "b7-landing-b1",
+      "kind": "space",
+      "label": "B7 · east plaza landing",
+      "modelLevel": "B1",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B7 on B1 landing. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "c1-branch-b2",
+      "kind": "space",
+      "label": "C1 · south-east branch",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Distinct C1 branch. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "c3-branch-b2",
+      "kind": "space",
+      "label": "C3 · stair approach",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "C3 west-facing stair branch. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "c1-upper-landing",
+      "kind": "space",
+      "label": "C1-side upper lift landing",
+      "modelLevel": "2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Lift 31 upper range endpoint. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "c2-upper-landing",
+      "kind": "space",
+      "label": "C2-side upper lift landing",
+      "modelLevel": "2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Lift 32 upper range endpoint. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "hikarie-upper-landing",
+      "kind": "space",
+      "label": "Hikarie upper lift landing",
+      "modelLevel": "4F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "22 / 4F range endpoint; facility floor naming. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "hikarie-surface-landing",
+      "kind": "space",
+      "label": "Hikarie surface lift landing",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Hikarie-side 1F landing. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "b6-upper-landing",
+      "kind": "space",
+      "label": "B6 upper lift landing",
+      "modelLevel": "3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Lift 23 / 3F endpoint. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "b6-surface-landing",
+      "kind": "space",
+      "label": "B6 surface lift landing",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B6 / ground lift endpoint. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-central-public",
+      "kind": "space",
+      "label": "JR Central outside-gate passage",
+      "modelLevel": "3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "3F Central public approach. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-hachiko-concourse",
+      "kind": "space",
+      "label": "JR Hachiko gate concourse",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "1F Hachiko Gate / lifts B,C. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-new-south",
+      "kind": "space",
+      "label": "JR New South gate concourse",
+      "modelLevel": "3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "3F New South Gate / lifts D,E. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-new-south-public",
+      "kind": "space",
+      "label": "New South free passage",
+      "modelLevel": "3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "3F public passage beside New South gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-A-landing-3f",
+      "kind": "space",
+      "label": "JR lift A landing",
+      "modelLevel": "3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "3F lift A landing. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-F-landing-3f",
+      "kind": "space",
+      "label": "JR lift F landing",
+      "modelLevel": "3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "3F lift F landing. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-central-gate",
+      "kind": "space",
+      "label": "Keio Central gate area",
+      "modelLevel": "2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "2F Central gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-arrival-platform",
+      "kind": "space",
+      "label": "Keio arrival-only platform",
+      "modelLevel": "2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Separate arrival-only platform. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-west-gate",
+      "kind": "space",
+      "label": "Keio West gate area",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "1F West gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-avenue-gate",
+      "kind": "space",
+      "label": "Keio Avenue gate area",
+      "modelLevel": "4F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "4F Avenue gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "markcity-avenue",
+      "kind": "space",
+      "label": "Mark City Avenue",
+      "modelLevel": "4F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "markcity-access"
+      ],
+      "note": "Restaurants Avenue 4F connection. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-central-surface",
+      "kind": "space",
+      "label": "Mark City surface lift landing",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Ground endpoint of external Central lift. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "ginza-scramble-surface",
+      "kind": "space",
+      "label": "Ginza ground lift landing",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "metro-access"
+      ],
+      "note": "Scramble Square gate–ground lift. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "g-west-stairs",
+      "kind": "connector",
+      "label": "Ginza west outside-gate stairs",
+      "modelLevel": "2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "metro-map"
+      ],
+      "note": "Scramble Square side outside-gate stairs. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "g-east-stairs",
+      "kind": "connector",
+      "label": "Ginza Meiji-dori stairs",
+      "modelLevel": "2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "metro-map"
+      ],
+      "note": "2F Meiji-dori area–3F platform stair bank. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-west-stairs",
+      "kind": "connector",
+      "label": "stairs · jr-west-stairs",
+      "modelLevel": "1F / 2F",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "General floor relationship; individual bank correspondence unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured. Illustrative bank; source equipment identity and exact location remain unverified."
+    },
+    {
+      "id": "jr-east-stairs",
+      "kind": "connector",
+      "label": "stairs · jr-east-stairs",
+      "modelLevel": "1F / 2F",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "General floor relationship; individual bank correspondence unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured. Illustrative bank; source equipment identity and exact location remain unverified."
+    },
+    {
+      "id": "jr-north-stairs",
+      "kind": "connector",
+      "label": "stairs · jr-north-stairs",
+      "modelLevel": "1F / 2F",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "General floor relationship; individual bank correspondence unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured. Illustrative bank; source equipment identity and exact location remain unverified."
+    },
+    {
+      "id": "west-ground-stairs",
+      "kind": "connector",
+      "label": "stairs · west-ground-stairs",
+      "modelLevel": "B1 / 1F",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "General floor relationship; individual bank correspondence unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured. Illustrative bank; source equipment identity and exact location remain unverified."
+    },
+    {
+      "id": "b1-b2-west",
+      "kind": "connector",
+      "label": "stairs · b1-b2-west",
+      "modelLevel": "B2 / B1",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "General floor relationship; individual bank correspondence unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured. Illustrative bank; source equipment identity and exact location remain unverified."
+    },
+    {
+      "id": "b1-b2-center",
+      "kind": "connector",
+      "label": "escalator · b1-b2-center",
+      "modelLevel": "B2 / B1",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "General floor relationship; individual bank correspondence unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured. Illustrative bank; source equipment identity and exact location remain unverified."
+    },
+    {
+      "id": "b1-b2-east",
+      "kind": "connector",
+      "label": "stairs · b1-b2-east",
+      "modelLevel": "B2 / B1",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "General floor relationship; individual bank correspondence unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured. Illustrative bank; source equipment identity and exact location remain unverified."
+    },
+    {
+      "id": "b2-b3-west",
+      "kind": "connector",
+      "label": "stairs · b2-b3-west",
+      "modelLevel": "B3 / B2",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "General floor relationship; individual bank correspondence unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured. Illustrative bank; source equipment identity and exact location remain unverified."
+    },
+    {
+      "id": "b2-b3-middle",
+      "kind": "connector",
+      "label": "escalator · b2-b3-middle",
+      "modelLevel": "B3 / B2",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "General floor relationship; individual bank correspondence unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured. Illustrative bank; source equipment identity and exact location remain unverified."
+    },
+    {
+      "id": "b2-b3-east",
+      "kind": "connector",
+      "label": "Hanzomon / Miyamasuzaka stair bank",
+      "modelLevel": "B3 / B2",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B3 Hanzomon to B2 Miyamasuzaka relationship; individual stair bank not matched. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "hikarie1-b4-escalator",
+      "kind": "connector",
+      "label": "Hikarie 1 escalator bank",
+      "modelLevel": "B4 / B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Hikarie 1 / B4 escalator bank. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Weekdays from first train to about 10:00, both indicated units run upward. Bank geometry is schematic."
+    },
+    {
+      "id": "hikarie2-b4-escalator",
+      "kind": "connector",
+      "label": "Hikarie 2 escalator bank",
+      "modelLevel": "B4 / B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Hikarie 2 / B4 bank. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "b4-b5-west-north",
+      "kind": "connector",
+      "label": "escalator · b4-b5-west-north",
+      "modelLevel": "B5 / B4",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "General floor relationship; individual bank correspondence unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured. Illustrative bank; source equipment identity and exact location remain unverified."
+    },
+    {
+      "id": "b4-b5-west-south",
+      "kind": "connector",
+      "label": "stairs · b4-b5-west-south",
+      "modelLevel": "B5 / B4",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "General floor relationship; individual bank correspondence unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured. Illustrative bank; source equipment identity and exact location remain unverified."
+    },
+    {
+      "id": "b4-b5-east-north",
+      "kind": "connector",
+      "label": "stairs · b4-b5-east-north",
+      "modelLevel": "B5 / B4",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "General floor relationship; individual bank correspondence unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured. Illustrative bank; source equipment identity and exact location remain unverified."
+    },
+    {
+      "id": "b4-b5-east-south",
+      "kind": "connector",
+      "label": "escalator · b4-b5-east-south",
+      "modelLevel": "B5 / B4",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "General floor relationship; individual bank correspondence unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured. Illustrative bank; source equipment identity and exact location remain unverified."
+    },
+    {
+      "id": "miyamasuzaka-hikarie-slope",
+      "kind": "connector",
+      "label": "B2–B3 concourse slope",
+      "modelLevel": "B3 / B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Slope between Miyamasuzaka and Hikarie. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "miyamasuzaka-b4-bank",
+      "kind": "connector",
+      "label": "Miyamasuzaka / B4 escalator bank",
+      "modelLevel": "B4 / B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Northern B4 escalators toward Miyamasuzaka. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-lift-A",
+      "kind": "connector",
+      "label": "Tokyu lift A",
+      "modelLevel": "B3 / B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "A / Den-en-toshi B3–B2. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-lift-B",
+      "kind": "connector",
+      "label": "Tokyu lift B",
+      "modelLevel": "B4 / B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B / B3 platform–B4 branch. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-lift-C",
+      "kind": "connector",
+      "label": "Tokyu lift C · platforms 3–4",
+      "modelLevel": "B5 / B4 / B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "C on B2, B4 and B5 panels. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-lift-D",
+      "kind": "connector",
+      "label": "Tokyu lift D · platforms 5–6",
+      "modelLevel": "B5 / B4 / B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "D on B2, B4 and B5 panels. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-lift-E",
+      "kind": "connector",
+      "label": "Tokyu lift E · Hikarie",
+      "modelLevel": "B5 / B4 / B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "E on B3–B5 panels. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-lift-F",
+      "kind": "connector",
+      "label": "Tokyu lift F · Hikarie",
+      "modelLevel": "B5 / B4 / B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "F on B3–B5 panels. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-lift-1",
+      "kind": "connector",
+      "label": "Lift 1 · A6 / Dogenzaka",
+      "modelLevel": "B2 / 1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Lift 1 range 1F–B2. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Only documented landings shown; intermediate stops are not inferred. Only recorded range endpoints are shown; no intermediate stop is inferred."
+    },
+    {
+      "id": "tokyu-lift-21",
+      "kind": "connector",
+      "label": "Lift 21 · surface / B2",
+      "modelLevel": "B2 / 1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "21 explicitly does not stop at B1. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Does not stop at B1. Source identifies the 1F and B2 landings."
+    },
+    {
+      "id": "tokyu-lift-20a",
+      "kind": "connector",
+      "label": "Lift 20a · B1 exit / surface",
+      "modelLevel": "B3 / 1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "20a / 1F–B3 range. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Only documented landings shown; intermediate stops are not inferred. Only recorded range endpoints are shown; no intermediate stop is inferred."
+    },
+    {
+      "id": "tokyu-lift-20b",
+      "kind": "connector",
+      "label": "Lift 20b · B1 approach",
+      "modelLevel": "B3 / B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "20b / B2–B3. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "b7-b2-bank",
+      "kind": "connector",
+      "label": "B7 landing escalator bank",
+      "modelLevel": "B2 / B1",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B7 approach from B2. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "b7-surface-stairs",
+      "kind": "connector",
+      "label": "B7 surface stairs",
+      "modelLevel": "B1 / 1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B7 / surface approach. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "b6-hikarie-public-stairs",
+      "kind": "connector",
+      "label": "B6 / Hikarie public transition",
+      "modelLevel": "B3 / B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Steps west of Hikarie gate toward B6. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "hikarie-south-public-stairs",
+      "kind": "connector",
+      "label": "Hikarie / south public passage",
+      "modelLevel": "B3 / B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Steps from Hikarie 2 area to south corridor. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-lift-31",
+      "kind": "connector",
+      "label": "Lift 31 · south junction",
+      "modelLevel": "B2 / 2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "31 / 2F–B2 range. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Only documented landings shown; intermediate stops are not inferred. Only recorded range endpoints are shown; no intermediate stop is inferred."
+    },
+    {
+      "id": "tokyu-lift-32",
+      "kind": "connector",
+      "label": "Lift 32 · Stream side",
+      "modelLevel": "B2 / 2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "32 / 2F–B2 range. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Only documented landings shown; intermediate stops are not inferred. Only recorded range endpoints are shown; no intermediate stop is inferred."
+    },
+    {
+      "id": "tokyu-lift-22-upper",
+      "kind": "connector",
+      "label": "Hikarie lift · B3–4F",
+      "modelLevel": "B3 / 4F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "22 left symbol, 4F–B3 range. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Only documented landings shown; intermediate stops are not inferred. Only recorded range endpoints are shown; no intermediate stop is inferred."
+    },
+    {
+      "id": "tokyu-lift-22-surface",
+      "kind": "connector",
+      "label": "Hikarie lift · B3–1F",
+      "modelLevel": "B3 / 1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Separate adjacent symbol, 1F–B3 range. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Only documented landings shown; intermediate stops are not inferred. Only recorded range endpoints are shown; no intermediate stop is inferred."
+    },
+    {
+      "id": "tokyu-lift-23-upper",
+      "kind": "connector",
+      "label": "B6 lift · B2–3F",
+      "modelLevel": "B2 / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "23 / 3F–B2 range. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Only documented landings shown; intermediate stops are not inferred. Only recorded range endpoints are shown; no intermediate stop is inferred."
+    },
+    {
+      "id": "tokyu-lift-23-surface",
+      "kind": "connector",
+      "label": "B6 lift · B2–1F",
+      "modelLevel": "B2 / 1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Separate ground-route lift symbol. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Only documented landings shown; intermediate stops are not inferred. Only recorded range endpoints are shown; no intermediate stop is inferred."
+    },
+    {
+      "id": "jr-lift-A",
+      "kind": "connector",
+      "label": "JR lift A",
+      "modelLevel": "1F / 2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Lift A matched across June 2026 panels. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-lift-B",
+      "kind": "connector",
+      "label": "JR lift B",
+      "modelLevel": "1F / 2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Lift B matched across June 2026 panels. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-lift-C",
+      "kind": "connector",
+      "label": "JR lift C",
+      "modelLevel": "1F / 2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Lift C matched across June 2026 panels. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-lift-D",
+      "kind": "connector",
+      "label": "JR lift D",
+      "modelLevel": "2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Lift D matched across June 2026 panels. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-lift-E",
+      "kind": "connector",
+      "label": "JR lift E",
+      "modelLevel": "2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Lift E matched across June 2026 panels. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-lift-F",
+      "kind": "connector",
+      "label": "JR lift F",
+      "modelLevel": "1F / 2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Lift F matched across June 2026 panels. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-central-yamanote-stairs",
+      "kind": "connector",
+      "label": "JR Central / yamanote stairs",
+      "modelLevel": "2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "3F Central / 2F platform stair bank. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-new-south-yamanote-stairs",
+      "kind": "connector",
+      "label": "New South / yamanote stairs",
+      "modelLevel": "2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "New South stair bank. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-central-yamanote-escalator",
+      "kind": "connector",
+      "label": "JR Central / yamanote escalator",
+      "modelLevel": "2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Central escalator symbol; direction not inferred. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-new-south-yamanote-escalator",
+      "kind": "connector",
+      "label": "New South / yamanote escalator",
+      "modelLevel": "2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "New South escalator symbol; direction not inferred. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-central-saikyo-stairs",
+      "kind": "connector",
+      "label": "JR Central / saikyo stairs",
+      "modelLevel": "2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "3F Central / 2F platform stair bank. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-new-south-saikyo-stairs",
+      "kind": "connector",
+      "label": "New South / saikyo stairs",
+      "modelLevel": "2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "New South stair bank. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-central-saikyo-escalator",
+      "kind": "connector",
+      "label": "JR Central / saikyo escalator",
+      "modelLevel": "2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Central escalator symbol; direction not inferred. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-new-south-saikyo-escalator",
+      "kind": "connector",
+      "label": "New South / saikyo escalator",
+      "modelLevel": "2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "New South escalator symbol; direction not inferred. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-jr-central-stairs",
+      "kind": "connector",
+      "label": "Keio approach / JR Central level",
+      "modelLevel": "2F / 3F",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Central public approach toward Keio; exact bank unresolved. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-central-lift",
+      "kind": "connector",
+      "label": "Keio Central / Mark City lift",
+      "modelLevel": "1F / 2F / 4F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Outside Central gate: ground and Avenue destinations. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-stair-A",
+      "kind": "connector",
+      "label": "Keio stairs A",
+      "modelLevel": "2F / 4F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Lettered stair A. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-stair-B",
+      "kind": "connector",
+      "label": "Keio stairs B",
+      "modelLevel": "2F / 4F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Lettered stair B. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-stair-C",
+      "kind": "connector",
+      "label": "Keio stairs C",
+      "modelLevel": "1F / 2F",
+      "status": "Closed in source",
+      "sourceIds": [
+        "keio-map"
+      ],
+      "note": "West-end C closure overlay. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. West-end stair replacement for lift works; planned through end-September 2026. Opening not confirmed."
+    },
+    {
+      "id": "keio-stair-D",
+      "kind": "connector",
+      "label": "Keio stairs D",
+      "modelLevel": "1F / 2F",
+      "status": "Closed in source",
+      "sourceIds": [
+        "keio-map"
+      ],
+      "note": "West-end D closure overlay. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. West-end stair replacement for lift works; planned through end-September 2026. Opening not confirmed."
+    },
+    {
+      "id": "keio-stair-E",
+      "kind": "connector",
+      "label": "Keio stairs E",
+      "modelLevel": "1F / 2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Lettered stair E. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-stair-F",
+      "kind": "connector",
+      "label": "Keio stairs F",
+      "modelLevel": "1F / 2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Lettered stair F. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "metro-ginza-paid-lift",
+      "kind": "connector",
+      "label": "Ginza Meiji-dori lift",
+      "modelLevel": "2F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "metro-access"
+      ],
+      "note": "Meiji-dori gate–platform. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "metro-ginza-unpaid-lift",
+      "kind": "connector",
+      "label": "Ginza Scramble Square / ground lift",
+      "modelLevel": "1F / 3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "metro-access"
+      ],
+      "note": "Scramble Square gate–ground; intermediate stops not specified. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Only documented landings shown; intermediate stops are not inferred. Only recorded range endpoints are shown; no intermediate stop is inferred."
+    },
+    {
+      "id": "exit-a0",
+      "kind": "exit",
+      "label": "Exit A0 · Dogenzaka",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B1 approach and published overnight hours recorded. Physical doorway position remains unmeasured. Published hours: Weekdays 04:35–00:45 next day; weekends/holidays 04:35–00:35 next day."
+    },
+    {
+      "id": "exit-a1",
+      "kind": "exit",
+      "label": "Exit A1 · Dogenzaka",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B1 approach identified; exact surface stair and doorway coordinates are unknown."
+    },
+    {
+      "id": "exit-a2",
+      "kind": "exit",
+      "label": "Exit A2 · SHIBUYA109",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "109 association supported. Its time-limited building lift is retained in the source inventory; its complete stop list is not established."
+    },
+    {
+      "id": "exit-a3",
+      "kind": "exit",
+      "label": "Exit A3 · Dogenzaka",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B1 approach identified; exact stairs and adjacent amenity positions are unknown."
+    },
+    {
+      "id": "exit-a4",
+      "kind": "exit",
+      "label": "Exit A4 · West passage",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B1 west-side approach identified; doorway and route geometry remain schematic."
+    },
+    {
+      "id": "exit-a5",
+      "kind": "exit",
+      "label": "Exit A5 · Mark City · Fukuras direction",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Mark City/Fukuras direction supported; no direct A5 indoor route verified."
+    },
+    {
+      "id": "exit-a6",
+      "kind": "exit",
+      "label": "Exit A6 · QFRONT direction",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "QFRONT direction supported; surface and underground circulation are not fully mapped."
+    },
+    {
+      "id": "exit-a7",
+      "kind": "exit",
+      "label": "Exit A7 · Hachiko direction",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B1 west/Hachiko approach identified; stair identity and access conditions unresolved."
+    },
+    {
+      "id": "exit-a8",
+      "kind": "exit",
+      "label": "Exit A8 · Hachiko square",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Hachiko approach identified; stairs/escalators and their operating directions are not modelled per asset."
+    },
+    {
+      "id": "exit-a12",
+      "kind": "exit",
+      "label": "Exit A12 · MAGNET",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "MAGNET / A12 in B2 panel. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "exit-b1",
+      "kind": "exit",
+      "label": "Exit B1 · Miyamasuzaka direction",
+      "modelLevel": "B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B1 is an exit code; its corridor is B3. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "exit-b2",
+      "kind": "exit",
+      "label": "Exit B2 · East underground passage",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B1 approach appears in source; badge is not a surveyed surface doorway."
+    },
+    {
+      "id": "exit-b3",
+      "kind": "exit",
+      "label": "Exit B3 · East underground passage",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B1 approach appears in source; stair/escalator bank is not individually represented."
+    },
+    {
+      "id": "exit-b4",
+      "kind": "exit",
+      "label": "Exit B4 · Miyamasuzaka passage",
+      "modelLevel": "B1",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B1 approach appears in source; exact surface exit position unresolved."
+    },
+    {
+      "id": "exit-b5",
+      "kind": "exit",
+      "label": "Exit B5 · Shibuya Hikarie",
+      "modelLevel": "B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B5 label beside Hikarie B3. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "exit-b6",
+      "kind": "exit",
+      "label": "Exit B6 · Scramble Square",
+      "modelLevel": "B2",
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Scramble Square association and two distinct lift ranges are represented. Facility floor labels do not establish common absolute elevation."
+    },
+    {
+      "id": "exit-b7",
+      "kind": "exit",
+      "label": "Exit B7 · East station approach",
+      "modelLevel": "B1",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B7 landing beside B1 label. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "exit-c1",
+      "kind": "exit",
+      "label": "Exit C1 · South-east passage",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "C1 southern junction. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "exit-c2",
+      "kind": "exit",
+      "label": "Exit C2 · Shibuya Stream",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "C2 / Stream branch. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Published hours: First to last train (source plan)."
+    },
+    {
+      "id": "exit-c3",
+      "kind": "exit",
+      "label": "Exit C3 · South-east passage",
+      "modelLevel": "B2",
+      "status": "Provisional correspondence",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "C3 outside-gate passage; absolute elevation unverified. Floor or bank correspondence remains provisional. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "shibuya109",
+      "kind": "building",
+      "label": "SHIBUYA109",
+      "modelLevel": null,
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Destination identified; matching PLATEAU feature identity and entrance coordinates remain unresolved."
+    },
+    {
+      "id": "qfront",
+      "kind": "building",
+      "label": "QFRONT",
+      "modelLevel": null,
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Destination identified; matching PLATEAU feature identity and entrance coordinates remain unresolved."
+    },
+    {
+      "id": "magnet",
+      "kind": "building",
+      "label": "MAGNET by SHIBUYA109",
+      "modelLevel": null,
+      "status": "Partial",
+      "sourceIds": [
+        "tokyu-plan",
+        "magnet-access"
+      ],
+      "note": "Destination identified; matching PLATEAU feature identity and entrance coordinates remain unresolved."
+    },
+    {
+      "id": "mark-city",
+      "kind": "building",
+      "label": "Shibuya Mark City",
+      "modelLevel": null,
+      "status": "Partial",
+      "sourceIds": [
+        "markcity-access",
+        "keio-floor",
+        "plateau-city"
+      ],
+      "note": "Named PLATEAU feature identified; used as a fit control, not an independent checkpoint. Original diagram envelope remains schematic."
+    },
+    {
+      "id": "hikarie",
+      "kind": "building",
+      "label": "Shibuya Hikarie",
+      "modelLevel": null,
+      "status": "Partial",
+      "sourceIds": [
+        "hikarie-access",
+        "tokyu-plan",
+        "plateau-city"
+      ],
+      "note": "Named PLATEAU feature identified; used as a fit control, not an independent checkpoint. Original diagram envelope remains schematic."
+    },
+    {
+      "id": "scramble-square",
+      "kind": "building",
+      "label": "Shibuya Scramble Square",
+      "modelLevel": null,
+      "status": "Partial",
+      "sourceIds": [
+        "square-access",
+        "tokyu-plan"
+      ],
+      "note": "Destination identified; matching PLATEAU feature identity and entrance coordinates remain unresolved."
+    },
+    {
+      "id": "stream",
+      "kind": "building",
+      "label": "Shibuya Stream",
+      "modelLevel": null,
+      "status": "Partial",
+      "sourceIds": [
+        "stream-access",
+        "tokyu-plan",
+        "plateau-city"
+      ],
+      "note": "Named PLATEAU feature identified; used as a fit control, not an independent checkpoint. Original diagram envelope remains schematic."
+    },
+    {
+      "id": "fukuras",
+      "kind": "building",
+      "label": "Shibuya Fukuras",
+      "modelLevel": null,
+      "status": "Partial",
+      "sourceIds": [
+        "fukuras-access",
+        "tokyu-plan"
+      ],
+      "note": "Destination identified; matching PLATEAU feature identity and entrance coordinates remain unresolved."
+    },
+    {
+      "id": "keio-west-works",
+      "kind": "facility",
+      "label": "Keio West lift works",
+      "modelLevel": "1F",
+      "status": "Planned; opening unconfirmed",
+      "sourceIds": [
+        "keio-works"
+      ],
+      "note": "2025-08-25 to end-September 2026, planned. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. New lift is not presented as open. Confirmation of completion is still required."
+    },
+    {
+      "id": "gate-jr-central",
+      "kind": "facility",
+      "label": "JR Central gate",
+      "modelLevel": "3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "JR Central gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "gate-jr-new-south",
+      "kind": "facility",
+      "label": "JR New South gate",
+      "modelLevel": "3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "JR New South gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "gate-jr-south",
+      "kind": "facility",
+      "label": "JR South gate",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "JR South gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "gate-jr-hachiko",
+      "kind": "facility",
+      "label": "JR Hachiko gate",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "JR Hachiko gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "gate-keio-central",
+      "kind": "facility",
+      "label": "Keio Central gate",
+      "modelLevel": "2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Keio Central gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "gate-keio-west",
+      "kind": "facility",
+      "label": "Keio West gate",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Keio West gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "gate-keio-avenue",
+      "kind": "facility",
+      "label": "Keio Avenue gate",
+      "modelLevel": "4F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Keio Avenue gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Published hours: 07:30–22:00."
+    },
+    {
+      "id": "gate-tokyu-dogenzaka",
+      "kind": "facility",
+      "label": "Dogenzaka gate",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Dogenzaka gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "gate-tokyu-hachiko",
+      "kind": "facility",
+      "label": "Hachiko gate · Tokyu",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Hachiko gate · Tokyu. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "gate-tokyu-miyamasuzaka-central",
+      "kind": "facility",
+      "label": "Miyamasuzaka Central gate",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Miyamasuzaka Central gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "gate-tokyu-miyamasuzaka-east",
+      "kind": "facility",
+      "label": "Miyamasuzaka East gate",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Miyamasuzaka East gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "gate-tokyu-hikarie1",
+      "kind": "facility",
+      "label": "Hikarie 1 gate",
+      "modelLevel": "B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Hikarie 1 gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "gate-tokyu-hikarie2",
+      "kind": "facility",
+      "label": "Hikarie 2 gate",
+      "modelLevel": "B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Hikarie 2 gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "gate-ginza-meiji",
+      "kind": "facility",
+      "label": "Ginza Meiji-dori gate",
+      "modelLevel": "2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "metro-map"
+      ],
+      "note": "Ginza Meiji-dori gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "gate-ginza-scramble",
+      "kind": "facility",
+      "label": "Ginza Scramble Square gate",
+      "modelLevel": "3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "metro-map"
+      ],
+      "note": "Ginza Scramble Square gate. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-south-wc",
+      "kind": "facility",
+      "label": "JR South accessible toilet",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "JR South accessible toilet. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-hachiko-wc",
+      "kind": "facility",
+      "label": "JR Hachiko accessible toilet",
+      "modelLevel": "1F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "JR Hachiko accessible toilet. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "jr-new-south-wc",
+      "kind": "facility",
+      "label": "JR New South accessible toilet",
+      "modelLevel": "3F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "JR New South accessible toilet. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-central-wc",
+      "kind": "facility",
+      "label": "Keio accessible toilet",
+      "modelLevel": "2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Keio accessible toilet. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-baby-care",
+      "kind": "facility",
+      "label": "Keio baby-care facilities",
+      "modelLevel": "2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Keio baby-care facilities. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-aed",
+      "kind": "facility",
+      "label": "Keio AED",
+      "modelLevel": "2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Keio AED. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "keio-tickets",
+      "kind": "facility",
+      "label": "Keio tickets",
+      "modelLevel": "2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Keio tickets. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-b2-wc",
+      "kind": "facility",
+      "label": "Dogenzaka accessible toilet",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Dogenzaka accessible toilet. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-east-wc",
+      "kind": "facility",
+      "label": "Miyamasuzaka accessible toilet",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Miyamasuzaka accessible toilet. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-b4-wc",
+      "kind": "facility",
+      "label": "B4 accessible toilet",
+      "modelLevel": "B4",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B4 accessible toilet. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-lounge-wc",
+      "kind": "facility",
+      "label": "Chikamichi Lounge adjoining toilet",
+      "modelLevel": "B1",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Chikamichi Lounge adjoining toilet. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured. Adjoining lounge is closed in the source; toilet available first to last train."
+    },
+    {
+      "id": "tokyu-aed-west",
+      "kind": "facility",
+      "label": "Dogenzaka AED",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Dogenzaka AED. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-aed-east",
+      "kind": "facility",
+      "label": "Miyamasuzaka AED",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Miyamasuzaka AED. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-hikarie-aed",
+      "kind": "facility",
+      "label": "Hikarie AED",
+      "modelLevel": "B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Hikarie AED. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-west-lockers",
+      "kind": "facility",
+      "label": "West concourse lockers",
+      "modelLevel": "B2",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "West concourse lockers. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-hikarie-lockers",
+      "kind": "facility",
+      "label": "Hikarie lockers",
+      "modelLevel": "B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Hikarie lockers. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-information",
+      "kind": "facility",
+      "label": "Wander Compass information",
+      "modelLevel": "B1",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Wander Compass information. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "tokyu-hikarie-tickets",
+      "kind": "facility",
+      "label": "Hikarie ticket facilities",
+      "modelLevel": "B3",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Hikarie ticket facilities. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    },
+    {
+      "id": "ginza-wc",
+      "kind": "facility",
+      "label": "Ginza accessible toilet",
+      "modelLevel": "2F",
+      "status": "Documented relationship",
+      "sourceIds": [
+        "metro-access"
+      ],
+      "note": "Ginza accessible toilet. The named feature and described floor relationship are represented. Positions, extents and elevations are schematic, not measured."
+    }
+  ],
+  "equipment": [
+    {
+      "id": "jr-lift-A",
+      "label": "JR lift A",
+      "kind": "lift",
+      "sourceLevels": [
+        "1F",
+        "2F",
+        "3F"
+      ],
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Saikyo; South/Central; same letter matched across floor panels.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "jr-lift-A",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "jr-lift-B",
+      "label": "JR lift B",
+      "kind": "lift",
+      "sourceLevels": [
+        "1F",
+        "2F"
+      ],
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Yamanote; Hachiko; same letter matched across floor panels.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "jr-lift-B",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "jr-lift-C",
+      "label": "JR lift C",
+      "kind": "lift",
+      "sourceLevels": [
+        "1F",
+        "2F"
+      ],
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Saikyo; Hachiko; same letter matched across floor panels.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "jr-lift-C",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "jr-lift-D",
+      "label": "JR lift D",
+      "kind": "lift",
+      "sourceLevels": [
+        "2F",
+        "3F"
+      ],
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Saikyo; New South; same letter matched across floor panels.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "jr-lift-D",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "jr-lift-E",
+      "label": "JR lift E",
+      "kind": "lift",
+      "sourceLevels": [
+        "2F",
+        "3F"
+      ],
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Yamanote; New South; same letter matched across floor panels.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "jr-lift-E",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "jr-lift-F",
+      "label": "JR lift F",
+      "kind": "lift",
+      "sourceLevels": [
+        "1F",
+        "2F",
+        "3F"
+      ],
+      "sourceIds": [
+        "jr-map"
+      ],
+      "note": "Yamanote; South/Central; same letter matched across floor panels.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "jr-lift-F",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-A",
+      "label": "Tokyu plan lift A",
+      "kind": "lift",
+      "sourceLevels": [
+        "B2",
+        "B3"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Den-en-toshi platform/concourse.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "tokyu-lift-A",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-B",
+      "label": "Tokyu plan lift B",
+      "kind": "lift",
+      "sourceLevels": [
+        "B3",
+        "B4"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Den-en-toshi/B4 transfer.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "tokyu-lift-B",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-C",
+      "label": "Tokyu plan lift C",
+      "kind": "lift",
+      "sourceLevels": [
+        "B2",
+        "B4",
+        "B5"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Eastern 3–4 island; range B2–B5, visible landings on these three panels.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "tokyu-lift-C",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-D",
+      "label": "Tokyu plan lift D",
+      "kind": "lift",
+      "sourceLevels": [
+        "B2",
+        "B4",
+        "B5"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Western 5–6 island; range B2–B5, visible landings on these three panels.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "tokyu-lift-D",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-E",
+      "label": "Tokyu plan lift E",
+      "kind": "lift",
+      "sourceLevels": [
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Eastern island and Hikarie side.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "tokyu-lift-E",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-F",
+      "label": "Tokyu plan lift F",
+      "kind": "lift",
+      "sourceLevels": [
+        "B3",
+        "B4",
+        "B5"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Western island and Hikarie side.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "tokyu-lift-F",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-1",
+      "label": "Tokyu plan lift 1",
+      "kind": "lift",
+      "sourceLevels": [
+        "1F",
+        "B2"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Near A6 / Dogenzaka side; intermediate stops not inferred.",
+      "status": "Mapped range endpoints; other stops unresolved",
+      "modelFeatureId": "tokyu-lift-1",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-20a",
+      "label": "Tokyu plan lift 20a",
+      "kind": "lift",
+      "sourceLevels": [
+        "1F",
+        "B3"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B1 exit approach.",
+      "status": "Mapped range endpoints; other stops unresolved",
+      "modelFeatureId": "tokyu-lift-20a",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-20b",
+      "label": "Tokyu plan lift 20b",
+      "kind": "lift",
+      "sourceLevels": [
+        "B2",
+        "B3"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Separate stage to B1 exit approach.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "tokyu-lift-20b",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-21",
+      "label": "Tokyu plan lift 21",
+      "kind": "lift",
+      "sourceLevels": [
+        "1F",
+        "B2"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Plan explicitly says no B1 stop.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "tokyu-lift-21",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-22-range-4F-B3",
+      "label": "Tokyu plan lift 22-range-4F-B3",
+      "kind": "lift",
+      "sourceLevels": [
+        "4F",
+        "B3"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Hikarie side; endpoints only, not a complete stopping list.",
+      "status": "Mapped range endpoints; other stops unresolved",
+      "modelFeatureId": "tokyu-lift-22-upper",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-22-adjacent-range-1F-B3",
+      "label": "Tokyu plan lift 22-adjacent-range-1F-B3",
+      "kind": "lift",
+      "sourceLevels": [
+        "1F",
+        "B3"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Adjacent separate lift symbol; do not merge with the 4F-range lift.",
+      "status": "Mapped range endpoints; other stops unresolved",
+      "modelFeatureId": "tokyu-lift-22-surface",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-23-range-3F-B2",
+      "label": "Tokyu plan lift 23-range-3F-B2",
+      "kind": "lift",
+      "sourceLevels": [
+        "3F",
+        "B2"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "B6 side; endpoints only, not a complete stopping list.",
+      "status": "Mapped range endpoints; other stops unresolved",
+      "modelFeatureId": "tokyu-lift-23-upper",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-23-adjacent-range-1F-B2",
+      "label": "Tokyu plan lift 23-adjacent-range-1F-B2",
+      "kind": "lift",
+      "sourceLevels": [
+        "1F",
+        "B2"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Adjacent separate lift symbol; ground route to JR indicated.",
+      "status": "Mapped range endpoints; other stops unresolved",
+      "modelFeatureId": "tokyu-lift-23-surface",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-31",
+      "label": "Tokyu plan lift 31",
+      "kind": "lift",
+      "sourceLevels": [
+        "2F",
+        "B2"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Southern C1/C2 junction; range endpoints only.",
+      "status": "Mapped range endpoints; other stops unresolved",
+      "modelFeatureId": "tokyu-lift-31",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-32",
+      "label": "Tokyu plan lift 32",
+      "kind": "lift",
+      "sourceLevels": [
+        "2F",
+        "B2"
+      ],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Southern C1/C2 junction; separate from 31.",
+      "status": "Mapped range endpoints; other stops unresolved",
+      "modelFeatureId": "tokyu-lift-32",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "tokyu-lift-109",
+      "label": "Tokyu plan lift 109",
+      "kind": "lift",
+      "sourceLevels": [],
+      "sourceIds": [
+        "tokyu-plan"
+      ],
+      "note": "Building lift marked 10:00–21:00; not a station-wide all-day accessible route.",
+      "status": "Unmapped: stopping floors unresolved",
+      "modelFeatureId": null,
+      "coordinates": null,
+      "modelPlacement": "not placed"
+    },
+    {
+      "id": "metro-ginza-paid-lift",
+      "label": "Ginza paid-area lift",
+      "kind": "lift",
+      "sourceLevels": [],
+      "sourceIds": [
+        "metro-map",
+        "metro-access"
+      ],
+      "note": "Platform–Meiji-dori gate relationship; exact floor-stop list not transcribed from text.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "metro-ginza-paid-lift",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "metro-ginza-unpaid-lift",
+      "label": "Ginza unpaid-area lift",
+      "kind": "lift",
+      "sourceLevels": [],
+      "sourceIds": [
+        "metro-map",
+        "metro-access"
+      ],
+      "note": "Scramble Square gate–surface relationship; separate from paid lift.",
+      "status": "Mapped range endpoints; other stops unresolved",
+      "modelFeatureId": "metro-ginza-unpaid-lift",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "keio-central-lift",
+      "label": "Lift outside Keio Central gate",
+      "kind": "lift",
+      "sourceLevels": [
+        "1F",
+        "2F",
+        "4F"
+      ],
+      "sourceIds": [
+        "keio-floor"
+      ],
+      "note": "Plan points to ground and Mark City Avenue. Operator ownership not inferred.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "keio-central-lift",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "keio-west-new-lift",
+      "label": "Keio West new lift",
+      "kind": "lift",
+      "sourceLevels": [],
+      "sourceIds": [
+        "keio-works",
+        "keio-map"
+      ],
+      "note": "Construction planned 2025-08-25 through end-September 2026. Opening not established.",
+      "status": "Works marker only; no operating lift",
+      "modelFeatureId": "keio-west-works",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "keio-stair-A",
+      "label": "Keio stair A",
+      "kind": "stairs",
+      "sourceLevels": [
+        "2F",
+        "4F"
+      ],
+      "sourceIds": [
+        "keio-floor",
+        "keio-map"
+      ],
+      "note": "Main platform–Avenue gate.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "keio-stair-A",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "keio-stair-B",
+      "label": "Keio stair B",
+      "kind": "stairs",
+      "sourceLevels": [
+        "2F",
+        "4F"
+      ],
+      "sourceIds": [
+        "keio-floor",
+        "keio-map"
+      ],
+      "note": "Arrival-only platform–Avenue gate.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "keio-stair-B",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "keio-stair-C",
+      "label": "Keio stair C",
+      "kind": "stairs",
+      "sourceLevels": [
+        "1F",
+        "2F"
+      ],
+      "sourceIds": [
+        "keio-floor",
+        "keio-map"
+      ],
+      "note": "West-end main-platform stair; closure overlay.",
+      "status": "Mapped; closed in source",
+      "modelFeatureId": "keio-stair-C",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "keio-stair-D",
+      "label": "Keio stair D",
+      "kind": "stairs",
+      "sourceLevels": [
+        "1F",
+        "2F"
+      ],
+      "sourceIds": [
+        "keio-floor",
+        "keio-map"
+      ],
+      "note": "West-end arrival-only stair; closure overlay.",
+      "status": "Mapped; closed in source",
+      "modelFeatureId": "keio-stair-D",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "keio-stair-E",
+      "label": "Keio stair E",
+      "kind": "stairs",
+      "sourceLevels": [
+        "1F",
+        "2F"
+      ],
+      "sourceIds": [
+        "keio-floor",
+        "keio-map"
+      ],
+      "note": "Main-platform alternate West-gate stair.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "keio-stair-E",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    },
+    {
+      "id": "keio-stair-F",
+      "label": "Keio stair F",
+      "kind": "stairs",
+      "sourceLevels": [
+        "1F",
+        "2F"
+      ],
+      "sourceIds": [
+        "keio-floor",
+        "keio-map"
+      ],
+      "note": "Arrival-only alternate West-gate stair.",
+      "status": "Source identity represented; position unmeasured",
+      "modelFeatureId": "keio-stair-F",
+      "coordinates": null,
+      "modelPlacement": "schematic"
+    }
+  ],
+  "restrictions": [
+    {
+      "id": "a0-hours",
+      "label": "A0 access hours",
+      "detail": "Weekdays 04:35–00:45 next day; weekends/holidays 04:35–00:35 next day, as printed in Tokyu’s plan.",
+      "sourceIds": [
+        "tokyu-plan"
+      ]
+    },
+    {
+      "id": "avenue-hours",
+      "label": "Keio Avenue gate",
+      "detail": "07:30–22:00 in the floor plan. This is the 4F Avenue gate, not Central gate.",
+      "sourceIds": [
+        "keio-floor"
+      ]
+    },
+    {
+      "id": "escalator-direction",
+      "label": "Escalator direction can change",
+      "detail": "Tokyu’s B4/B5 panels include weekday first-train-to-about-10:00 direction exceptions. Individual arrows require asset matching before routing.",
+      "sourceIds": [
+        "tokyu-plan"
+      ]
+    },
+    {
+      "id": "lift-stops",
+      "label": "Passing a floor does not mean stopping",
+      "detail": "Lift 21 explicitly skips B1. Displayed range endpoints cannot be expanded to every intermediate floor.",
+      "sourceIds": [
+        "tokyu-plan"
+      ]
+    },
+    {
+      "id": "lounge-closure",
+      "label": "Chikamichi Lounge",
+      "detail": "Tokyu marks the lounge closed while its adjoining toilet remains available from first to last train.",
+      "sourceIds": [
+        "tokyu-plan"
+      ]
+    },
+    {
+      "id": "keio-closure",
+      "label": "Keio West stair replacement",
+      "detail": "Works notice and red map overlay must take precedence over treating an unmarked stair symbol as proof it is open.",
+      "sourceIds": [
+        "keio-works",
+        "keio-map"
+      ]
+    }
+  ],
+  "coverage": {
+    "spaces": 59,
+    "connectors": 64,
+    "exits": 20,
+    "buildings": 8,
+    "facilities": 35,
+    "matchedExitCodes": [
+      "A0",
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A7",
+      "A8",
+      "A12",
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6",
+      "B7",
+      "C1",
+      "C2",
+      "C3"
+    ],
+    "equipmentInventoryComplete": false,
+    "individuallyMatchedModelConnectors": 31,
+    "recordedLiftStops": 57,
+    "gates": 15,
+    "amenities": 19
+  },
+  "missing": [
+    "Measured station entrance and corner coordinates, common vertical datum and independent alignment checkpoints",
+    "Complete stop lists for source lift ranges (including the 109 building lift), individually matched anonymous banks, escalator counts/directions and the complete Ginza Hikarie approach",
+    "Continuous paid/unpaid boundaries, complete amenity inventory and tactile guidance",
+    "Current field confirmation of closures, Keio West lift commissioning and operating status",
+    "Reviewed PLATEAU identities for the other five destination buildings and current redevelopment geometry"
+  ],
+  "historicalNetwork": {
+    "nodeCount": 1641,
+    "linkCount": 1823,
+    "sourceDate": "2020-03-01",
+    "nodeSha256": "7f0621b96a4b322df15f64118a0716a10f0ca31cad3e33c0a397af9539920079",
+    "linkSha256": "9f7982087fbef7dcc7a699da38474b6f3f167607a9f73504d83c965eafa8b654",
+    "acceptedControlPoints": 0
+  },
+  "limitations": [
+    "No live operational guarantee or certified accessible route.",
+    "Detailed amenity and escalator inventory is incomplete; unidentified banks remain unidentified.",
+    "Five destination buildings still lack reviewed PLATEAU identities.",
+    "Existing 25.7 m fit RMS measures building-centre residuals only.",
+    "Large source PDFs and historic GeoJSON remain in ignored local cache and are not shipped to the browser."
+  ],
+  "historicalMapSamples": [
+    {
+      "label": "Hikarie stroller/wheelchair-priority lift",
+      "sourceIds": [
+        "city-bf-map"
+      ],
+      "contributorType": "WheeLog public contribution",
+      "lastUpdated": "2019-02-08",
+      "coordinates": [
+        139.70332793891,
+        35.658369295248
+      ],
+      "coordinateEvidence": "Latitude/longitude displayed in the public correction-link metadata; no message sent.",
+      "claimedPublicEquipmentId": null,
+      "acceptedAsControl": false,
+      "reason": "Historic contributed point; correspondence to the current operator lift symbols and station model is unresolved."
+    }
+  ],
+  "userInputsNeeded": [
+    {
+      "id": "geometry",
+      "request": "A current dimensioned station/CAD/BIM or survey plan with entrance/corner coordinates and floor elevations in a named datum.",
+      "purpose": "Replace schematic shapes and establish measured horizontal and vertical alignment. Use at least three well-distributed correspondence points plus two separate check points; more are needed across the whole complex."
+    },
+    {
+      "id": "operations",
+      "request": "Dated on-site photographs or an operator asset schedule for unresolved lift stop panels, anonymous stair/escalator banks, gate boundaries and Keio West opening.",
+      "purpose": "Resolve equipment identity and current operation where public source diagrams stop short."
+    }
+  ],
+  "correctionsAppliedOn": "2026-09-19",
+  "releaseVersion": "1.1.0",
+  "photoVerification": {
+    "status": "pending-user-photos",
+    "plannedAfterVersion": "1.1.0",
+    "checklist": "docs/spatial-recovery/photo-verification.md",
+    "effectOnRelease": "Does not establish current operation, measured geometry or complete equipment coverage."
+  }
+}

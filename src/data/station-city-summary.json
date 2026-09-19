@@ -1,0 +1,24 @@
+{
+  "buildings": 3101,
+  "bytes": 645153,
+  "gzipBytes": 252970,
+  "sha256": "3394a1eea2d253a53782b5be952fbf30e50231e2a4b70847cbc3fb27b7dc83b9",
+  "sourceTriangles": 469945,
+  "maxOuterBoundaryDeviationM": 0.24967423943575556,
+  "areaMeters": [
+    -650,
+    -700,
+    650,
+    500
+  ],
+  "originWgs84": [
+    139.7009682753108,
+    35.65740742675032,
+    0.0
+  ],
+  "displayGroundEllipsoidM": 55.0,
+  "sourceYear": 2025,
+  "surveyYearNote": "Mostly 2021; not current construction",
+  "processing": "Projected source mesh envelope, simplified 0.25 m; base/top from decoded source; uniform-height extrusion; no textures or facade/roof details.",
+  "sourceUrl": "https://assets.cms.plateau.reearth.io/assets/16/b016d3-42ef-4428-ad99-d229310b39fd/13113_shibuya-ku_pref_2025_citygml_1_op_bldg_3dtiles_13113_shibuya-ku_lod2/tileset.json"
+}

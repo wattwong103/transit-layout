@@ -1,0 +1,363 @@
+.shell {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #faf9f6;
+  color: #20393e;
+}
+.header {
+  padding: 20px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #dce2d9;
+  gap: 20px;
+}
+.eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.19em;
+  color: #427368;
+}
+.header h1 {
+  font-size: 25px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+.header nav {
+  display: flex;
+  gap: 24px;
+  font-size: 12px;
+}
+.header a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.workspace {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  min-height: 0;
+}
+.sidebar {
+  padding: 24px;
+  overflow-y: auto;
+  border-right: 1px solid #dce2d9;
+}
+.intro {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #657672;
+}
+.metric {
+  margin: 20px 0;
+  border-block: 1px solid #dce2d9;
+  padding: 16px 0;
+}
+.metric strong {
+  font-size: 30px;
+  font-weight: 500;
+  display: block;
+}
+.metric span {
+  font-size: 11px;
+  color: #657672;
+  line-height: 1.6;
+}
+.buttonRow {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.buttonRow button {
+  flex: 1;
+  padding: 9px 5px;
+  font-size: 11px;
+  border: 1px solid #d5ded5;
+  border-radius: 5px;
+  background: #fff;
+}
+.buttonRow button[aria-pressed="true"] {
+  background: #236f65;
+  color: white;
+  border-color: #236f65;
+}
+.shell button:disabled {
+  opacity: 0.4;
+  cursor: wait;
+}
+.sidebar h2 {
+  margin: 24px 0 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.layer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  padding: 7px 0;
+}
+.layer span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.layer small {
+  font-size: 9px;
+  color: #617e73;
+}
+.layer input,
+.range input {
+  accent-color: #236f65;
+}
+.range {
+  display: block;
+  margin: 14px 0;
+  font-size: 11px;
+}
+.range span {
+  float: right;
+}
+.range input {
+  width: 100%;
+  display: block;
+  margin-top: 8px;
+}
+.passageButton {
+  padding: 11px 8px;
+  background: #e2eeea;
+  border: 1px solid #c7dfd6;
+  width: 100%;
+  border-radius: 5px;
+  font-size: 11px;
+  margin-top: 9px;
+}
+.hint {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #71817a;
+}
+.places {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+.places button {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid #dce2d9;
+  border-radius: 5px;
+  font-size: 12px;
+  background: #fff;
+}
+.places small {
+  font-size: 9px;
+  align-self: center;
+  color: #6d8075;
+}
+.selection {
+  position: relative;
+  background: #fff4de;
+  border: 1px solid #e3d1aa;
+  padding: 13px;
+  border-radius: 6px;
+  margin-top: 16px;
+}
+.selection h2 {
+  margin: 0 15px 10px 0;
+}
+.selection p {
+  font-size: 11px;
+  margin-block: 6px;
+}
+.selection code {
+  font-size: 9px;
+  word-break: break-all;
+  display: block;
+}
+.selection button {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 20px;
+}
+.notes {
+  margin-top: 24px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: #6d7f77;
+}
+.notes summary {
+  cursor: pointer;
+  color: #274b43;
+}
+.notes p {
+  margin: 12px 0;
+}
+.notes a {
+  display: block;
+  text-decoration: underline;
+  margin: 5px 0;
+}
+.map {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  background: #e7ebe4;
+}
+.canvas {
+  position: absolute;
+  inset: 0;
+}
+.mapCaption {
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  background: #fffffff0;
+  border: 1px solid #dce2d9;
+  padding: 13px 16px;
+  border-radius: 6px;
+  pointer-events: none;
+  max-width: calc(100% - 48px);
+}
+.mapCaption strong {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  color: #236f65;
+}
+.mapCaption span {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+}
+.help {
+  position: absolute;
+  right: 14px;
+  bottom: 37px;
+  background: #ffffffe8;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 10px;
+  line-height: 1.6;
+  pointer-events: none;
+}
+.message {
+  position: absolute;
+  top: 100px;
+  left: 24px;
+  right: 24px;
+  padding: 20px;
+  border: 1px solid #d4dfd5;
+  border-radius: 6px;
+  background: #fffffff5;
+  font-size: 14px;
+}
+.message button {
+  display: block;
+  margin-top: 14px;
+  text-decoration: underline;
+}
+.warning {
+  position: absolute;
+  top: 100px;
+  left: 24px;
+  right: 24px;
+  background: #fff4de;
+  padding: 10px;
+  font-size: 12px;
+}
+.levels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.levels button {
+  border: 1px solid #d5ded5;
+  border-radius: 4px;
+  padding: 7px 9px;
+  font-size: 11px;
+  background: white;
+}
+.levels button[aria-pressed="true"],
+.places button[aria-pressed="true"] {
+  background: #e1eee5;
+  border-color: #236f65;
+}
+.alignment {
+  margin-top: 22px;
+  padding: 13px;
+  border: 1px solid #e3d1aa;
+  background: #fff5e0;
+  border-radius: 5px;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.alignment p {
+  margin-top: 5px;
+}
+.fullLink {
+  font-size: 11px;
+  display: block;
+  margin-top: 22px;
+  text-decoration: underline;
+  line-height: 1.8;
+}
+.credit {
+  position: absolute;
+  bottom: 8px;
+  left: 12px;
+  right: 12px;
+  font-size: 9px;
+  color: #45695e;
+  background: #faf9f6db;
+  padding: 5px;
+}
+.credit a {
+  text-decoration: underline;
+}
+@media (max-width: 700px) {
+  .shell {
+    height: auto;
+    min-height: 100dvh;
+  }
+  .header {
+    padding: 18px;
+    align-items: start;
+    flex-direction: column;
+    gap: 13px;
+  }
+  .header h1 {
+    font-size: 23px;
+  }
+  .workspace {
+    display: flex;
+    flex-direction: column;
+  }
+  .map {
+    order: -1;
+    min-height: 62dvh;
+  }
+  .sidebar {
+    border-right: 0;
+    padding: 22px;
+    overflow: visible;
+  }
+  .mapCaption {
+    top: 12px;
+    left: 12px;
+    max-width: calc(100% - 24px);
+    padding: 10px;
+  }
+  .help {
+    display: none;
+  }
+  .buttonRow {
+    max-width: 420px;
+  }
+}

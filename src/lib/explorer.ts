@@ -5,8 +5,24 @@ import type {
   ExplorerSpace,
   ExplorerBuilding,
   ExplorerExit,
+  ExplorerConnector,
+  ExplorerFacility,
   Point2,
 } from "../types/explorer";
+
+export const connectorStops = (connector: ExplorerConnector) =>
+  connector.stops ?? [connector.from, connector.to];
+export const connectorLevels = (connector: ExplorerConnector) =>
+  connectorStops(connector).map((stop) => stop.levelId);
+export const connectorName = (connector: ExplorerConnector) =>
+  connector.name ?? (connector.kind === "lift" ? "Lift" : connector.kind === "stairs" ? "Stairs" : connector.kind === "slope" ? "Slope" : "Escalator");
+export const facilitySymbol = (kind: ExplorerFacility["kind"]) => ({
+  gate: "G", toilet: "WC", "baby-care": "B", aed: "+", lockers: "L", tickets: "T", information: "i", works: "×",
+})[kind];
+
+/** Tiny display-only layer offsets avoid coplanar flicker at overlapping passage joins. */
+export const floorSurfaceOffset = (data: ExplorerDataset, space: ExplorerSpace) =>
+  data.spaces.filter(s=>s.levelId === space.levelId).findIndex(s=>s.id === space.id) * .015;
 
 /** Screen-size label placement; canonical building and exit positions stay untouched. */
 export function placeBuildingLabels(
@@ -55,6 +71,7 @@ export function getSelection(data: ExplorerDataset, selectedId: string | null) {
   const building = data.buildings.find((item) => item.id === selectedId);
   const space = data.spaces.find((item) => item.id === selectedId);
   const connector = data.connectors.find((item) => item.id === selectedId);
+  const facility = data.facilities?.find((item) => item.id === selectedId);
   const exits = exit
     ? [exit]
     : building
@@ -82,10 +99,12 @@ export function getSelection(data: ExplorerDataset, selectedId: string | null) {
     building,
     space,
     connector,
+    facility,
     exits,
     connections,
     highlightedIds: new Set([
       selectedId,
+      facility?.spaceId,
       ...exits.map((item) => item.id),
       ...exits.map((item) => item.spaceId),
       ...connections.map((item) => item.buildingId),
@@ -108,10 +127,11 @@ export function getVisibleFeatures(
       mode === "buildings"
         ? []
         : data.connectors.filter(
-            (item) => matches(item.from.levelId) || matches(item.to.levelId),
+            (item) => connectorLevels(item).some(matches),
           ),
     buildings: mode === "station" ? [] : data.buildings,
     exits: data.exits.filter((item) => matches(item.levelId)),
+    facilities: mode === "buildings" ? [] : (data.facilities ?? []).filter((item) => matches(item.levelId)),
   };
 }
 
@@ -134,6 +154,7 @@ export function getSpaceOpenings(
   data: ExplorerDataset,
   space: ExplorerSpace,
 ): Point2[][] {
+  if (space.openings) return space.openings;
   const order = (id: ExplorerLevelId) =>
     data.levels.find((level) => level.id === id)!.order;
   const level = order(space.levelId);

@@ -1,18 +1,24 @@
 {
   "name": "transit-layout",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
+    "predev": "node scripts/prepare-cesium.mjs",
+    "prebuild": "node scripts/prepare-cesium.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "preview": "node scripts/serve-preview.mjs",
     "lint": "next lint",
-    "test": "tsc -p tsconfig.test.json && node --test .test-dist/tests/route-display.test.js .test-dist/tests/explorer.test.js"
+    "test": "tsc -p tsconfig.test.json && node --test .test-dist/tests/route-display.test.js .test-dist/tests/explorer.test.js .test-dist/tests/area.test.js .test-dist/tests/registration.test.js .test-dist/tests/geometry.test.js .test-dist/tests/evidence.test.js .test-dist/tests/source-corrections.test.js"
   },
   "dependencies": {
     "@react-three/fiber": "^8.18.0",
     "@use-gesture/react": "^10.3.0",
+    "cesium": "1.145.0",
     "framer-motion": "^11.0.0",
     "next": "^14.2.0",
     "react": "^18.3.0",

@@ -1,0 +1,80 @@
+{
+  "checkedOn": "2026-09-19",
+  "baseline": {
+    "tag": "v1.0.0",
+    "commit": "3f4f5c4"
+  },
+  "downloadedSources": [
+    {
+      "url": "https://www.tokyu.co.jp/railway/station_map/pdf/ty01-shibuya_2.pdf",
+      "localCacheName": "tokyu-map.pdf",
+      "sha256": "14e91d59894df2b4e4bc20e28c0db1ff0c6151b74b4908cb16dab23affe9823c",
+      "bytes": 875321,
+      "printedDate": "2026-08-21",
+      "note": "Visual inspection of isometric and B2F/B3F plans; embedded exit guide has separate 2024-08-30 date."
+    },
+    {
+      "url": "https://www.keio.co.jp/assets/pdf/global/routes/stations/shibuya/k55_shibuya.pdf",
+      "localCacheName": "keio-map.pdf",
+      "sha256": "02588652eead95e7fa68e238eda02cad2ac4dd25c85d924d8797211ff86d4996",
+      "bytes": 106513,
+      "printedDate": null,
+      "note": "Own-station diagram visually inspected; no printed revision date established."
+    },
+    {
+      "url": "https://www.keio.co.jp/assets/pdf/global/routes/stations/shibuya/ksb02_shibuya.pdf",
+      "localCacheName": "keio-entire-map.pdf",
+      "sha256": "8b00dcadb5ac6441ff8e55103510caa606fae1d034745c93c3199a1c13214448",
+      "bytes": 171437,
+      "printedDate": null,
+      "note": "Older gate labels; not treated as current JR authority."
+    },
+    {
+      "url": "https://www.geospatial.jp/ckan/api/3/action/package_show?id=plateau-uc24-13",
+      "localCacheName": "plateau-catalog.json",
+      "sha256": "bdbc9311edaa68976bbdc78c1a3924ea557863e0485eba7fef9591d5bd90dda6",
+      "bytes": 1123997,
+      "printedDate": null,
+      "note": "Metadata: underground reference reflects December 2024; catalog resource created 2025-05-26."
+    },
+    {
+      "url": "https://www.geospatial.jp/ckan/api/3/action/package_show?id=plateau-13113-shibuya-ku-2023",
+      "localCacheName": "plateau-shibuya-city-catalog.json",
+      "sha256": "0b428fa41d31e4b43e38fda275c7ae5f78bb1dd0011e054f5e8993889eb6e702",
+      "bytes": 1282272,
+      "printedDate": null,
+      "note": "Metadata only; surrounding building geometry not imported."
+    }
+  ],
+  "webInspectedSources": [
+    {
+      "url": "https://www.hikarie.jp/access/index.php",
+      "note": "B5 direct association; exit code, not floor number.",
+      "sha256": null
+    },
+    {
+      "url": "https://www.shibuya-scramble-square.com/sky/access/",
+      "note": "B6 underground entrance association.",
+      "sha256": null
+    },
+    {
+      "url": "https://shibuyastream.jp/access/",
+      "note": "C2 and JR New South Exit direct associations.",
+      "sha256": null
+    },
+    {
+      "url": "https://www.jreast.co.jp/press/2024/tokyo/20240423_to03.pdf",
+      "note": "Web PDF extraction: JR Central Gate on 3F, release date 2024-04-23. Local download returned HTTP 403.",
+      "sha256": null
+    },
+    {
+      "url": "https://www.tokyometro.jp/station/shibuya/yardmap/index_print.html",
+      "note": "Map page located; linked image download returned HTTP 403; not counted as visually reverified.",
+      "sha256": null
+    }
+  ],
+  "failedImageDownloads": [
+    "https://www.jreast.co.jp/estation/stations/img/floormap/0808_1f-3f.png",
+    "https://www.tokyometro.jp/station/yardmap_img/figure_yardmap_shibuya_all.jpg"
+  ]
+}

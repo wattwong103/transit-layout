@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import type { ExplorerDataset, Point2 } from "@/types/explorer";
-import { getSpaceOpenings } from "@/lib/explorer";
+import { getSpaceOpenings, connectorLevels, connectorStops, connectorName, floorSurfaceOffset } from "@/lib/explorer";
+import { extrudePlan } from "@/lib/planGeometry";
 
 export type LabelRecord = {
   id: string | null;
@@ -181,26 +182,7 @@ export function buildModel(data: ExplorerDataset, separation: number): Model {
     holes: Point2[][] = [],
     opacity = 1,
   ) => {
-    const shape = new THREE.Shape(
-      polygon.map((p) => new THREE.Vector2(p[0], -p[1])),
-    );
-    shape.closePath();
-    holes.forEach((hole) => {
-      const path = new THREE.Path(
-        hole.map((p) => new THREE.Vector2(p[0], -p[1])),
-      );
-      path.closePath();
-      shape.holes.push(path);
-    });
-    const geometry = new THREE.ExtrudeGeometry(shape, {
-      depth,
-      bevelEnabled: opacity === 1,
-      bevelSize: 0.2,
-      bevelThickness: 0.25,
-      bevelSegments: 1,
-      curveSegments: 1,
-    });
-    geometry.rotateX(-Math.PI / 2);
+    const geometry = extrudePlan([polygon, ...holes], depth, opacity === 1);
     const result = mesh(geometry, color, opacity);
     result.position.y = height;
     return result;
@@ -255,7 +237,7 @@ export function buildModel(data: ExplorerDataset, separation: number): Model {
     const height = y(space.levelId);
     slab(
       space.polygon,
-      height,
+      height + floorSurfaceOffset(data,space),
       space.kind === "platform" ? 2.2 : 1.35,
       space.color,
       getSpaceOpenings(data, space),
@@ -333,51 +315,29 @@ export function buildModel(data: ExplorerDataset, separation: number): Model {
           false,
         );
       }
-      if (space.kind === "concourse")
-        for (const offset of [-3, 0, 3]) {
-          box(
-            at(
-              [space.labelPosition[0] + offset, space.labelPosition[1] + 6],
-              height + 2.7,
-            ),
-            1,
-            2.4,
-            3.2,
-            "#adb6b2",
-            0,
-            1,
-            false,
-          );
-        }
       parent = previous;
       detail.visible = false;
       details.push(detail);
     }
   }
   for (const connector of data.connectors) {
-    entity(connector.id, "station", [
-      connector.from.levelId,
-      connector.to.levelId,
-    ]);
+    entity(connector.id, "station", connectorLevels(connector));
     const a = at(connector.from.position, y(connector.from.levelId) + 2);
     const b = at(connector.to.position, y(connector.to.levelId) + 2);
     const width = connector.width;
+    const closed = connector.access?.status === "closed-in-source";
     labels.push({
       id: connector.id,
-      text:
-        connector.kind === "lift"
-          ? "Lift"
-          : connector.kind === "stairs"
-            ? "Stairs"
-            : "Escalator",
+      text: `${connectorName(connector)}${closed ? " · closed in source" : ""}`,
       kind: "connector",
       position: a.clone().lerp(b, 0.5),
-      levels: [connector.from.levelId, connector.to.levelId],
+      levels: connectorLevels(connector),
       color: "#4c6470",
     });
     if (connector.kind === "lift") {
       beam(a, b, width, width, "#76d6e8", 0.55, true);
-      for (const endpoint of [a, b]) {
+      for (const stop of connectorStops(connector)) {
+        const endpoint = at(stop.position, y(stop.levelId) + 2);
         box(
           endpoint.clone().add(new THREE.Vector3(0, 0.45, 0)),
           width + 1,
@@ -409,6 +369,10 @@ export function buildModel(data: ExplorerDataset, separation: number): Model {
           "#518e9b",
         );
       }
+    } else if (connector.kind === "slope") {
+      const ramp = mesh(new THREE.BoxGeometry(width, .6, a.distanceTo(b)), "#e4dfbd");
+      ramp.position.copy(a).lerp(b, .5);
+      ramp.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1), b.clone().sub(a).normalize());
     } else {
       const horizontal = new THREE.Vector3(b.x - a.x, 0, b.z - a.z);
       const distance = horizontal.length();
@@ -431,7 +395,11 @@ export function buildModel(data: ExplorerDataset, separation: number): Model {
       const merged = mergeGeometries(treads);
       treads.forEach((tread) => tread.dispose());
       if (merged)
-        mesh(merged, connector.kind === "escalator" ? "#c7c7b1" : "#e2ddcd");
+        mesh(merged, closed ? "#b8a19a" : connector.kind === "escalator" ? "#c7c7b1" : "#e2ddcd");
+      if (closed) for (const endpoint of [a,b]) {
+        beam(endpoint.clone().add(new THREE.Vector3(-width/2, 1, -.1)), endpoint.clone().add(new THREE.Vector3(width/2, 4, .1)), .6, .6, "#bc4b35");
+        beam(endpoint.clone().add(new THREE.Vector3(width/2, 1, -.1)), endpoint.clone().add(new THREE.Vector3(-width/2, 4, .1)), .6, .6, "#bc4b35");
+      }
       for (const endpoint of [a, b])
         box(
           endpoint.clone(),
@@ -473,6 +441,15 @@ export function buildModel(data: ExplorerDataset, separation: number): Model {
         }
       }
     }
+  }
+  for (const f of data.facilities ?? []) {
+    entity(f.id, "station", [f.levelId]);
+    const height = y(f.levelId) + 3;
+    const color = f.kind === "works" ? "#bc4b35" : f.kind === "gate" ? "#51857b" : "#f8f6ed";
+    if (f.kind === "gate") for (const offset of [-2,0,2])
+      box(at([f.position[0]+offset, f.position[1]], height), .8, 2.5, 2.5, color);
+    else box(at(f.position,height), 2.5, 2.8, 1.2, color);
+    labels.push({ id:f.id, text:f.name, kind:"connector", position:at(f.position,height+4), levels:[f.levelId], color:"#355859" });
   }
   for (const building of data.buildings) {
     entity(building.id, "building", []);
