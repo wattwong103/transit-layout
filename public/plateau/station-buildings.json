@@ -1,0 +1,200 @@
+{
+  "buildings": 8,
+  "triangles": 17237,
+  "bytes": 218308,
+  "sha256": "4ea08e1653f8e15f340277bb25b11916d53c715d61611519424dea7b5802723d",
+  "originWgs84": [
+    139.7009682753108,
+    35.65740742675032,
+    0.0
+  ],
+  "displayGroundEllipsoidM": 55.0,
+  "sourceYear": 2025,
+  "surveyYearNote": "Mostly 2021; not current construction",
+  "asset": "/plateau/station-buildings.glb",
+  "attribution": "Derived from MLIT Project PLATEAU, Shibuya ward 2025 release. Source building triangles retained; textures removed and materials replaced by transit-layout. Five building identity matches use the separate crosswalk credited to OpenStreetMap contributors (ODbL 1.0).",
+  "licenseUrl": "https://www.mlit.go.jp/plateau/site-policy/",
+  "identityCrosswalk": "../evidence/building-crosswalk.json",
+  "identityLicenseUrl": "https://www.openstreetmap.org/copyright",
+  "sourceUrl": "https://assets.cms.plateau.reearth.io/assets/16/b016d3-42ef-4428-ad99-d229310b39fd/13113_shibuya-ku_pref_2025_citygml_1_op_bldg_3dtiles_13113_shibuya-ku_lod2/tileset.json",
+  "sourceTileHashes": {
+    "data/data502.b3dm": "c757ce1ed31525cf324a86cea0feae6ec34bf48b7c9d657f8fb3fa0ba10556b0",
+    "data/data503.b3dm": "2bac24489b5f8ec93a2cfc86a1093b4b466615e9938800b8c9e0cdf98de51d59",
+    "data/data504.b3dm": "d65ed440cfeebd913276d9932c642a535b239362f40e1fd129cfeb3971760fff",
+    "data/data505.b3dm": "34c40e2f4376637276a58990181f0df92855b83970aa636e6922c838161d6e89",
+    "data/data518.b3dm": "26e32b079dce7119f2c1be285156ddc11dd2168c997bb16fb927df1056d02b8f",
+    "data/data520.b3dm": "f49cf7f80e8b25a63b26643838ec7b8937bb16e77340e702fea54c5951d7cd61"
+  },
+  "axes": "X east, Y up, Z south; metres at the shared WGS84 origin; ellipsoidal height, not station floors",
+  "processing": "Finest REPLACE leaves from pinned compact-city sources. Decode Draco, Y-up to Z-up plus RTC ECEF, local east/up/south. Retain all source triangles; deduplicate equal float32 positions; omit textures and replace materials. Display subtracts the shared 55 m plane; the original diagram applies the inverse station similarity with uniform vertical scale.",
+  "features": [
+    {
+      "explorerId": "stream",
+      "featureId": "bldg_1db9c375-4ff6-4e3a-8c05-3a5c37e4580d",
+      "identity": "named-in-plateau",
+      "triangles": 1102,
+      "bounds": {
+        "min": [
+          146.7383251362441,
+          49.170566694660664,
+          -23.009911207563206
+        ],
+        "max": [
+          252.0331825458695,
+          231.6591446715413,
+          66.08066102875496
+        ]
+      },
+      "sourceTiles": [
+        "data/data504.b3dm"
+      ]
+    },
+    {
+      "explorerId": "fukuras",
+      "featureId": "bldg_3ad6aaeb-26f8-4716-a8ec-cb2504b94674",
+      "identity": "cross-source-match",
+      "triangles": 1580,
+      "bounds": {
+        "min": [
+          -109.44360857533441,
+          53.08197678771517,
+          -63.18941737819753
+        ],
+        "max": [
+          -35.92571090423983,
+          159.50937249921498,
+          7.8036111673442505
+        ]
+      },
+      "sourceTiles": [
+        "data/data520.b3dm"
+      ]
+    },
+    {
+      "explorerId": "qfront",
+      "featureId": "bldg_5f7ff4f3-a620-4fd0-a380-3ec46435cd27",
+      "identity": "cross-source-match",
+      "triangles": 284,
+      "bounds": {
+        "min": [
+          -72.3763228090224,
+          51.879020613241245,
+          -290.28631934409253
+        ],
+        "max": [
+          -37.14126951829473,
+          104.01129008277745,
+          -260.4617563360639
+        ]
+      },
+      "sourceTiles": [
+        "data/data518.b3dm"
+      ]
+    },
+    {
+      "explorerId": "scramble-square",
+      "featureId": "bldg_7b006717-e9e6-4a94-8843-1f4ce13b2509",
+      "identity": "cross-source-match",
+      "triangles": 5938,
+      "bounds": {
+        "min": [
+          75.50044472193409,
+          51.37495498101377,
+          -149.83858040670737
+        ],
+        "max": [
+          155.2126787891096,
+          282.35591063621644,
+          -66.98042081699916
+        ]
+      },
+      "sourceTiles": [
+        "data/data505.b3dm"
+      ]
+    },
+    {
+      "explorerId": "mark-city",
+      "featureId": "bldg_884b7aea-8fa7-4447-8d45-d691cfec7237",
+      "identity": "named-in-plateau",
+      "triangles": 4885,
+      "bounds": {
+        "min": [
+          -339.5659302462012,
+          52.35553466630184,
+          -170.08122786777724
+        ],
+        "max": [
+          -83.0902709452197,
+          165.94663574414045,
+          -19.269280342817282
+        ]
+      },
+      "sourceTiles": [
+        "data/data520.b3dm"
+      ]
+    },
+    {
+      "explorerId": "hikarie",
+      "featureId": "bldg_9ad5b600-360f-4627-8a89-fca39aad5576",
+      "identity": "named-in-plateau",
+      "triangles": 1314,
+      "bounds": {
+        "min": [
+          178.2282952054025,
+          53.86611155477062,
+          -232.3743977191295
+        ],
+        "max": [
+          309.7271320013032,
+          238.76570784936837,
+          -139.6416833619753
+        ]
+      },
+      "sourceTiles": [
+        "data/data502.b3dm"
+      ]
+    },
+    {
+      "explorerId": "shibuya109",
+      "featureId": "bldg_aba50b67-9267-4c80-9004-08ebfc7682d8",
+      "identity": "cross-source-match",
+      "triangles": 1126,
+      "bounds": {
+        "min": [
+          -231.24565882605714,
+          52.95346918216975,
+          -269.0956181479713
+        ],
+        "max": [
+          -171.5243682644205,
+          102.73278193719256,
+          -217.60611298135393
+        ]
+      },
+      "sourceTiles": [
+        "data/data518.b3dm"
+      ]
+    },
+    {
+      "explorerId": "magnet",
+      "featureId": "bldg_d47d8aa9-e4f5-4599-9d9a-bc129a12d6a8",
+      "identity": "cross-source-match",
+      "triangles": 1008,
+      "bounds": {
+        "min": [
+          -16.67005140686959,
+          51.33869929936127,
+          -303.1681054790429
+        ],
+        "max": [
+          9.325975127900083,
+          94.80232743427659,
+          -242.03857615090342
+        ]
+      },
+      "sourceTiles": [
+        "data/data503.b3dm"
+      ]
+    }
+  ]
+}

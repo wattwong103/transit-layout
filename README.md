@@ -2,14 +2,18 @@
 
 An interactive Shibuya station and neighborhood atlas. The homepage now uses a rotatable WebGL model and a matching SVG floor plan, with shared geometry and selection IDs.
 
-Version 1.2.0 improves floor framing, adds a lightweight footprint context and makes single-floor map comparison clearer. It retains the operator-source corrections and evidence introduced in v1.1.0. See the [release notes](CHANGELOG.md).
+Version 1.3.0 shares PLATEAU building outlines and optional source meshes between the station diagram and unified map, with public entrance references for comparison. It retains the floor controls and operator-source corrections from earlier releases. See the [release notes](CHANGELOG.md) and [final alignment and performance checks](docs/spatial-recovery/v1.3-validation.md).
+
+All eight PLATEAU destination outlines are shared across both views, with 21 attributed public entrance references at map coordinates. The city file remains 645 KB; the shared outline subset is 3.7 KB. See the [pre-photo alignment record](docs/spatial-recovery/pre-photo-alignment.md) and [remaining photo checklist](docs/spatial-recovery/photo-verification.md). Station interiors remain schematic, with the original 25.7 m RMS fit retained.
+
+Enable **PLATEAU 3D buildings** in Buildings/Both mode or the unified map to load the eight source meshes, including their roof shapes, setbacks and source heights. This optional 218 KB file preserves 17,237 triangles without textures. Flat plans and the lightweight default remain available. [Source mesh details and checks](docs/spatial-recovery/plateau-3d-buildings.md).
 
 - **3D model:** orthographic reference view, shaped slabs, platforms, vertical connectors, adjustable floor separation and floor isolation.
 - **2D plan:** the same polygons and connector openings, with pan, zoom and readable exit badges.
-- **Station / Buildings / Both:** switch from station interiors to eight schematic surrounding building envelopes.
+- **Station / Buildings / Both:** switch from station interiors to eight shared PLATEAU outlines. Simple diagram building heights are illustrative; the optional source meshes retain PLATEAU proportions and heights.
 - **Exit connections:** select a building or exit to inspect documented associations. Solid links mean direct building connections; dashed links mean an exit toward a destination. The diagram includes 20 selected exits, not complete station coverage.
 
-All shape coordinates, building envelopes, elevations and connector placements remain **schematic**. Source-backed destination relationships do not establish measured geometry or turn-by-turn routes. Building interiors and complete accessible routes are not mapped. Published closures, hours and explicit lift stops are represented with their source limits; live operating status is unverified.
+Station interiors, elevations and connector placements remain **schematic**. Building plan outlines retain PLATEAU source coordinates; blue public entrance references retain OSM coordinates, separate from schematic landings. Source-backed destination relationships do not establish measured geometry or turn-by-turn routes. Building interiors and complete accessible routes are not mapped. Published closures, hours and explicit lift stops are represented with their source limits; live operating status is unverified.
 
 ```sh
 npm ci
@@ -45,8 +49,8 @@ The 14 September 2026 handoff passed 11 tests and the production build, with des
 
 The [source corrections and remaining evidence](docs/spatial-recovery/source-corrections.md) describe the current branch: nine levels, 59 spaces, 64 connectors, 20 exit codes and 35 gates/amenities/works markers. Hikarie and exit floor issues are corrected, JR gate areas and lifts A–F are present, and Keio includes West 1F and Avenue 4F. Thirty-one source-identified lifts and lettered stairs are linked to schematic features. Use the **Access** tab or the city view's **Station features** selector to inspect stops and published conditions.
 
-The `/verification` page exposes the current feature-by-feature evidence register, including the remaining measured and on-site evidence needed. The v1.2 application suite contains 32 tests, including camera framing and flat-footprint geometry. The v1.1 full source audit remains the geometry baseline; source positions and the registration fit are unchanged. The PLATEAU city payload remains 645 KB. Internal consistency passes; precise geographic alignment, full equipment coverage and current operations remain unverified. Earlier [geometry](docs/spatial-recovery/final-geometry-check.md) and [public-source](docs/spatial-recovery/public-source-crosscheck.md) reports are retained as historical snapshots.
+The `/verification` page exposes the current feature-by-feature evidence register, including the remaining measured and on-site evidence needed. The v1.3 suite contains 40 application and nine Python tests, covering source meshes, shared outlines, entrance references, registration, floor support and camera framing. The v1.1 full operator-source audit remains the station baseline; station positions and the registration fit are unchanged. Building and public entrance references were added on 10 October 2026. Internal consistency passes; precise geographic alignment, full equipment coverage and current operations remain unverified. Earlier [geometry](docs/spatial-recovery/final-geometry-check.md) and [public-source](docs/spatial-recovery/public-source-crosscheck.md) reports are retained as historical snapshots.
 
-Photo verification is pending after v1.1.0. The user will provide photos later; the [photo verification checklist](docs/spatial-recovery/photo-verification.md) records the requested views, evidence fields and acceptance criteria. Surveyed geometry and live access conditions remain unverified.
+Photo verification remains pending in v1.3.0. The user will provide photos later; the [photo verification checklist](docs/spatial-recovery/photo-verification.md) records the requested views, evidence fields and acceptance criteria. Surveyed geometry and live access conditions remain unverified.
 
 The [v1.2 validation record](docs/spatial-recovery/v1.2-validation.md) covers the presentation changes. Station focus defaults to flat PLATEAU footprints; Neighbourhood shows source-height building envelopes. North-up comparison displays one floor at a time. Mobile users can change floors and views directly on the map.

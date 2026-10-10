@@ -6,7 +6,7 @@ import reference from "../../../public/plateau/reference.json";
 export const metadata = {
   title: "Shibuya — Sources & real-world reference",
   description:
-    "Review the v1.2 schematic against operator diagrams and decoded PLATEAU geometry.",
+    "Review the v1.3 schematic against operator diagrams and decoded PLATEAU geometry.",
 };
 
 export default function VerificationPage() {
@@ -18,7 +18,7 @@ export default function VerificationPage() {
         <Link href="/" className="underline underline-offset-4">
           ← Back to station explorer
         </Link>
-        <span className="text-slate-500">v1.2.0 · sources reviewed 19 September 2026</span>
+        <span className="text-slate-500">v1.3.0 · operator review 19 September · building and entrance references 10 October 2026</span>
       </nav>
       <Link
         href="/area"
@@ -58,6 +58,12 @@ export default function VerificationPage() {
           </div>
         ))}
       </div>
+      <section className="my-8 rounded-lg border border-blue-200 bg-blue-50 p-5 text-sm leading-relaxed" aria-label="Public alignment update">
+        <h2 className="text-xl">Public alignment update · 10 October 2026</h2>
+        <p className="mt-2">All eight destination outlines now share PLATEAU geometry across both views. Three buildings are named in PLATEAU; five identities are inferred from unique overlaps with named OpenStreetMap buildings. The outlines are projected mesh envelopes, not surveyed ground footprints.</p>
+        <p className="mt-2">21 public entrance references are shown separately from underground landings. Branch suffixes, unknown source levels and outdated references are retained explicitly. The original 25.7 m station-fit mismatch is unchanged; the replaced building outlines are not new validation points.</p>
+        <p className="mt-2"><a className="underline" href={`${base}/evidence/entrance-references.json`}>Entrance data & exclusions</a> · <a className="underline" href={`${base}/evidence/building-crosswalk.json`}>Building matches</a> · <a className="underline" href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors · ODbL</a></p>
+      </section>
       <PublicSourceReview />
       <section
         aria-labelledby="reference-title"

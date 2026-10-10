@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.0 — 2026-10-10
+
+This release unifies the destination buildings across the diagram and geographic map, adds optional source PLATEAU geometry, and makes public entrance references available for alignment comparison before photos.
+
+- Add optional source PLATEAU meshes for the eight destination buildings in both 3D views. Preserve all 17,237 source triangles, roof shapes and heights in a 218 KB download without textures. Solid/translucent display, lazy loading, fallback and source attribution are included. See the [mesh validation record](docs/spatial-recovery/plateau-3d-buildings.md).
+- Share all eight PLATEAU destination outlines, including multipart shapes and holes, between the diagram, SVG plan and unified map. Five previously unresolved building identities now have documented, unique public-map matches.
+- Add 21 attributed public entrance references at their geographic coordinates, with selected comparison lines, source dates/floor tags and branch-match limits. Schematic landings remain distinct; unverified connecting routes are not invented.
+- Keep the 645,153-byte city asset unchanged. The shared outline subset is 3,652 bytes; entrance evidence and the identity crosswalk add 12,345 bytes of source data. Retain on-demand rendering and optional heavy layers.
+- Document missing entrance references, branch and floor questions, and the photos/plans still required. Preserve the original 25.7 m RMS station fit and the baseline operator evidence.
+
+All 49 automated tests pass (40 application and nine Python tests), including an independent comparison of the shipped 3D meshes against the separately derived plan envelopes and source heights. See the [final alignment and performance checks](docs/spatial-recovery/v1.3-validation.md), [public alignment record](docs/spatial-recovery/pre-photo-alignment.md) and [photo checklist](docs/spatial-recovery/photo-verification.md). These checks validate rendering and internal consistency; current construction, complete equipment coverage and surveyed station alignment remain unverified.
+
 ## 1.2.0 — 2026-10-10
 
 This release makes selected station floors larger and easier to inspect, and provides a clearer lightweight map comparison.

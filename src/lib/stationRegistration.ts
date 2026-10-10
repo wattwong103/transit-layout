@@ -3,6 +3,10 @@ import landmarks from "../data/plateau-landmarks.json";
 import reference from "../../public/plateau/reference.json";
 import type { ExplorerDataset, Point2 } from "../types/explorer";
 import { getSpaceOpenings } from "./explorer";
+import outlines from "../data/station-building-outlines.json";
+import entranceSource from "../../public/evidence/entrance-references.json";
+import type { EntranceReference } from "../types/explorer";
+import type { CompactCity } from "../types/geographic";
 
 export interface AlignmentControl {
   id: string;
@@ -144,6 +148,41 @@ export const alignmentControls: AlignmentControl[] = landmarks.map(
 );
 export const stationAlignment = fitSimilarity(alignmentControls);
 
+/** Invert the frozen station fit; reference buildings never become new fit controls. */
+export function inverseTransformPoint(p: Point2, fit = stationAlignment): Point2 {
+  const x = p[0] - fit.tx, z = p[1] - fit.tz, denominator = fit.a ** 2 + fit.b ** 2;
+  return [(fit.a * x + fit.b * z) / denominator, (-fit.b * x + fit.a * z) / denominator];
+}
+
+const entranceReferences: EntranceReference[] = entranceSource.entries.map(entry => {
+  const exit = explorerData.exits.find(e => e.code === entry.group);
+  const connector = explorerData.connectors.find(c => c.equipmentId === entry.group);
+  if (!exit && !connector) throw new Error(`Unmatched public entrance ${entry.ref}`);
+  const p = geographicToLocal(entry.longitude, entry.latitude);
+  return {
+    id: entry.id, ref: entry.ref, targetId: exit?.id ?? connector!.id,
+    position: inverseTransformPoint([p[0], p[2]]),
+    levels: Array.from(new Set(["1F" as const, ...(exit ? [exit.levelId] : (connector!.stops ?? [connector!.from, connector!.to]).map(s => s.levelId))])),
+    sourceUrl: entry.sourceUrl, sourceUpdatedAt: entry.sourceUpdatedAt,
+    sourceLevel: entry.sourceLevel, match: entry.match,
+  };
+});
+
+/** Presentation dataset: all eight envelopes match the compact city exactly in plan. */
+export const schematicExplorer: ExplorerDataset = {
+  ...explorerData,
+  buildings: explorerData.buildings.map(building => {
+    const source = outlines.buildings.find(b => b.explorerId === building.id);
+    if (!source) throw new Error(`Missing shared building outline ${building.id}`);
+    const parts = source.parts.map(part => part.map(ring => ring.map(p => inverseTransformPoint(p as unknown as Point2))));
+    const points = parts.flat(2), xs = points.map(p=>p[0]), zs = points.map(p=>p[1]);
+    return {...building, polygon: parts[0][0], parts,
+      labelPosition: [(Math.min(...xs)+Math.max(...xs))/2, (Math.min(...zs)+Math.max(...zs))/2] as Point2,
+      outlineSource: {featureId:source.featureId, identity:source.identity}};
+  }),
+  entranceReferences,
+};
+
 /** Shared registered geometry for plan and 3D; the source drawing is immutable. */
 export function registerExplorer(
   data: ExplorerDataset,
@@ -174,7 +213,18 @@ export function registerExplorer(
       ...b,
       polygon: b.polygon.map(point),
       labelPosition: point(b.labelPosition),
+      ...(b.parts ? {parts: b.parts.map(part=>part.map(ring=>ring.map(point)))} : {}),
     })),
+    ...(data.entranceReferences ? {entranceReferences: data.entranceReferences.map(e=>({...e,position:point(e.position)}))} : {}),
   };
 }
-export const geographicExplorer = registerExplorer(explorerData);
+export const geographicExplorer = registerExplorer(schematicExplorer);
+
+/** Attach reviewed identities without duplicating geometry or changing the city asset. */
+export function withCityIdentities(city: CompactCity): CompactCity {
+  return {...city, buildings: city.buildings.map(building => {
+    const match = outlines.buildings.find(b=>b.featureId===building.id);
+    const place = explorerData.buildings.find(b=>b.id===match?.explorerId);
+    return place ? {...building, explorerId:place.id, label:place.shortName} : building;
+  })};
+}

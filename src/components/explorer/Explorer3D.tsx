@@ -51,6 +51,7 @@ type SceneProps = ExplorerViewProps & {
 function ArchitecturalScene(props: SceneProps) {
   const {
     data,
+    buildingMeshes,
     separation,
     contextMode,
     activeLevel,
@@ -162,7 +163,7 @@ function ArchitecturalScene(props: SceneProps) {
 
   // Only source geometry or display separation can allocate a new model.
   useEffect(() => {
-    const model = buildModel(data, separation);
+    const model = buildModel(data, separation, buildingMeshes);
     modelRef.current = model;
     scene.add(model.group);
     revision.current++;
@@ -170,6 +171,7 @@ function ArchitecturalScene(props: SceneProps) {
     if (host) {
       host.dataset.geometryRevision = String(revision.current);
       host.dataset.objectCount = String(model.objects);
+      host.dataset.buildingGeometry = buildingMeshes ? "plateau-source" : "outlines";
     }
     const overlay = overlayRef.current;
     const focusId = overlay?.contains(document.activeElement)
@@ -187,7 +189,7 @@ function ArchitecturalScene(props: SceneProps) {
           button.dataset.featureId = label.id;
           button.setAttribute(
             "aria-label",
-            `${label.kind === "exit" ? "Exit " : ""}${label.text}`,
+            label.kind === "reference" ? `Mapped entrance ${label.text.replace(/^○ /, "")}` : `${label.kind === "exit" ? "Exit " : ""}${label.text}`,
           );
           button.addEventListener("click", () =>
             current.current.onSelect(label.id),
@@ -221,7 +223,7 @@ function ArchitecturalScene(props: SceneProps) {
       if (modelRef.current === model) modelRef.current = null;
       overlay?.replaceChildren();
     };
-  }, [data, separation, scene, invalidate, hostRef, overlayRef]);
+  }, [data, separation, buildingMeshes, scene, invalidate, hostRef, overlayRef]);
 
   // Selection preserves meshes, buffers, labels, and keyboard focus.
   useEffect(() => {
@@ -235,6 +237,10 @@ function ArchitecturalScene(props: SceneProps) {
       entity.visible =
         meta.category === "building"
           ? contextMode !== "station"
+          : meta.category === "reference"
+            ? contextMode !== "station" && matches
+          : meta.category === "comparison"
+            ? contextMode !== "station" && matches && selectedId === meta.id
           : meta.category === "link"
             ? contextMode !== "station" &&
               matches &&
@@ -293,6 +299,7 @@ function ArchitecturalScene(props: SceneProps) {
     invalidate();
   }, [
     data,
+    buildingMeshes,
     separation,
     contextMode,
     activeLevel,
@@ -327,7 +334,7 @@ function ArchitecturalScene(props: SceneProps) {
   };
   useEffect(() => {
     fitRef.current(false);
-  }, [data, separation, contextMode, activeLevel, size.width, size.height]);
+  }, [data, separation, buildingMeshes, contextMode, activeLevel, size.width, size.height]);
   useEffect(() => {
     fitRef.current(true);
   }, [resetKey]);
@@ -373,7 +380,7 @@ function ArchitecturalScene(props: SceneProps) {
       const matches =
         activeLevel === "all" || label.levels.includes(activeLevel);
       const modeMatches =
-        label.kind === "building"
+        label.kind === "building" || label.kind === "reference"
           ? contextMode !== "station"
           : label.kind === "exit" || contextMode !== "buildings";
       const densityHidden =
@@ -469,6 +476,7 @@ function ArchitecturalScene(props: SceneProps) {
         host.dataset.drawCalls = String(gl.info.render.calls);
         host.dataset.triangles = String(gl.info.render.triangles);
         host.dataset.geometryCount = String(gl.info.memory.geometries);
+        host.dataset.renderedFrames = String(gl.info.render.frame);
       }
     });
   });

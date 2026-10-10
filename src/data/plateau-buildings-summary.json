@@ -1,0 +1,15 @@
+{
+  "buildings": 8,
+  "triangles": 17237,
+  "bytes": 218308,
+  "sha256": "4ea08e1653f8e15f340277bb25b11916d53c715d61611519424dea7b5802723d",
+  "originWgs84": [
+    139.7009682753108,
+    35.65740742675032,
+    0.0
+  ],
+  "displayGroundEllipsoidM": 55.0,
+  "sourceYear": 2025,
+  "surveyYearNote": "Mostly 2021; not current construction",
+  "asset": "/plateau/station-buildings.glb"
+}

@@ -11,6 +11,8 @@ import {
   connectorLevels,
   connectorName,
   facilitySymbol,
+  buildingParts,
+  buildingPoints,
 } from "@/lib/explorer";
 
 const polygonPoints = (points: Point2[]) =>
@@ -72,6 +74,19 @@ export default function Explorer2D({
       })
       .map((exit) => exit.id),
   );
+  const references = contextMode === "station" ? [] : (data.entranceReferences ?? []).filter(r=>activeLevel === "all" || r.levels.includes(activeLevel));
+  const referenceLabelOffsets = new Map<string, number>();
+  for (const r of [...references].sort((a,b)=>Number(b.targetId===selectedId)-Number(a.targetId===selectedId))) {
+    const selected = r.targetId === selectedId;
+    if (!showLabels && !selected) continue;
+    const x = r.position[0]*scale+20, y = r.position[1]*scale;
+    const blocked = (dy:number)=>occupied.some(p=>Math.abs(p.x-x)<35 && Math.abs(p.y-y-dy)<17);
+    const dy = [0, ...(selected ? [-18,18,-36,36,-54,54] : [])].find(offset=>!blocked(offset));
+    if (dy !== undefined) {
+      referenceLabelOffsets.set(r.id,dy);
+      occupied.push({x,y:y+dy});
+    }
+  }
   useEffect(() => {
     if (!svg.current) return;
     const observer = new ResizeObserver(([entry]) =>
@@ -87,7 +102,8 @@ export default function Explorer2D({
     const features = getVisibleFeatures(data, contextMode, activeLevel);
     const points = [
       ...features.spaces.flatMap((space) => space.polygon),
-      ...features.buildings.flatMap((building) => building.polygon),
+      ...features.buildings.flatMap(buildingPoints),
+      ...(contextMode === "station" ? [] : (data.entranceReferences ?? []).filter(r=>activeLevel === "all" || r.levels.includes(activeLevel)).map(r=>r.position)),
       ...features.exits.map((exit) => exit.position),
     ];
     if (!points.length) {
@@ -204,24 +220,15 @@ export default function Explorer2D({
             if (!drag.current?.moved) onSelect(null);
           }}
         />
-        {contextMode !== "station" && (
-          <g
-            fill="none"
-            stroke="#e5e1d8"
-            strokeWidth="8"
-            strokeLinejoin="round"
-          >
-            <path d="M -182,-61 L -56,-61 L 31,-80 L 171,-99 M -57,-129 L -57,-61 L -40,8 L -37,136 M 32,-125 L 32,90 L 64,144" />
-          </g>
-        )}
         {visible.buildings.map((building) => (
           <g
             key={building.id}
             {...interactive(building.id, building.name)}
             className="plan-target"
           >
-            <polygon
-              points={polygonPoints(building.polygon)}
+            <path
+              d={buildingParts(building).flat().map(polygonPath).join(" ")}
+              fillRule="evenodd"
               fill={building.color}
               fillOpacity={
                 selection.highlightedIds.has(building.id) ? 0.85 : 0.38
@@ -432,6 +439,18 @@ export default function Explorer2D({
             )}
           </g>
         ))}
+        {references.map(r=>{
+          const target = data.exits.find(e=>e.id===r.targetId)?.position
+            ?? data.connectors.find(c=>c.id===r.targetId)?.stops?.find(s=>s.levelId==="1F")?.position;
+          return <g key={r.id} {...interactive(r.targetId, `Mapped entrance ${r.ref}`)}>
+            {selectedId === r.targetId && target && <path d={`M${target.join(",")} L${r.position.join(",")}`} fill="none" stroke="#386ca0" strokeWidth={1/scale} strokeDasharray={`${4/scale} ${3/scale}`} pointerEvents="none"/>}
+            <circle cx={r.position[0]} cy={r.position[1]} r={3/scale} fill="#fff" stroke="#386ca0" strokeWidth={1.5/scale}/>
+            {referenceLabelOffsets.has(r.id) && <>
+              {!!referenceLabelOffsets.get(r.id) && <path d={`M${r.position.join(",")} v${referenceLabelOffsets.get(r.id)!/scale}`} stroke="#386ca0" strokeWidth={.6/scale} pointerEvents="none"/>}
+              <text x={r.position[0]+5/scale} y={r.position[1]+referenceLabelOffsets.get(r.id)!/scale} fill="#285580" style={{fontSize:`${10/scale}px`}}>○ {r.ref}</text>
+            </>}
+          </g>;
+        })}
       </svg>
       <div className="plan-zoom" aria-label="Plan zoom controls">
         <button onClick={() => zoom(0.8)} aria-label="Zoom in">

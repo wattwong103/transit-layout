@@ -1,3 +1,5 @@
+import type { PlateauBuildingMeshes } from "../lib/plateauBuildingGeometry";
+
 /** X east/right, Z south/down. Original data uses drawing units; registered views use metres. */
 export type Point2 = readonly [number, number];
 export type ExplorerLevelId =
@@ -79,6 +81,9 @@ export interface ExplorerBuilding {
   name: string;
   shortName: string;
   polygon: Point2[];
+  /** Complete source envelope: polygon parts, each outer ring followed by holes. */
+  parts?: Point2[][][];
+  outlineSource?: { featureId: string; identity: string };
   labelPosition: Point2;
   /** Display-only envelope height; not the surveyed building height. */
   displayHeight: number;
@@ -111,9 +116,22 @@ export interface ExplorerDataset {
   buildings: ExplorerBuilding[];
   exits: ExplorerExit[];
   facilities?: ExplorerFacility[];
+  entranceReferences?: EntranceReference[];
+}
+export interface EntranceReference {
+  id: string;
+  ref: string;
+  targetId: string;
+  position: Point2;
+  levels: ExplorerLevelId[];
+  sourceUrl: string;
+  sourceUpdatedAt: string;
+  sourceLevel: string | null;
+  match: string;
 }
 export interface ExplorerViewProps {
   data: ExplorerDataset;
+  buildingMeshes?: PlateauBuildingMeshes | null;
   contextMode: ContextMode;
   activeLevel: ExplorerLevelId | "all";
   selectedId: string | null;

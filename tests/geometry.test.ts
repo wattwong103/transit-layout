@@ -3,9 +3,9 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import * as C from "cesium";
 import { extrudePlan, flatPlan } from "../src/lib/planGeometry";
-import { getSpaceOpenings, pointInPolygon, connectorStops } from "../src/lib/explorer";
+import { getSpaceOpenings, pointInPolygon, connectorStops, buildingParts } from "../src/lib/explorer";
 import { explorerData } from "../src/data/explorer";
-import { geographicExplorer, geographicToLocal } from "../src/lib/stationRegistration";
+import { schematicExplorer, geographicExplorer, geographicToLocal } from "../src/lib/stationRegistration";
 import summary from "../src/data/station-city-summary.json";
 import type { Point2 } from "../src/types/explorer";
 import type { CompactCity } from "../src/types/geographic";
@@ -48,11 +48,12 @@ function checkExtrusion(id: string, rings: Point2[][], depth: number) {
 }
 
 test("all original and registered floor slabs, voids and buildings extrude without plan reflection or missing area", () => {
-  for (const data of [explorerData, geographicExplorer]) {
+  for (const data of [explorerData, schematicExplorer, geographicExplorer]) {
     for (const space of data.spaces)
       checkExtrusion(space.id, [space.polygon, ...getSpaceOpenings(data, space)], 1.35);
     for (const building of data.buildings)
-      checkExtrusion(building.id, [building.polygon], building.displayHeight);
+      for (const part of buildingParts(building))
+        checkExtrusion(building.id, part, building.displayHeight);
   }
 });
 

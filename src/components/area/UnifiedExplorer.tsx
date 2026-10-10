@@ -6,13 +6,16 @@ import { useEffect, useState } from "react";
 import {
   geographicExplorer,
   stationAlignment,
+  withCityIdentities,
 } from "@/lib/stationRegistration";
 import summary from "@/data/station-city-summary.json";
-import landmarks from "@/data/plateau-landmarks.json";
 import type { CompactCity } from "@/types/geographic";
 import styles from "./area.module.css";
 import { getSelection, connectorName, connectorLevels } from "@/lib/explorer";
 import FeatureDetails from "../explorer/FeatureDetails";
+import EntranceDetails from "../explorer/EntranceDetails";
+import PlateauBuildingControl from "../explorer/PlateauBuildingControl";
+import { usePlateauBuildings } from "../explorer/usePlateauBuildings";
 
 const Viewer = dynamic(() => import("./CompactScene"), {
   ssr: false,
@@ -35,8 +38,11 @@ export default function UnifiedExplorer() {
   const [map, setMap] = useState(true);
   const [passage, setPassage] = useState(false);
   const [guides, setGuides] = useState(false);
+  const [entrances, setEntrances] = useState(true);
   const [selected, setSelected] = useState<string | null>(null);
   const footprints = plan || context === "footprints";
+  const [detailedBuildings,setDetailedBuildings] = useState(false);
+  const plateau = usePlateauBuildings(detailedBuildings && !footprints);
   const activeLevel = geographicExplorer.levels.find(item => item.id === level);
 
   function focusLevel(next: string) {
@@ -58,7 +64,7 @@ export default function UnifiedExplorer() {
         if (!response.ok) throw new Error("City data is unavailable");
         return response.json();
       })
-      .then(setCity)
+      .then(value=>setCity(withCityIdentities(value)))
       .catch((error) => {
         if (error.name !== "AbortError")
           setStatus(
@@ -67,7 +73,7 @@ export default function UnifiedExplorer() {
       });
     return () => abort.abort();
   }, []);
-  const place = landmarks.find((item) => item.explorerId === selected);
+  const place = geographicExplorer.buildings.find((item) => item.id === selected);
   const residual = stationAlignment.residuals.find(
     (item) => item.id === selected,
   );
@@ -80,7 +86,7 @@ export default function UnifiedExplorer() {
     <main className={styles.shell}>
       <header className={styles.header}>
         <div>
-          <span className={styles.eyebrow}>SHIBUYA / CITY + STATION · v1.2</span>
+          <span className={styles.eyebrow}>SHIBUYA / CITY + STATION · v1.3</span>
           <h1>One place. One shared view.</h1>
         </div>
         <nav>
@@ -95,7 +101,7 @@ export default function UnifiedExplorer() {
       <div className={styles.workspace}>
         <aside className={styles.sidebar}>
           <p className={styles.intro}>
-            Explore the station with PLATEAU building footprints, then switch
+            Explore the station with PLATEAU building outlines, then switch
             to the city’s 3D envelopes or compare one floor against the map.
           </p>
           <div className={styles.metric}>
@@ -176,12 +182,17 @@ export default function UnifiedExplorer() {
           </p>
           <h2>Compare layers</h2>
           <div className={styles.buttonRow} aria-label="City context style">
-            <button aria-pressed={footprints} onClick={() => setContext("footprints")}>Footprints</button>
+            <button aria-pressed={footprints} onClick={() => setContext("footprints")}>Outlines</button>
             <button aria-pressed={!footprints} disabled={plan} onClick={() => setContext("buildings")}>3D buildings</button>
           </div>
           <p className={styles.hint}>
             {footprints ? "Building outlines shown on the map plane. Switch to 3D buildings to see source heights." : "Source building heights. Reduce opacity to see the station through the city."}
           </p>
+          <PlateauBuildingControl enabled={detailedBuildings} onChange={enabled=>{
+            setDetailedBuildings(enabled);
+            if(enabled) {setPlan(false);setContext("buildings");}
+          }} status={plateau.status} onRetry={plateau.retry}/>
+          {detailedBuildings && footprints && <p className={styles.hint}>Source meshes are used in 3D buildings mode. Plan outlines stay flat.</p>}
           <label className={styles.layer}>
             <span>
               <input
@@ -230,6 +241,8 @@ export default function UnifiedExplorer() {
             The optional passage loads another 1.2 MB.
           </p>
           <h2>Station features</h2>
+          <label className={styles.layer}><span><input type="checkbox" checked={entrances} onChange={e=>setEntrances(e.target.checked)}/>Mapped entrance references</span></label>
+          <p className={styles.hint}>Blue circles use public map coordinates on a flat comparison plane. Choose a floor or exit to compare them with its schematic landing. Dashed lines compare positions; they are not routes.</p>
           <label className={styles.hint}>Inspect a lift, gate or exit
             <select aria-label="Inspect station feature" value={features.some(f=>f.id===selected)?selected!:""}
               className="my-2 w-full rounded border p-2 text-xs" onChange={event=>{
@@ -243,24 +256,22 @@ export default function UnifiedExplorer() {
           {feature && <section className={styles.selection} aria-label="Selected station feature">
             <h2>{"from" in feature ? connectorName(feature) : feature.name}</h2>
             <FeatureDetails feature={feature}/>
+            <EntranceDetails data={geographicExplorer} targetId={selected}/>
             <Link href="/verification#public-review" prefetch={false}>Source evidence ↗</Link>
           </section>}
-          <h2>Three building anchors</h2>
+          <h2>Shared building outlines</h2>
           <div className={styles.places}>
-            {landmarks.map((item) => (
+            {geographicExplorer.buildings.map((item) => (
               <button
-                aria-pressed={selected === item.explorerId}
-                key={item.featureId}
+                aria-pressed={selected === item.id}
+                key={item.id}
                 onClick={() =>
-                  setSelected(selected === item.explorerId ? null : item.explorerId)
+                  setSelected(selected === item.id ? null : item.id)
                 }
               >
-                <span>{item.label}</span>
+                <span>{item.shortName}</span>
                 <small>
-                  {stationAlignment.residuals
-                    .find((r) => r.id === item.explorerId)!
-                    .distance.toFixed(1)}{" "}
-                  m mismatch
+                  {item.outlineSource?.identity === "named-in-plateau" ? "Named PLATEAU feature" : "Public map match"}
                 </small>
               </button>
             ))}
@@ -270,24 +281,22 @@ export default function UnifiedExplorer() {
               className={styles.selection}
               aria-label="Selected building alignment"
             >
-              <h2>{place.label}</h2>
+              <h2>{place.shortName}</h2>
               <p>
-                PLATEAU: {place.latitude.toFixed(6)}° N,{" "}
-                {place.longitude.toFixed(6)}° E
+                {plateau.meshes ? "The same source PLATEAU mesh is available in both views, with roof shapes and source heights." : "The same PLATEAU outline appears in the diagram and city view. Projected mesh envelope; ground-contact footprint unverified."}
               </p>
               <p>
-                Drawing centre is {residual?.distance.toFixed(1)} m from the
-                source centre after fitting.
+                {residual ? `The original schematic centre was ${residual.distance.toFixed(1)} m from the source centre. This original fit is retained for station interiors; replacing the building outline does not validate entrances.` : "Building identity is inferred from a unique 88–96% overlap with a named OpenStreetMap outline. It was not added as a station-fit control."}
               </p>
-              <code>{place.featureId}</code>
+              <code>{place.outlineSource?.featureId}</code>
+              <a href={`${base}/evidence/building-crosswalk.json`} target="_blank" rel="noreferrer">Match evidence ↗</a>
             </section>
           )}
           <div className={styles.alignment}>
             <strong>Draft horizontal alignment</strong>
             <p>
               {stationAlignment.rmse.toFixed(1)} m RMS mismatch across three
-              building centres. Entrances and individual station spaces remain
-              approximate.
+              original building centres. Station interiors remain approximate; the shared building outlines are now placed at their source coordinates.
             </p>
           </div>
           <label className={styles.layer}>
@@ -297,7 +306,7 @@ export default function UnifiedExplorer() {
                 checked={guides}
                 onChange={(e) => setGuides(e.target.checked)}
               />
-              Show alignment differences
+              Show original fit differences
             </span>
           </label>
           <details className={styles.notes}>
@@ -309,10 +318,7 @@ export default function UnifiedExplorer() {
               not warped to force an exact match.
             </p>
             <p>
-              City buildings retain their source positions and heights,
-              simplified into plan envelopes with flat roofs. Their facades and
-              detailed roof shapes are omitted. The three source buildings
-              replace the corresponding schematic envelopes in this view.
+              Most city buildings are simplified plan envelopes with flat roofs. The optional PLATEAU 3D layer preserves source triangles, roof shapes and heights for the eight destinations, without textures. Both layers use the same geographic frame and are shared with the original diagram. Three identities are named in PLATEAU; five are cross-source matches. The original station fit remains frozen.
             </p>
             <p>
               Building centres are approximate controls, not entrance survey
@@ -348,6 +354,7 @@ export default function UnifiedExplorer() {
             {city && (
               <Viewer
                 city={city}
+                buildingMeshes={plateau.meshes}
                 plan={plan}
                 district={district}
                 footprints={footprints}
@@ -359,6 +366,7 @@ export default function UnifiedExplorer() {
                 schematic={schematic}
                 map={map}
                 passage={passage}
+                entrances={entrances}
                 guides={guides}
                 selected={selected}
                 onSelect={setSelected}
@@ -400,7 +408,8 @@ export default function UnifiedExplorer() {
           </div>
           <div className={styles.mapLegend}>
             <span><i className={styles.stationKey} />Station</span>
-            <span><i className={styles.cityKey} />PLATEAU {footprints ? "footprints" : "buildings"}</span>
+            <span><i className={styles.cityKey} />PLATEAU {footprints ? "outlines" : "buildings"}</span>
+            {entrances && <span style={{color:"#285580"}}>○ Mapped entry</span>}
             {plan && <span className={styles.north}>↑ N</span>}
           </div>
           <p className={styles.help}>
@@ -418,6 +427,7 @@ export default function UnifiedExplorer() {
               MLIT PLATEAU
             </a>{" "}
             · simplified by transit-layout
+            {" · "}<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap contributors · ODbL</a>
             {map && (
               <>
                 {" "}

@@ -32,7 +32,7 @@ export default function PublicSourceReview() {
       <p className="mb-3 text-xs font-bold uppercase tracking-[0.15em] text-[#226e65]">Public-source cross-check · 19 September 2026</p>
       <h2 id="public-review-title" className="text-3xl">Source corrections applied.</h2>
       <p className="mt-4 max-w-3xl leading-relaxed text-slate-600">
-        Every current model feature has a review entry against the sources below.
+        Every baseline station feature has a review entry against the sources below.
         Exit landing floors, Hikarie circulation, JR gate levels and Keio’s missing
         levels have been corrected. {review.coverage.individuallyMatchedModelConnectors} source-identified
         lifts and lettered stairs are represented. Their drawn positions remain unmeasured.
@@ -47,7 +47,7 @@ export default function PublicSourceReview() {
       </div>
       <div className="my-6 rounded-lg border border-[#d8cdb7] bg-[#faf6ec] p-5">
         <h3 className="text-xl">What still needs measured or on-site evidence</h3>
-        <p className="mt-3 text-sm font-medium">Photo verification is still pending. Sources were last reviewed on 19 September 2026; the current release preserves the limits below.</p>
+        <p className="mt-3 text-sm font-medium">Photo verification is still pending. Operator topology was last reviewed on 19 September 2026. The 10 October public-map reference layer adds entrance coordinates and building identity matches; it does not confirm present operation or surveyed station alignment.</p>
         {review.userInputsNeeded.map(item=><div key={item.id} className="mt-4 text-sm leading-relaxed">
           <p className="font-medium">{item.request}</p><p className="mt-1 text-slate-600">{item.purpose}</p>
         </div>)}

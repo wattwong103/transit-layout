@@ -3,11 +3,14 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useState } from "react";
-import { explorerData as data } from "@/data/explorer";
+import { schematicExplorer as data, stationAlignment } from "@/lib/stationRegistration";
 import { getSelection, connectorName, connectorLevels } from "@/lib/explorer";
 import type { ContextMode, ExplorerLevelId } from "@/types/explorer";
 import Explorer2D from "./Explorer2D";
 import FeatureDetails from "./FeatureDetails";
+import EntranceDetails from "./EntranceDetails";
+import PlateauBuildingControl from "./PlateauBuildingControl";
+import { usePlateauBuildings } from "./usePlateauBuildings";
 
 const Explorer3D = dynamic(() => import("./Explorer3D"), {
   ssr: false,
@@ -47,6 +50,8 @@ export default function StationExplorer() {
   const [query, setQuery] = useState("");
   const [listTab, setListTab] = useState<"places" | "exits" | "access">("places");
   const [panelOpen, setPanelOpen] = useState(false);
+  const [detailedBuildings,setDetailedBuildings] = useState(false);
+  const plateau = usePlateauBuildings(detailedBuildings && view === "3d" && contextMode !== "station");
   const selection = getSelection(data, selectedId);
   const level = data.levels.find((item) => item.id === activeLevel);
   const search = query.trim().toLowerCase();
@@ -107,6 +112,7 @@ export default function StationExplorer() {
   }
   const viewProps = {
     data,
+    buildingMeshes: plateau.meshes,
     contextMode,
     activeLevel,
     selectedId,
@@ -157,7 +163,7 @@ export default function StationExplorer() {
             2D plan
           </button>
         </div>
-        <span className="header-caption">v1.2 · An inside-out view of the city.</span>
+        <span className="header-caption">v1.3 · An inside-out view of the city.</span>
         <button
           className="mobile-explore"
           aria-expanded={panelOpen}
@@ -205,6 +211,7 @@ export default function StationExplorer() {
                 ),
               )}
             </div>
+            {view === "3d" && contextMode !== "station" && <PlateauBuildingControl enabled={detailedBuildings} onChange={setDetailedBuildings} status={plateau.status} onRetry={plateau.retry}/>}
           </div>
           {selectedId && (
             <section
@@ -240,7 +247,9 @@ export default function StationExplorer() {
                 Check floors, equipment & source evidence ↗
               </Link>
               {selectedFeature && <FeatureDetails feature={selectedFeature} />}
+              <EntranceDetails data={data} targetId={selectedId} unitsToMeters={stationAlignment.scale}/>
               {selection.building && <p>{selection.building.description}</p>}
+              {selection.building?.outlineSource && <p className="text-xs">{plateau.meshes ? "Source PLATEAU mesh and height" : "Shared PLATEAU outline; illustrative height"} · {selection.building.outlineSource.identity === "named-in-plateau" ? "named in PLATEAU" : "identity matched using the public map"}. Ground-contact boundaries and current construction remain unverified. <a href={`${process.env.NODE_ENV === "production" ? "/transit-layout" : ""}/evidence/building-crosswalk.json`} target="_blank" rel="noreferrer">Match evidence ↗</a></p>}
               {selection.space && (
                 <>
                   <p>
@@ -420,9 +429,9 @@ export default function StationExplorer() {
               About this diagram <span>↗</span>
             </summary>
             <p>
-              Station shapes, stairs, building envelopes and spacing are
-              illustrative. They share one schematic layout across 2D and 3D.
+              Station shapes, stairs and floor heights remain illustrative. All eight building outlines share the compact PLATEAU source used by the city view. Enable PLATEAU 3D buildings for the source roof shapes, setbacks and heights. Textures are omitted to keep the download small.
             </p>
+            <p>Blue circles in Both / Buildings show public entrance references on the comparison plane. These do not move the underground landings or establish a route. Building outlines are projected mesh envelopes, not surveyed ground footprints. <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap contributors · ODbL</a> · <a href="https://www.mlit.go.jp/plateau/" target="_blank" rel="noreferrer">MLIT PLATEAU</a>.</p>
             <p>
               Exit destinations are linked to operator and building sources.
               Lines show associations, not turn-by-turn paths. Building
@@ -438,7 +447,7 @@ export default function StationExplorer() {
         <section className="map-stage" aria-label="Interactive Shibuya map">
           <div className="map-heading">
             <span className="eyebrow">
-              {view === "3d" ? "EXPLODED STATION ATLAS" : "STATION FLOOR PLAN"}
+              {view === "3d" ? (plateau.meshes && contextMode === "buildings" ? "PLATEAU BUILDING MODEL" : "EXPLODED STATION ATLAS") : "STATION FLOOR PLAN"}
             </span>
             <h2>
               {activeLevel === "all"
@@ -562,6 +571,7 @@ export default function StationExplorer() {
                     <i className="legend-toward" />
                     Toward
                   </span>
+                  <span style={{color:"#285580"}}>○ Mapped entry</span>
                 </>
               )}
             </div>
@@ -583,7 +593,7 @@ export default function StationExplorer() {
           <div className="map-footer">
             <span>
               <i />
-              Schematic geometry · source-linked destinations
+              Schematic station · <a href="https://www.mlit.go.jp/plateau/" target="_blank" rel="noreferrer">PLATEAU {plateau.meshes ? "3D" : "outlines"}</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap contributors · ODbL</a>
             </span>
             <span>
               {view === "3d"

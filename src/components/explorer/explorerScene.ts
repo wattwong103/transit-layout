@@ -1,14 +1,15 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import type { ExplorerDataset, Point2 } from "@/types/explorer";
-import { getSpaceOpenings, connectorLevels, connectorStops, connectorName, floorSurfaceOffset } from "@/lib/explorer";
+import { getSpaceOpenings, connectorLevels, connectorStops, connectorName, floorSurfaceOffset, buildingParts } from "@/lib/explorer";
 import { extrudePlan } from "@/lib/planGeometry";
+import { plateauBuildingGeometry, type PlateauBuildingMeshes } from "@/lib/plateauBuildingGeometry";
 
 export type LabelRecord = {
   id: string | null;
   text: string;
   position: THREE.Vector3;
-  kind: "floor" | "exit" | "platform" | "space" | "building" | "connector";
+  kind: "floor" | "exit" | "platform" | "space" | "building" | "connector" | "reference";
   color: string;
   levels: string[];
   element?: HTMLButtonElement;
@@ -118,7 +119,7 @@ function batchLayer(layer: THREE.Group) {
 }
 
 /** Builds once per data/spacing change. Selection only mutates visibility/materials. */
-export function buildModel(data: ExplorerDataset, separation: number): Model {
+export function buildModel(data: ExplorerDataset, separation: number, buildingMeshes?: PlateauBuildingMeshes | null): Model {
   const group = new THREE.Group();
   const labels: LabelRecord[] = [];
   const details: THREE.Group[] = [];
@@ -453,15 +454,45 @@ export function buildModel(data: ExplorerDataset, separation: number): Model {
   }
   for (const building of data.buildings) {
     entity(building.id, "building", []);
-    slab(building.polygon, 0, building.displayHeight, building.color, [], 0.12);
+    const source = buildingMeshes?.get(building.id);
+    let labelHeight = building.displayHeight;
+    if (source) {
+      const geometry = plateauBuildingGeometry(source,"diagram");
+      labelHeight = geometry.boundingBox!.max.y;
+      const buildingMesh = mesh(geometry,building.color,.22);
+      (buildingMesh.material as THREE.MeshStandardMaterial).flatShading = true;
+      (buildingMesh.material as THREE.MeshStandardMaterial).side = THREE.DoubleSide;
+      (buildingMesh.material as THREE.MeshStandardMaterial).forceSinglePass = true;
+    } else for (const [outer, ...holes] of buildingParts(building))
+      slab(outer, 0, building.displayHeight, building.color, holes, 0.12);
     labels.push({
       id: building.id,
       text: building.shortName,
       kind: "building",
-      position: at(building.labelPosition, building.displayHeight + 4),
+      position: at(building.labelPosition, labelHeight + 4),
       levels: [],
       color: "#6c7776",
     });
+  }
+  for (const reference of data.entranceReferences ?? []) {
+    entity(reference.targetId, "reference", reference.levels);
+    const marker = mesh(new THREE.CylinderGeometry(1.5, 1.5, .6, 8), "#386ca0", 1, false);
+    (marker.material as THREE.MeshStandardMaterial).depthTest = false;
+    (marker.material as THREE.MeshStandardMaterial).depthWrite = false;
+    marker.renderOrder = 40;
+    marker.position.copy(at(reference.position, 1));
+    labels.push({id:reference.targetId,text:`○ ${reference.ref}`,kind:"reference",position:at(reference.position,5),levels:reference.levels,color:"#285580"});
+    const target = data.exits.find(e=>e.id===reference.targetId)?.position
+      ?? data.connectors.find(c=>c.id===reference.targetId)?.stops?.find(s=>s.levelId==="1F")?.position;
+    if (target) {
+      const comparison = entity(reference.targetId, "comparison", reference.levels);
+      const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints([at(target, 2), at(reference.position, 2)]),
+        new THREE.LineDashedMaterial({color:"#386ca0", dashSize:2, gapSize:1.5, depthTest:false, depthWrite:false}));
+      line.computeLineDistances();
+      line.renderOrder = 45;
+      comparison.add(line);
+      comparison.visible = false;
+    }
   }
   for (const exit of data.exits) {
     entity(exit.id, "exit", [exit.levelId]);
@@ -535,7 +566,7 @@ export function buildModel(data: ExplorerDataset, separation: number): Model {
     });
   }
   for (const feature of group.children)
-    if (feature.userData.category !== "link")
+    if (!["link", "reference", "comparison"].includes(feature.userData.category))
       batchLayer(feature as THREE.Group);
   details.forEach(batchLayer);
   let objects = 0;

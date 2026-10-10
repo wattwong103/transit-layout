@@ -1,0 +1,61 @@
+{
+  "attribution": "© OpenStreetMap contributors",
+  "license": "ODbL-1.0",
+  "licenseUrl": "https://opendatacommons.org/licenses/odbl/1-0/",
+  "copyrightUrl": "https://www.openstreetmap.org/copyright",
+  "checkedOn": "2026-10-10",
+  "sourceUrl": "https://api.openstreetmap.org/api/0.6/map?bbox=139.696,35.655,139.706,35.662",
+  "sourceSha256": "0aa039074060ae099dc5aa2274226a2abc5ff03e57ce2fdec167e4d716025fa7",
+  "matches": [
+    {
+      "explorerId": "shibuya109",
+      "featureId": "bldg_aba50b67-9267-4c80-9004-08ebfc7682d8",
+      "osmWayId": "55895868",
+      "name": "Shibuya 109",
+      "sourceUpdatedAt": "2026-07-19T09:11:08Z",
+      "overlapIoU": 0.9427666984591907,
+      "runnerUpIoU": 0,
+      "method": "Named OSM outline matched to PLATEAU envelope by unique polygon overlap; not a surveyed identity check."
+    },
+    {
+      "explorerId": "qfront",
+      "featureId": "bldg_5f7ff4f3-a620-4fd0-a380-3ec46435cd27",
+      "osmWayId": "136691386",
+      "name": "Q-FRONT",
+      "sourceUpdatedAt": "2026-07-19T09:00:29Z",
+      "overlapIoU": 0.8962428040060079,
+      "runnerUpIoU": 0,
+      "method": "Named OSM outline matched to PLATEAU envelope by unique polygon overlap; not a surveyed identity check."
+    },
+    {
+      "explorerId": "magnet",
+      "featureId": "bldg_d47d8aa9-e4f5-4599-9d9a-bc129a12d6a8",
+      "osmWayId": "116806281",
+      "name": "MAGNET SHIBUYA",
+      "sourceUpdatedAt": "2026-07-19T09:11:08Z",
+      "overlapIoU": 0.9564515618909551,
+      "runnerUpIoU": 0,
+      "method": "Named OSM outline matched to PLATEAU envelope by unique polygon overlap; not a surveyed identity check."
+    },
+    {
+      "explorerId": "scramble-square",
+      "featureId": "bldg_7b006717-e9e6-4a94-8843-1f4ce13b2509",
+      "osmWayId": "617560918",
+      "name": "渋谷スクランブルスクエア",
+      "sourceUpdatedAt": "2026-07-20T05:30:18Z",
+      "overlapIoU": 0.8760865573169792,
+      "runnerUpIoU": 0.012164840376189985,
+      "method": "Named OSM outline matched to PLATEAU envelope by unique polygon overlap; not a surveyed identity check."
+    },
+    {
+      "explorerId": "fukuras",
+      "featureId": "bldg_3ad6aaeb-26f8-4716-a8ec-cb2504b94674",
+      "osmWayId": "55588118",
+      "name": "渋谷フクラス",
+      "sourceUpdatedAt": "2025-06-21T15:54:06Z",
+      "overlapIoU": 0.9273240484227199,
+      "runnerUpIoU": 2.4670068247851587e-05,
+      "method": "Named OSM outline matched to PLATEAU envelope by unique polygon overlap; not a surveyed identity check."
+    }
+  ]
+}

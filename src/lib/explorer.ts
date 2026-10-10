@@ -20,6 +20,9 @@ export const facilitySymbol = (kind: ExplorerFacility["kind"]) => ({
   gate: "G", toilet: "WC", "baby-care": "B", aed: "+", lockers: "L", tickets: "T", information: "i", works: "×",
 })[kind];
 
+export const buildingParts = (building: ExplorerBuilding): Point2[][][] => building.parts ?? [[building.polygon]];
+export const buildingPoints = (building: ExplorerBuilding): Point2[] => buildingParts(building).flat(2);
+
 /** Tiny display-only layer offsets avoid coplanar flicker at overlapping passage joins. */
 export const floorSurfaceOffset = (data: ExplorerDataset, space: ExplorerSpace) =>
   data.spaces.filter(s=>s.levelId === space.levelId).findIndex(s=>s.id === space.id) * .015;
@@ -41,7 +44,7 @@ export function placeBuildingLabels(
   for (const building of buildings) {
     const width = building.shortName.length * 6.1 + 8;
     const x = building.labelPosition[0] * px;
-    const z = building.polygon.map((point) => point[1] * px);
+    const z = buildingPoints(building).map((point) => point[1] * px);
     const candidates = [
       building.labelPosition[1] * px,
       Math.max(...z) + 13,

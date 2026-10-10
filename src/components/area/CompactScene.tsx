@@ -12,12 +12,12 @@ import {
   geographicExplorer as station,
   geographicToLocal,
   stationAlignment,
-  alignmentControls,
 } from "@/lib/stationRegistration";
 import { getSpaceOpenings, connectorLevels, connectorStops, connectorName, facilitySymbol, floorSurfaceOffset } from "@/lib/explorer";
 import { extrudePlan, flatPlan } from "@/lib/planGeometry";
 import citySummary from "@/data/station-city-summary.json";
 import { fitOrthographicCamera, visibleGeometryCorners } from "@/lib/cameraFraming";
+import { plateauBuildingGeometry, type PlateauBuildingMeshes } from "@/lib/plateauBuildingGeometry";
 
 const base = process.env.NODE_ENV === "production" ? "/transit-layout" : "";
 const ground = citySummary.displayGroundEllipsoidM;
@@ -29,6 +29,7 @@ const stationLabels = [
 
 export interface CompactSceneProps {
   city: CompactCity;
+  buildingMeshes?: PlateauBuildingMeshes | null;
   plan: boolean;
   district: boolean;
   footprints: boolean;
@@ -40,6 +41,7 @@ export interface CompactSceneProps {
   schematic: boolean;
   map: boolean;
   passage: boolean;
+  entrances: boolean;
   guides: boolean;
   selected: string | null;
   onSelect: (id: string | null) => void;
@@ -75,13 +77,20 @@ function release(group: THREE.Object3D) {
   });
 }
 
-function cityModel(city: CompactCity, footprints: boolean) {
+function cityModel(city: CompactCity, footprints: boolean, buildingMeshes?: PlateauBuildingMeshes | null) {
   const group = new THREE.Group();
   const buckets = new Map<string, THREE.BufferGeometry[]>();
   for (const building of city.buildings) {
     const key = building.explorerId ?? "context";
     const bucket = buckets.get(key) ?? [];
-    building.parts.forEach((rings) => {
+    const source = !footprints && building.explorerId ? buildingMeshes?.get(building.explorerId) : null;
+    if (source) {
+      const indexed = plateauBuildingGeometry(source,"map");
+      const geometry = indexed.toNonIndexed();
+      indexed.dispose();
+      geometry.deleteAttribute("uv");
+      bucket.push(geometry);
+    } else building.parts.forEach((rings) => {
       const geometry = footprints
         ? flatPlan(rings).translate(0, 0.1, 0)
         : extrusion(rings, building.base - ground, building.top - building.base);
@@ -95,6 +104,7 @@ function cityModel(city: CompactCity, footprints: boolean) {
     const material = new THREE.MeshStandardMaterial({
       color: id === "context" ? "#8fa8a3" : "#638e82",
       roughness: 1,
+      flatShading: true,
       transparent: true,
       opacity: 0.3,
       depthWrite: false,
@@ -105,7 +115,7 @@ function cityModel(city: CompactCity, footprints: boolean) {
     mesh.userData.buildingId = id === "context" ? null : id;
     group.add(mesh);
     // Neighbourhood facades do not need thousands of individual edge strokes.
-    // Keep clear edges only on the three reviewed landmark envelopes.
+    // Keep clear edges only on the eight matched destination envelopes.
     if (id === "context") return;
     const outline = new THREE.LineSegments(
       new THREE.EdgesGeometry(geometry, 35),
@@ -385,10 +395,33 @@ function Scene(
   const { camera: rawCamera, gl, scene, size, invalidate } = useThree();
   const camera = rawCamera as THREE.OrthographicCamera;
   const controls = useRef<OrbitControls>();
-  const buildings = useMemo(() => cityModel(props.city, props.footprints), [props.city, props.footprints]);
+  const buildings = useMemo(() => cityModel(props.city, props.footprints, props.buildingMeshes), [props.city, props.footprints, props.buildingMeshes]);
   const cameraPreset = useRef("");
   const previousZoomStep = useRef(props.zoomStep);
   const schematic = useMemo(() => stationModel(props.spacing), [props.spacing]);
+  const references = useMemo(() => {
+    const group = new THREE.Group();
+    for (const entry of station.entranceReferences ?? []) {
+      const marker = new THREE.Mesh(new THREE.CylinderGeometry(2.4,2.4,.6,8),new THREE.MeshBasicMaterial({color:"#386ca0",depthTest:false,depthWrite:false}));
+      marker.position.set(entry.position[0],.5,entry.position[1]);
+      marker.renderOrder=40;
+      marker.userData={targetId:entry.targetId,levels:entry.levels}; group.add(marker);
+    }
+    return group;
+  }, []);
+  const entranceComparison = useMemo(() => {
+    const group = new THREE.Group();
+    const selectedExit = station.exits.find(e=>e.id===props.selected);
+    const selectedLift = station.connectors.find(c=>c.id===props.selected);
+    const target = selectedExit?.position ?? selectedLift?.stops?.find(s=>s.levelId==="1F")?.position;
+    if (target) for (const entry of station.entranceReferences?.filter(r=>r.targetId===props.selected) ?? []) {
+      const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(entry.position[0],2,entry.position[1]),new THREE.Vector3(target[0],2,target[1])]),new THREE.LineDashedMaterial({color:"#386ca0",dashSize:4,gapSize:3,depthTest:false}));
+      line.computeLineDistances(); line.renderOrder=45; group.add(line);
+    }
+    return group;
+  }, [props.selected]);
+  useEffect(()=>()=>release(references),[references]);
+  useEffect(()=>()=>release(entranceComparison),[entranceComparison]);
   const guideGeometry = useMemo(
     () =>
       new THREE.BufferGeometry().setFromPoints(
@@ -451,6 +484,9 @@ function Scene(
         props.opacity === 100 && child.type !== "LineSegments";
     });
     schematic.visible = props.schematic;
+    references.visible=props.entrances;
+    entranceComparison.visible=props.entrances;
+    references.children.forEach(child=>{child.visible=props.level === "1F" || child.userData.targetId===props.selected || (props.level !== "all" && child.userData.levels.includes(props.level));});
     schematic.children.forEach((child) => {
       child.visible =
         props.level === "all" || child.userData.levels?.includes(props.level);
@@ -463,6 +499,9 @@ function Scene(
     props.selected,
     props.schematic,
     props.level,
+    props.entrances,
+    references,
+    entranceComparison,
     invalidate,
   ]);
   useEffect(() => {
@@ -477,6 +516,7 @@ function Scene(
       ? [buildings]
       : schematic.children;
     const points = visibleGeometryCorners(roots);
+    if (props.entrances && !props.district) points.push(...visibleGeometryCorners([references]));
     const target = fitOrthographicCamera(camera, points, size.width, size.height,
       { x: size.width < 600 ? 52 : 70, y: size.width < 600 ? 120 : size.height < 500 ? 65 : 95 });
     if (controls.current && target) {
@@ -488,7 +528,7 @@ function Scene(
     }
     invalidate();
   }, [camera, buildings, schematic, props.plan, props.district, props.reset,
-      props.level, props.schematic, size.width, size.height, invalidate]);
+      props.level, props.schematic, props.entrances, props.selected, references, size.width, size.height, invalidate]);
   useEffect(() => {
     const change = props.zoomStep - previousZoomStep.current;
     previousZoomStep.current = props.zoomStep;
@@ -499,19 +539,20 @@ function Scene(
     invalidate();
   }, [camera, props.zoomStep, invalidate]);
   useFrame(() => {
+    const occupied: {x:number;y:number}[]=[];
     props.labelsRef.current
       ?.querySelectorAll<HTMLButtonElement>("button[data-building-id]")
       .forEach((button) => {
-        const control = alignmentControls.find(
+        const control = station.buildings.find(
           (c) => c.id === button.dataset.buildingId,
         )!;
         const building = props.city.buildings.find(
           (b) => b.explorerId === control.id,
         )!;
         const point = new THREE.Vector3(
-          control.target[0],
+          control.labelPosition[0],
           props.footprints ? 4 : building.top - ground + 6,
-          control.target[1],
+          control.labelPosition[1],
         ).project(camera);
         const x = ((point.x + 1) * size.width) / 2,
           y = ((1 - point.y) * size.height) / 2;
@@ -525,8 +566,33 @@ function Scene(
             ? "none"
             : "block";
         button.style.transform = `translate(-50%,-100%) translate(${x}px,${y}px)`;
+        if (button.style.display !== "none") occupied.push({x,y});
       });
-    const occupied: {x:number;y:number}[]=[];
+    const entranceButtons = Array.from(props.labelsRef.current?.querySelectorAll<HTMLButtonElement>("button[data-entrance-index]") ?? []);
+    entranceButtons.sort((a,b)=>Number(station.entranceReferences![Number(b.dataset.entranceIndex)].targetId===props.selected)-Number(station.entranceReferences![Number(a.dataset.entranceIndex)].targetId===props.selected));
+    entranceButtons.forEach(button=>{
+      const entry=station.entranceReferences![Number(button.dataset.entranceIndex)];
+      const selected=props.selected===entry.targetId;
+      const visible=props.entrances && (props.level === "1F" || selected || (props.level !== "all" && entry.levels.some(id=>id===props.level)));
+      const p=new THREE.Vector3(entry.position[0],3,entry.position[1]).project(camera);
+      const x=(p.x+1)*size.width/2,y=(1-p.y)*size.height/2;
+      const collides=(cy:number)=>occupied.some(q=>Math.abs(q.x-x)<46 && Math.abs(q.y-cy)<23);
+      let labelY=y;
+      if (selected && collides(y)) {
+        const dy=[-24,24,-48,48,-72,72].find(d=>y+d>24 && y+d<size.height-24 && !collides(y+d));
+        if (dy !== undefined) labelY+=dy;
+      }
+      const hidden=!visible || p.z < -1 || p.z > 1 || x<20 || x>size.width-20 || labelY<24 || labelY>size.height-24 || (!selected && collides(labelY));
+      button.style.display=hidden ? "none":"block";
+      button.style.transform=`translate(-50%,-100%) translate(${x}px,${labelY}px)`;
+      const leader=props.labelsRef.current?.querySelector<HTMLElement>(`[data-entrance-leader="${button.dataset.entranceIndex}"]`);
+      if(leader) {
+        leader.style.display=!hidden && labelY!==y ? "block":"none";
+        leader.style.height=`${Math.abs(labelY-y)}px`;
+        leader.style.transform=`translate(${x}px,${Math.min(y,labelY)}px)`;
+      }
+      if(!hidden) occupied.push({x,y:labelY});
+    });
     props.labelsRef.current?.querySelectorAll<HTMLButtonElement>("button[data-feature-id]").forEach(button=>{
       const record=stationLabels[Number(button.dataset.markerIndex)];
       const selected=props.selected===record.id;
@@ -545,8 +611,10 @@ function Scene(
       gl.domElement.dataset.triangles = String(gl.info.render.triangles);
       gl.domElement.dataset.geometryCount = String(gl.info.memory.geometries);
       gl.domElement.dataset.textureCount = String(gl.info.memory.textures);
+      gl.domElement.dataset.renderedFrames = String(gl.info.render.frame);
       gl.domElement.dataset.renderedLevel = props.level;
       gl.domElement.dataset.contextStyle = props.footprints ? "footprints" : "buildings";
+      gl.domElement.dataset.buildingGeometry = props.buildingMeshes && !props.footprints ? "plateau-source" : "outlines";
       gl.domElement.dataset.zoom = camera.zoom.toFixed(3);
     });
   });
@@ -569,6 +637,10 @@ function Scene(
         }}
       />
       <primitive object={schematic} />
+      <primitive object={references} onClick={(event: {stopPropagation:()=>void;object:THREE.Object3D})=>{
+        if(event.object.userData.targetId) {event.stopPropagation();props.onSelect(event.object.userData.targetId);}
+      }}/>
+      <primitive object={entranceComparison} />
       <gridHelper
         args={[1600, 16, "#c0ccc3", "#e0e4dc"]}
         position={[0, -0.3, -100]}
@@ -618,7 +690,13 @@ export default function CompactScene(props: CompactSceneProps) {
       >
         {stationLabels.map((f,i)=><button key={`${f.id}-${f.level}`} data-feature-id={f.id} data-marker-index={i}
           aria-label={`${f.name} · ${f.level}`} title={`${f.name} · ${f.level}`} aria-pressed={props.selected===f.id}
-          onClick={()=>props.onSelect(f.id)} style={{position:"absolute",top:0,left:0,display:"none",pointerEvents:"auto",padding:"2px 4px",fontSize:10,border:"1px solid #7e9487",borderRadius:3,background:props.selected===f.id?"#ffd597":f.color,color:"#27493f"}}>{f.text}</button>)}
+          onClick={()=>props.onSelect(f.id)} style={{position:"absolute",top:0,left:0,display:"none",zIndex:props.selected===f.id?4:2,pointerEvents:"auto",padding:"2px 4px",fontSize:10,border:"1px solid #7e9487",borderRadius:3,background:props.selected===f.id?"#ffd597":f.color,color:"#27493f"}}>{f.text}</button>)}
+        {station.entranceReferences?.map((entry,i)=><span key={entry.id}>
+          <span data-entrance-leader={i} style={{position:"absolute",top:0,left:0,display:"none",width:1,background:"#386ca0"}}/>
+          <button data-entrance-index={i}
+          aria-label={`Mapped entrance ${entry.ref}`} title={`Public map reference ${entry.ref}; comparison plane, not measured height`}
+          aria-pressed={props.selected===entry.targetId}
+          onClick={()=>props.onSelect(entry.targetId)} style={{position:"absolute",top:0,left:0,display:"none",zIndex:3,pointerEvents:"auto",padding:"2px 4px",fontSize:10,border:"1px solid #386ca0",borderRadius:10,background:props.selected===entry.targetId?"#d8ebff":"#f2f8ff",color:"#285580"}}>○ {entry.ref}</button></span>)}
         {props.city.buildings
           .filter((b) => b.explorerId)
           .map((building) => (
@@ -630,6 +708,7 @@ export default function CompactScene(props: CompactSceneProps) {
               onClick={() => props.onSelect(building.explorerId!)}
               style={{
                 position: "absolute",
+                zIndex: props.selected === building.explorerId ? 4 : 1,
                 top: 0,
                 left: 0,
                 pointerEvents: "auto",
