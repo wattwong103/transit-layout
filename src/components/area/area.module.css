@@ -84,7 +84,13 @@
 }
 .shell button:disabled {
   opacity: 0.4;
-  cursor: wait;
+  cursor: not-allowed;
+}
+.shell button:focus-visible,
+.shell input:focus-visible,
+.shell select:focus-visible {
+  outline: 2px solid #236f65;
+  outline-offset: 3px;
 }
 .sidebar h2 {
   margin: 24px 0 10px;
@@ -238,7 +244,7 @@
 }
 .help {
   position: absolute;
-  right: 14px;
+  right: 68px;
   bottom: 37px;
   background: #ffffffe8;
   padding: 10px 12px;
@@ -247,6 +253,44 @@
   line-height: 1.6;
   pointer-events: none;
 }
+.mapTools {
+  position: absolute;
+  right: 14px;
+  bottom: 48px;
+  display: grid;
+  background: #fffffff2;
+  border: 1px solid #c6d4ce;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px #243e3510;
+}
+.mapTools button {
+  width: 42px;
+  height: 42px;
+  font-size: 22px;
+}
+.mapTools button + button { border-top: 1px solid #dce2d9; }
+.mapTools button:hover { background: #e8f1eb; }
+.mapLegend {
+  position: absolute;
+  left: 24px;
+  bottom: 54px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 8px 10px;
+  border: 1px solid #dce2d9;
+  border-radius: 5px;
+  background: #fffffff0;
+  font-size: 10px;
+  pointer-events: none;
+}
+.mapLegend span { display: flex; align-items: center; gap: 5px; }
+.mapLegend i { width: 10px; height: 10px; border: 1px solid #738677; }
+.stationKey { background: #e3d5ae; }
+.cityKey { background: #a2b8ad; }
+.north { font-weight: 700; }
+.mobileToolbar { display: none; }
 .message {
   position: absolute;
   top: 100px;
@@ -356,6 +400,29 @@
   }
   .help {
     display: none;
+  }
+  .mapLegend {
+    left: 12px;
+    bottom: 53px;
+    max-width: calc(100% - 80px);
+    gap: 8px;
+  }
+  .mobileToolbar {
+    position: absolute;
+    display: flex;
+    left: 12px;
+    bottom: 94px;
+    gap: 6px;
+  }
+  .mobileToolbar button,
+  .mobileToolbar select {
+    height: 40px;
+    padding: 6px 10px;
+    border: 1px solid #c6d4ce;
+    border-radius: 5px;
+    background: #fffffff5;
+    font-size: 12px;
+    color: #20393e;
   }
   .buttonRow {
     max-width: 420px;

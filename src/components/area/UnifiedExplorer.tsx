@@ -25,15 +25,32 @@ export default function UnifiedExplorer() {
   const [status, setStatus] = useState("");
   const [plan, setPlan] = useState(false);
   const [district, setDistrict] = useState(false);
+  const [context, setContext] = useState<"footprints" | "buildings">("footprints");
+  const [zoomStep, setZoomStep] = useState(0);
   const [reset, setReset] = useState(0);
   const [level, setLevel] = useState("all");
-  const [spacing, setSpacing] = useState(12);
-  const [opacity, setOpacity] = useState(22);
+  const [spacing, setSpacing] = useState(18);
+  const [opacity, setOpacity] = useState(45);
   const [schematic, setSchematic] = useState(true);
   const [map, setMap] = useState(true);
   const [passage, setPassage] = useState(false);
   const [guides, setGuides] = useState(false);
   const [selected, setSelected] = useState<string | null>(null);
+  const footprints = plan || context === "footprints";
+  const activeLevel = geographicExplorer.levels.find(item => item.id === level);
+
+  function focusLevel(next: string) {
+    setLevel(next);
+    setSchematic(true);
+    setDistrict(false);
+    setContext("footprints");
+    setOpacity(45);
+  }
+
+  function switchPlan(next: boolean) {
+    setPlan(next);
+    if (next) focusLevel(level === "all" ? "1F" : level);
+  }
   useEffect(() => {
     const abort = new AbortController();
     fetch(`${base}/plateau/station-city.json`, { signal: abort.signal })
@@ -63,7 +80,7 @@ export default function UnifiedExplorer() {
     <main className={styles.shell}>
       <header className={styles.header}>
         <div>
-          <span className={styles.eyebrow}>SHIBUYA / CITY + STATION</span>
+          <span className={styles.eyebrow}>SHIBUYA / CITY + STATION · v1.2</span>
           <h1>One place. One shared view.</h1>
         </div>
         <nav>
@@ -78,8 +95,8 @@ export default function UnifiedExplorer() {
       <div className={styles.workspace}>
         <aside className={styles.sidebar}>
           <p className={styles.intro}>
-            The station drawing placed among simplified PLATEAU buildings.
-            Switch to a plan to compare their positions.
+            Explore the station with PLATEAU building footprints, then switch
+            to the city’s 3D envelopes or compare one floor against the map.
           </p>
           <div className={styles.metric}>
             <strong>{Math.round(summary.bytes / 1000)} KB</strong>
@@ -93,10 +110,10 @@ export default function UnifiedExplorer() {
             </span>
           </div>
           <div className={styles.buttonRow}>
-            <button aria-pressed={!plan} onClick={() => setPlan(false)}>
+            <button aria-pressed={!plan} onClick={() => switchPlan(false)}>
               3D together
             </button>
-            <button aria-pressed={plan} onClick={() => setPlan(true)}>
+            <button aria-pressed={plan} onClick={() => switchPlan(true)}>
               North-up plan
             </button>
           </div>
@@ -104,6 +121,8 @@ export default function UnifiedExplorer() {
             <button
               onClick={() => {
                 setDistrict(false);
+                setContext("footprints");
+                setOpacity(45);
                 setReset((value) => value + 1);
               }}
             >
@@ -111,7 +130,10 @@ export default function UnifiedExplorer() {
             </button>
             <button
               onClick={() => {
+                setPlan(false);
                 setDistrict(true);
+                setContext("buildings");
+                setOpacity(100);
                 setReset((value) => value + 1);
               }}
             >
@@ -125,9 +147,9 @@ export default function UnifiedExplorer() {
                 <button
                   key={item.id}
                   aria-pressed={level === item.id}
+                  disabled={plan && item.id === "all"}
                   onClick={() => {
-                    setLevel(item.id);
-                    setSchematic(true);
+                    focusLevel(item.id);
                   }}
                 >
                   {item.label}
@@ -135,6 +157,7 @@ export default function UnifiedExplorer() {
               ),
             )}
           </div>
+          {plan && <p className={styles.hint}>One floor at a time keeps the plan readable.</p>}
           <label className={styles.range}>
             Illustrative floor spacing <span>{spacing}</span>
             <input
@@ -143,6 +166,7 @@ export default function UnifiedExplorer() {
               min="4"
               max="24"
               value={spacing}
+              disabled={plan || level !== "all"}
               onChange={(e) => setSpacing(Number(e.target.value))}
             />
           </label>
@@ -151,6 +175,13 @@ export default function UnifiedExplorer() {
             drawing for readability.
           </p>
           <h2>Compare layers</h2>
+          <div className={styles.buttonRow} aria-label="City context style">
+            <button aria-pressed={footprints} onClick={() => setContext("footprints")}>Footprints</button>
+            <button aria-pressed={!footprints} disabled={plan} onClick={() => setContext("buildings")}>3D buildings</button>
+          </div>
+          <p className={styles.hint}>
+            {footprints ? "Building outlines shown on the map plane. Switch to 3D buildings to see source heights." : "Source building heights. Reduce opacity to see the station through the city."}
+          </p>
           <label className={styles.layer}>
             <span>
               <input
@@ -203,7 +234,7 @@ export default function UnifiedExplorer() {
             <select aria-label="Inspect station feature" value={features.some(f=>f.id===selected)?selected!:""}
               className="my-2 w-full rounded border p-2 text-xs" onChange={event=>{
                 const item=features.find(f=>f.id===event.target.value);
-                setSelected(item?.id??null); if(item){setLevel(item.level);setSchematic(true);}
+                setSelected(item?.id??null); if(item) focusLevel(item.level);
               }}>
               <option value="">Choose a station feature…</option>
               {features.map(f=><option key={f.id} value={f.id}>{f.name} · {f.level}</option>)}
@@ -221,9 +252,7 @@ export default function UnifiedExplorer() {
                 aria-pressed={selected === item.explorerId}
                 key={item.featureId}
                 onClick={() =>
-                  setSelected(
-                    selected === item.explorerId ? null : item.explorerId,
-                  )
+                  setSelected(selected === item.explorerId ? null : item.explorerId)
                 }
               >
                 <span>{item.label}</span>
@@ -321,6 +350,8 @@ export default function UnifiedExplorer() {
                 city={city}
                 plan={plan}
                 district={district}
+                footprints={footprints}
+                zoomStep={zoomStep}
                 reset={reset}
                 level={level}
                 spacing={spacing}
@@ -344,11 +375,33 @@ export default function UnifiedExplorer() {
             </p>
           )}
           <div className={styles.mapCaption}>
-            <strong>{plan ? "SHARED NORTH-UP PLAN" : "CITY + STATION"}</strong>
+            <strong>{plan ? "NORTH-UP PLAN" : "CITY + STATION"} · {level === "all" ? "ALL LEVELS" : level}</strong>
+            <span>{activeLevel?.description ?? "Exploded station diagram"}</span>
             <span>
               Draft alignment · {stationAlignment.rmse.toFixed(1)} m fit
               mismatch
             </span>
+          </div>
+          <div className={styles.mapTools} aria-label="Map controls">
+            <button aria-label="Zoom in" onClick={() => setZoomStep(value => value + 1)}>+</button>
+            <button aria-label="Zoom out" onClick={() => setZoomStep(value => value - 1)}>−</button>
+            <button aria-label="Reset map view" onClick={() => setReset(value => value + 1)}>↺</button>
+          </div>
+          <div className={styles.mobileToolbar} aria-label="Quick map controls">
+            <button aria-label={plan ? "Show 3D map" : "Show north-up map"} onClick={() => switchPlan(!plan)}>
+              {plan ? "3D view" : "North-up"}
+            </button>
+            <select aria-label="Visible station level" value={level} onChange={event => {
+              focusLevel(event.target.value);
+            }}>
+              <option value="all" disabled={plan}>All levels</option>
+              {geographicExplorer.levels.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}
+            </select>
+          </div>
+          <div className={styles.mapLegend}>
+            <span><i className={styles.stationKey} />Station</span>
+            <span><i className={styles.cityKey} />PLATEAU {footprints ? "footprints" : "buildings"}</span>
+            {plan && <span className={styles.north}>↑ N</span>}
           </div>
           <p className={styles.help}>
             100 m grid · Drag to {plan ? "pan" : "orbit"} · Scroll to zoom

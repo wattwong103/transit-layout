@@ -157,7 +157,7 @@ export default function StationExplorer() {
             2D plan
           </button>
         </div>
-        <span className="header-caption">An inside-out view of the city.</span>
+        <span className="header-caption">v1.2 · An inside-out view of the city.</span>
         <button
           className="mobile-explore"
           aria-expanded={panelOpen}

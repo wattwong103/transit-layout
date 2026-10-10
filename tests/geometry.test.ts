@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import * as C from "cesium";
-import { extrudePlan } from "../src/lib/planGeometry";
+import { extrudePlan, flatPlan } from "../src/lib/planGeometry";
 import { getSpaceOpenings, pointInPolygon, connectorStops } from "../src/lib/explorer";
 import { explorerData } from "../src/data/explorer";
 import { geographicExplorer, geographicToLocal } from "../src/lib/stationRegistration";
@@ -61,6 +61,32 @@ test("every compact PLATEAU envelope triangulates with its concavities and holes
   for (const building of city.buildings)
     for (const rings of building.parts)
       checkExtrusion(building.id, rings, building.top - building.base);
+});
+
+test("flat city footprints retain every source plan area and hole without reflecting the map", () => {
+  const city = JSON.parse(readFileSync("public/plateau/station-city.json", "utf8")) as CompactCity;
+  for (const building of city.buildings) {
+    for (const rings of building.parts) {
+      const indexed = flatPlan(rings);
+      const geometry = indexed.toNonIndexed();
+      const positions = geometry.getAttribute("position");
+      let actualArea = 0;
+      for (let i = 0; i < positions.count; i += 3) {
+        const triangle = [0, 1, 2].map(k => [positions.getX(i + k), positions.getZ(i + k)] as Point2);
+        actualArea += area(triangle);
+      }
+      const expectedArea = area(rings[0]) - rings.slice(1).reduce((sum, ring) => sum + area(ring), 0);
+      assert.ok(Math.abs(actualArea - expectedArea) < Math.max(0.002, expectedArea * 1e-5), building.id);
+      geometry.computeBoundingBox();
+      const box = geometry.boundingBox!;
+      const xs = rings[0].map(p => p[0]), zs = rings[0].map(p => p[1]);
+      assert.ok(Math.abs(box.min.x - Math.min(...xs)) < .0001);
+      assert.ok(Math.abs(box.max.z - Math.max(...zs)) < .0001);
+      assert.ok(Math.abs(box.min.y) < 1e-8 && Math.abs(box.max.y) < 1e-8);
+      geometry.dispose();
+      indexed.dispose();
+    }
+  }
 });
 
 test("every recorded connector stop lands within a station slab on its declared floor in both frames", () => {

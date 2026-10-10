@@ -47,7 +47,7 @@ export default function PublicSourceReview() {
       </div>
       <div className="my-6 rounded-lg border border-[#d8cdb7] bg-[#faf6ec] p-5">
         <h3 className="text-xl">What still needs measured or on-site evidence</h3>
-        <p className="mt-3 text-sm font-medium">Photo verification is pending after v1.1.0. The current release preserves the source limits below.</p>
+        <p className="mt-3 text-sm font-medium">Photo verification is still pending. Sources were last reviewed on 19 September 2026; the current release preserves the limits below.</p>
         {review.userInputsNeeded.map(item=><div key={item.id} className="mt-4 text-sm leading-relaxed">
           <p className="font-medium">{item.request}</p><p className="mt-1 text-slate-600">{item.purpose}</p>
         </div>)}

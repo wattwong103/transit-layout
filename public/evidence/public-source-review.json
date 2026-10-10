@@ -3240,7 +3240,7 @@
     }
   ],
   "correctionsAppliedOn": "2026-09-19",
-  "releaseVersion": "1.1.0",
+  "releaseVersion": "1.2.0",
   "photoVerification": {
     "status": "pending-user-photos",
     "plannedAfterVersion": "1.1.0",

@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.2.0 — 2026-10-10
+
+This release makes selected station floors larger and easier to inspect, and provides a clearer lightweight map comparison.
+
+### Changes
+
+- Reframe the 3D diagram and unified map around visible floors. Hidden floors no longer determine the view; switching floors preserves the orbit angle.
+- Add a flat PLATEAU footprint view for station focus, preserving source coordinates, concave outlines and holes. The Neighbourhood preset shows opaque source-height buildings; the station preset restores a quieter footprint context.
+- Show one level at a time in north-up comparison, starting at 1F when switching from the all-level overview. The active floor and its description stay visible on the map.
+- Add zoom/reset controls, an explicit station/city legend, stronger edge smoothing and direct mobile floor/view controls.
+- Retain the 645,153-byte city file and render only on changes. Footprint mode reduces the default scene's triangle count without adding a second city download.
+
+### Verification and scope
+
+All 39 automated tests passed (32 application and seven Python tests), along with the production build and desktop/mobile browser checks. The default unified scene renders 21,493 triangles versus 81,444 in v1.1, about 74% fewer; the city download remains 645 KB. See the [v1.2 validation record](docs/spatial-recovery/v1.2-validation.md).
+
+This is a presentation update. Station coordinates, lift stops, source building heights and the provisional 25.7 m RMS registration fit are unchanged. Public sources were last reviewed on 19 September 2026; current operation and the deferred [photo verification](docs/spatial-recovery/photo-verification.md) remain unconfirmed.
+
 ## 1.1.0 — 2026-09-19
 
 This release places the station diagram alongside lightweight PLATEAU city geometry and applies the floor, gate and equipment corrections supported by operator sources.

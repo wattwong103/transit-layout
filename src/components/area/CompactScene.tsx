@@ -15,8 +15,9 @@ import {
   alignmentControls,
 } from "@/lib/stationRegistration";
 import { getSpaceOpenings, connectorLevels, connectorStops, connectorName, facilitySymbol, floorSurfaceOffset } from "@/lib/explorer";
-import { extrudePlan } from "@/lib/planGeometry";
+import { extrudePlan, flatPlan } from "@/lib/planGeometry";
 import citySummary from "@/data/station-city-summary.json";
+import { fitOrthographicCamera, visibleGeometryCorners } from "@/lib/cameraFraming";
 
 const base = process.env.NODE_ENV === "production" ? "/transit-layout" : "";
 const ground = citySummary.displayGroundEllipsoidM;
@@ -30,6 +31,8 @@ export interface CompactSceneProps {
   city: CompactCity;
   plan: boolean;
   district: boolean;
+  footprints: boolean;
+  zoomStep: number;
   reset: number;
   level: string;
   spacing: number;
@@ -72,17 +75,19 @@ function release(group: THREE.Object3D) {
   });
 }
 
-function cityModel(city: CompactCity) {
+function cityModel(city: CompactCity, footprints: boolean) {
   const group = new THREE.Group();
   const buckets = new Map<string, THREE.BufferGeometry[]>();
   for (const building of city.buildings) {
     const key = building.explorerId ?? "context";
     const bucket = buckets.get(key) ?? [];
-    building.parts.forEach((rings) =>
-      bucket.push(
-        extrusion(rings, building.base - ground, building.top - building.base),
-      ),
-    );
+    building.parts.forEach((rings) => {
+      const geometry = footprints
+        ? flatPlan(rings).translate(0, 0.1, 0)
+        : extrusion(rings, building.base - ground, building.top - building.base);
+      geometry.deleteAttribute("uv");
+      bucket.push(geometry);
+    });
     buckets.set(key, bucket);
   }
   buckets.forEach((parts, id) => {
@@ -93,6 +98,8 @@ function cityModel(city: CompactCity) {
       transparent: true,
       opacity: 0.3,
       depthWrite: false,
+      side: footprints ? THREE.DoubleSide : THREE.FrontSide,
+      forceSinglePass: true,
     });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.userData.buildingId = id === "context" ? null : id;
@@ -267,7 +274,7 @@ function MapPlane({
         geometry.setIndex([0, 2, 1, 2, 3, 1]);
         const material = new THREE.MeshBasicMaterial({
           transparent: true,
-          opacity: 0.18,
+          opacity: 0.28,
           depthWrite: false,
           side: THREE.DoubleSide,
         });
@@ -378,7 +385,9 @@ function Scene(
   const { camera: rawCamera, gl, scene, size, invalidate } = useThree();
   const camera = rawCamera as THREE.OrthographicCamera;
   const controls = useRef<OrbitControls>();
-  const buildings = useMemo(() => cityModel(props.city), [props.city]);
+  const buildings = useMemo(() => cityModel(props.city, props.footprints), [props.city, props.footprints]);
+  const cameraPreset = useRef("");
+  const previousZoomStep = useRef(props.zoomStep);
   const schematic = useMemo(() => stationModel(props.spacing), [props.spacing]);
   const guideGeometry = useMemo(
     () =>
@@ -424,49 +433,6 @@ function Scene(
     };
   }, [camera, gl, invalidate]);
   useEffect(() => {
-    const target = props.district
-      ? new THREE.Vector3(0, 0, -100)
-      : new THREE.Vector3(25, -20, -140);
-    const span =
-      (props.district ? 740 : 330) /
-      Math.min(1, size.width / Math.max(size.height, 1));
-    camera.left = (-span * size.width) / Math.max(size.height, 1);
-    camera.right = -camera.left;
-    camera.top = span;
-    camera.bottom = -span;
-    camera.zoom = 1;
-    camera.up.set(0, props.plan ? 0 : 1, props.plan ? -1 : 0);
-    camera.position
-      .copy(target)
-      .add(
-        props.plan
-          ? new THREE.Vector3(0, 2200, 0)
-          : new THREE.Vector3(600, 800, 1100),
-      );
-    camera.lookAt(target);
-    camera.updateProjectionMatrix();
-    if (controls.current) {
-      controls.current.target.copy(target);
-      controls.current.enableRotate = !props.plan;
-      controls.current.mouseButtons.LEFT = props.plan
-        ? THREE.MOUSE.PAN
-        : THREE.MOUSE.ROTATE;
-      controls.current.touches.ONE = props.plan
-        ? THREE.TOUCH.PAN
-        : THREE.TOUCH.ROTATE;
-      controls.current.update();
-    }
-    invalidate();
-  }, [
-    camera,
-    props.plan,
-    props.district,
-    props.reset,
-    size.width,
-    size.height,
-    invalidate,
-  ]);
-  useEffect(() => {
     buildings.children.forEach((child) => {
       const object = child as THREE.Mesh;
       const material = object.material as THREE.MeshStandardMaterial;
@@ -499,6 +465,39 @@ function Scene(
     props.level,
     invalidate,
   ]);
+  useEffect(() => {
+    const preset = `${props.plan}-${props.district}-${props.reset}`;
+    if (cameraPreset.current !== preset) {
+      cameraPreset.current = preset;
+      camera.up.set(0, props.plan ? 0 : 1, props.plan ? -1 : 0);
+      camera.position.set(...(props.plan ? [0, 2200, 0] : [700, 550, 950]) as [number, number, number]);
+      camera.lookAt(0, 0, 0);
+    }
+    const roots = props.district || !props.schematic
+      ? [buildings]
+      : schematic.children;
+    const points = visibleGeometryCorners(roots);
+    const target = fitOrthographicCamera(camera, points, size.width, size.height,
+      { x: size.width < 600 ? 52 : 70, y: size.width < 600 ? 120 : size.height < 500 ? 65 : 95 });
+    if (controls.current && target) {
+      controls.current.target.copy(target);
+      controls.current.enableRotate = !props.plan;
+      controls.current.mouseButtons.LEFT = props.plan ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
+      controls.current.touches.ONE = props.plan ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
+      controls.current.update();
+    }
+    invalidate();
+  }, [camera, buildings, schematic, props.plan, props.district, props.reset,
+      props.level, props.schematic, size.width, size.height, invalidate]);
+  useEffect(() => {
+    const change = props.zoomStep - previousZoomStep.current;
+    previousZoomStep.current = props.zoomStep;
+    if (!change) return;
+    camera.zoom = THREE.MathUtils.clamp(camera.zoom * Math.pow(1.25, change), 0.4, 8);
+    camera.updateProjectionMatrix();
+    controls.current?.update();
+    invalidate();
+  }, [camera, props.zoomStep, invalidate]);
   useFrame(() => {
     props.labelsRef.current
       ?.querySelectorAll<HTMLButtonElement>("button[data-building-id]")
@@ -511,7 +510,7 @@ function Scene(
         )!;
         const point = new THREE.Vector3(
           control.target[0],
-          building.top - ground + 6,
+          props.footprints ? 4 : building.top - ground + 6,
           control.target[1],
         ).project(camera);
         const x = ((point.x + 1) * size.width) / 2,
@@ -546,13 +545,17 @@ function Scene(
       gl.domElement.dataset.triangles = String(gl.info.render.triangles);
       gl.domElement.dataset.geometryCount = String(gl.info.memory.geometries);
       gl.domElement.dataset.textureCount = String(gl.info.memory.textures);
+      gl.domElement.dataset.renderedLevel = props.level;
+      gl.domElement.dataset.contextStyle = props.footprints ? "footprints" : "buildings";
+      gl.domElement.dataset.zoom = camera.zoom.toFixed(3);
     });
   });
   return (
     <>
       <color attach="background" args={["#f3f2ed"]} />
-      <ambientLight intensity={1.6} />
-      <directionalLight position={[300, 700, 400]} intensity={2.2} />
+      <ambientLight intensity={0.9} />
+      <hemisphereLight args={["#fffaf0", "#708a8c", 0.55]} />
+      <directionalLight position={[-300, 700, 400]} intensity={1.6} />
       <primitive
         object={buildings}
         onClick={(event: {
@@ -583,14 +586,18 @@ function Scene(
 
 export default function CompactScene(props: CompactSceneProps) {
   const labelsRef = useRef<HTMLDivElement>(null);
+  const camera = useMemo(() => Object.assign(
+    new THREE.OrthographicCamera(-500, 500, 500, -500, 0.1, 10000),
+    { manual: true },
+  ), []);
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
       <Canvas
         orthographic
         frameloop="demand"
         dpr={[1, 1.25]}
-        gl={{ antialias: false, powerPreference: "low-power" }}
-        camera={{ near: 0.1, far: 10000 }}
+        gl={{ antialias: true, powerPreference: "low-power" }}
+        camera={camera}
         fallback={
           <p>
             3D is unavailable on this device. The original 2D station plan is

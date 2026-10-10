@@ -14,6 +14,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import type { ExplorerViewProps } from "@/types/explorer";
 import { getSelection } from "@/lib/explorer";
+import { fitOrthographicCamera, visibleGeometryCorners } from "@/lib/cameraFraming";
 import {
   buildModel,
   disposeModel,
@@ -311,75 +312,22 @@ function ArchitecturalScene(props: SceneProps) {
       camera.lookAt(controls.target);
       firstFit.current = false;
     }
-    camera.updateMatrixWorld();
-    model.group.updateMatrixWorld(true);
-    const right = new THREE.Vector3().setFromMatrixColumn(
-      camera.matrixWorld,
-      0,
+    const points = visibleGeometryCorners(
+      model.group.children.filter((entity) => entity.userData.category !== "link"),
     );
-    const up = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 1);
-    const forward = new THREE.Vector3().setFromMatrixColumn(
-      camera.matrixWorld,
-      2,
-    );
-    let minX = Infinity,
-      maxX = -Infinity,
-      minY = Infinity,
-      maxY = -Infinity;
-    const add = (point: THREE.Vector3) => {
-      const x = point.dot(right),
-        y = point.dot(up);
-      minX = Math.min(minX, x);
-      maxX = Math.max(maxX, x);
-      minY = Math.min(minY, y);
-      maxY = Math.max(maxY, y);
-    };
-    const point = new THREE.Vector3();
-    for (const entity of model.group.children) {
-      const category = entity.userData.category;
-      if (
-        category === "link" ||
-        (category === "building" && contextMode === "station") ||
-        (category === "station" && contextMode === "buildings")
-      )
-        continue;
-      entity.traverse((object) => {
-        const position = (object as THREE.Mesh).geometry?.attributes.position;
-        if (!position) return;
-        for (let index = 0; index < position.count; index++)
-          add(
-            point
-              .fromBufferAttribute(position, index)
-              .applyMatrix4(object.matrixWorld),
-          );
-      });
-    }
     for (const label of model.labels)
-      if (label.kind === "floor" && contextMode !== "buildings")
-        add(label.position);
-    if (!Number.isFinite(minX)) return;
-    const center = right
-      .clone()
-      .multiplyScalar((minX + maxX) / 2)
-      .addScaledVector(up, (minY + maxY) / 2);
-    controls.target.copy(center);
-    camera.position.copy(center).addScaledVector(forward, 600);
-    const unitsPerPixel = Math.max(
-      (maxX - minX) / Math.max(size.width - 42, 1),
-      (maxY - minY) / Math.max(size.height - 40, 1),
-    );
-    camera.left = (-unitsPerPixel * size.width) / 2;
-    camera.right = -camera.left;
-    camera.top = (unitsPerPixel * size.height) / 2;
-    camera.bottom = -camera.top;
-    camera.zoom = 1;
-    camera.updateProjectionMatrix();
+      if (label.kind === "floor" && contextMode !== "buildings" &&
+          (activeLevel === "all" || label.levels.includes(activeLevel)))
+        points.push(label.position);
+    const target = fitOrthographicCamera(camera, points, size.width, size.height, { x: 22, y: 20 });
+    if (target) controls.target.copy(target);
+    if (hostRef.current) hostRef.current.dataset.framedLevel = activeLevel;
     controls.update();
     invalidate();
   };
   useEffect(() => {
     fitRef.current(false);
-  }, [data, separation, contextMode, size.width, size.height]);
+  }, [data, separation, contextMode, activeLevel, size.width, size.height]);
   useEffect(() => {
     fitRef.current(true);
   }, [resetKey]);
