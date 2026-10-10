@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.4.0 — 2026-10-11
+
+The 3D view now opens as a clearer exploded station diagram, inspired by the operator reference while retaining shared plan coordinates.
+
+- Add cream floor plates, stronger platform and lift colors, compact blue floor labels anchored to real slab vertices, and collision-aware line/building callouts. Platform labels include floors; building labels include associated exit codes.
+- Flatten PLATEAU outlines in the exploded diagram to keep the floors readable. Realistic retains source building geometry and explicitly estimated station heights. Optional building meshes load only for the height comparison.
+- Show eight source-backed exit/building associations in the overview, with solid direct links and dashed directional links. Selection isolates the relevant links. Endpoints use the nearest outer envelope for illustration, not inferred entrance coordinates or walking routes.
+- Add an expanded canvas, zoom controls, and a reference reset that restores the exploded overview. Keep detailed height evidence available under Alignment & heights to verify.
+- Include the preceding Keio, Ginza and JR public-map platform corrections, confirmed floor labels, explicit height assumptions, and enlarged geometry/dimension view. See the [size check](docs/spatial-recovery/platform-size-detail.md), [Keio](docs/spatial-recovery/keio-mark-city-alignment.md) and [Ginza/JR](docs/spatial-recovery/ginza-jr-alignment.md) records.
+
+All 60 automated tests pass (51 application and nine Python tests), along with production compilation, lint, type checks and static export. Validation and remaining photo/measurement needs are recorded in [v1.4 checks](docs/spatial-recovery/v1.4-validation.md). Release tag: `v1.4.0`.
+
 ## 1.3.0 — 2026-10-10
 
 This release unifies the destination buildings across the diagram and geographic map, adds optional source PLATEAU geometry, and makes public entrance references available for alignment comparison before photos.

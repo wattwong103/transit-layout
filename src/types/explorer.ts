@@ -37,6 +37,7 @@ export interface ExplorerLevel {
   description: string;
 }
 export interface ExplorerSpace {
+  positionNote?: string;
   id: string;
   name: string;
   levelId: ExplorerLevelId;
@@ -53,6 +54,7 @@ export interface ExplorerSpace {
   tracks?: { points: Point2[]; color: string }[];
 }
 export interface ExplorerConnector {
+  positionNote?: string;
   id: string;
   name?: string;
   kind: "stairs" | "escalator" | "lift" | "slope";
@@ -67,6 +69,7 @@ export interface ExplorerConnector {
   access?: FeatureAccess;
 }
 export interface ExplorerFacility {
+  positionNote?: string;
   id: string;
   name: string;
   kind: "gate" | "toilet" | "baby-care" | "aed" | "lockers" | "tickets" | "information" | "works";
@@ -130,6 +133,12 @@ export interface EntranceReference {
   match: string;
 }
 export interface ExplorerViewProps {
+  /** Show documented destination associations when no feature is selected. */
+  showConnections?: boolean;
+  /** Camera-only close-up; canonical geometry and coordinate scale stay unchanged. */
+  inspection?: boolean;
+  zoomStep?: number;
+  heightMode: "realistic" | "exploded";
   data: ExplorerDataset;
   buildingMeshes?: PlateauBuildingMeshes | null;
   contextMode: ContextMode;

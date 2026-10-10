@@ -4,6 +4,11 @@ import type { ExplorerDataset, Point2 } from "@/types/explorer";
 import { getSpaceOpenings, connectorLevels, connectorStops, connectorName, floorSurfaceOffset, buildingParts } from "@/lib/explorer";
 import { extrudePlan } from "@/lib/planGeometry";
 import { plateauBuildingGeometry, type PlateauBuildingMeshes } from "@/lib/plateauBuildingGeometry";
+import { stationLevelHeight, type HeightMode } from "@/lib/stationHeights";
+import { stationAlignment } from "@/lib/stationRegistration";
+import outlines from "@/data/station-building-outlines.json";
+import buildingSummary from "@/data/plateau-buildings-summary.json";
+import { buildingAssociationAnchor } from "@/lib/diagramPresentation";
 
 export type LabelRecord = {
   id: string | null;
@@ -14,6 +19,8 @@ export type LabelRecord = {
   levels: string[];
   element?: HTMLButtonElement;
   leader?: HTMLDivElement;
+  /** Actual slab vertices; the renderer chooses the visible left edge for floor labels. */
+  anchors?: THREE.Vector3[];
 };
 export type Model = {
   group: THREE.Group;
@@ -119,13 +126,15 @@ function batchLayer(layer: THREE.Group) {
 }
 
 /** Builds once per data/spacing change. Selection only mutates visibility/materials. */
-export function buildModel(data: ExplorerDataset, separation: number, buildingMeshes?: PlateauBuildingMeshes | null): Model {
+export function buildModel(data: ExplorerDataset, separation: number, buildingMeshes?: PlateauBuildingMeshes | null, heightMode: HeightMode = "exploded"): Model {
   const group = new THREE.Group();
   const labels: LabelRecord[] = [];
   const details: THREE.Group[] = [];
   let parent = group;
-  const y = (id: string) =>
-    (data.levels.find((level) => level.id === id)?.order ?? 0) * separation;
+  // Compress decorative station detail as well as floor gaps in the compact view.
+  // Floors are slab TOP surfaces; the metric building meshes are never compressed.
+  const detailScale = heightMode === "realistic" ? .25 : 1;
+  const y = (id: string) => stationLevelHeight(id, heightMode, separation, stationAlignment.scale) / detailScale;
   const at = (p: Point2, height: number) =>
     new THREE.Vector3(p[0], height, p[1]);
   const entity = (id: string, category: string, levels: string[]) => {
@@ -135,7 +144,9 @@ export function buildModel(data: ExplorerDataset, separation: number, buildingMe
     return parent;
   };
   const material = (color: string, opacity = 1) => {
-    const result = new THREE.MeshStandardMaterial({
+    const result = heightMode === "exploded" ? new THREE.MeshBasicMaterial({
+      color, transparent: opacity < 1, opacity, depthWrite: opacity === 1, toneMapped: false,
+    }) : new THREE.MeshStandardMaterial({
       color,
       roughness: 0.84,
       metalness: 0.03,
@@ -169,8 +180,8 @@ export function buildModel(data: ExplorerDataset, separation: number, buildingMe
   ) => {
     const result = new THREE.Mesh(geometry, material(color, opacity));
     result.userData.selectId = parent.userData.id;
-    result.castShadow = opacity === 1;
-    result.receiveShadow = opacity === 1;
+    result.castShadow = heightMode === "realistic" && opacity === 1;
+    result.receiveShadow = heightMode === "realistic" && opacity === 1;
     if (outline) edges(result);
     parent.add(result);
     return result;
@@ -183,7 +194,9 @@ export function buildModel(data: ExplorerDataset, separation: number, buildingMe
     holes: Point2[][] = [],
     opacity = 1,
   ) => {
-    const geometry = extrudePlan([polygon, ...holes], depth, opacity === 1);
+    // A decorative bevel expands the footprint by 0.2 drawing units per side.
+    // Keep slabs exactly on their shared plan boundaries, including close-up views.
+    const geometry = extrudePlan([polygon, ...holes], depth);
     const result = mesh(geometry, color, opacity);
     result.position.y = height;
     return result;
@@ -238,9 +251,9 @@ export function buildModel(data: ExplorerDataset, separation: number, buildingMe
     const height = y(space.levelId);
     slab(
       space.polygon,
-      height + floorSurfaceOffset(data,space),
-      space.kind === "platform" ? 2.2 : 1.35,
-      space.color,
+      height + floorSurfaceOffset(data,space) / (heightMode === "realistic" ? detailScale*stationAlignment.scale : 1),
+      space.kind === "platform" || heightMode === "realistic" ? 2.2 : 1.35,
+      heightMode === "exploded" && space.kind !== "platform" ? (space.kind === "concourse" ? "#fff2ba" : "#f1eee7") : space.color,
       getSpaceOpenings(data, space),
     );
     for (const track of space.tracks ?? [])
@@ -256,7 +269,7 @@ export function buildModel(data: ExplorerDataset, separation: number, buildingMe
     const trackColor = space.tracks?.[0]?.color;
     labels.push({
       id: space.id,
-      text: space.name,
+      text: space.kind === "platform" ? `${space.id === "toyoko-west-platform" ? "Toyoko / Fukutoshin 5–6" : space.id === "toyoko-east-platform" ? "Toyoko / Fukutoshin 3–4" : space.name} · ${space.levelId}` : space.name,
       kind: space.kind === "platform" ? "platform" : "space",
       position: at(space.labelPosition, height + 4.5),
       levels: [space.levelId],
@@ -454,7 +467,7 @@ export function buildModel(data: ExplorerDataset, separation: number, buildingMe
   }
   for (const building of data.buildings) {
     entity(building.id, "building", []);
-    const source = buildingMeshes?.get(building.id);
+    const source = heightMode === "realistic" ? buildingMeshes?.get(building.id) : undefined;
     let labelHeight = building.displayHeight;
     if (source) {
       const geometry = plateauBuildingGeometry(source,"diagram");
@@ -463,15 +476,21 @@ export function buildModel(data: ExplorerDataset, separation: number, buildingMe
       (buildingMesh.material as THREE.MeshStandardMaterial).flatShading = true;
       (buildingMesh.material as THREE.MeshStandardMaterial).side = THREE.DoubleSide;
       (buildingMesh.material as THREE.MeshStandardMaterial).forceSinglePass = true;
-    } else for (const [outer, ...holes] of buildingParts(building))
-      slab(outer, 0, building.displayHeight, building.color, holes, 0.12);
+    } else for (const [outer, ...holes] of buildingParts(building)) {
+      const sourceHeight=outlines.buildings.find(b=>b.explorerId===building.id);
+      const bottom=heightMode === "realistic" && sourceHeight ? (sourceHeight.base-buildingSummary.displayGroundEllipsoidM)/stationAlignment.scale : 0;
+      // The exploded diagram keeps the shared envelope flat so towers cannot hide floors.
+      const depth=heightMode === "realistic" && sourceHeight ? (sourceHeight.top-sourceHeight.base)/stationAlignment.scale : .65;
+      labelHeight=bottom+depth;
+      slab(outer, bottom, depth, heightMode === "exploded" ? "#b5cad2" : building.color, holes, heightMode === "exploded" ? .16 : .12);
+    }
     labels.push({
       id: building.id,
-      text: building.shortName,
+      text: `${building.shortName} · ${data.exits.filter(e=>e.destinations.some(d=>d.buildingId===building.id)).map(e=>e.code).join(" / ")}`,
       kind: "building",
       position: at(building.labelPosition, labelHeight + 4),
       levels: [],
-      color: "#6c7776",
+      color: "#355c6b",
     });
   }
   for (const reference of data.entranceReferences ?? []) {
@@ -520,8 +539,8 @@ export function buildModel(data: ExplorerDataset, separation: number, buildingMe
       const start = at(exit.position, y(exit.levelId) + 4);
       const points = [
         start,
-        new THREE.Vector3(start.x, 1.5, start.z),
-        at(building.labelPosition, 1.5),
+        // A straight association, not an invented lift or indoor walking path.
+        at(buildingAssociationAnchor(building, exit.position), heightMode === "realistic" ? 1.5/detailScale+2.2 : 1.5),
       ];
       const mat =
         destination.relationship === "toward"
@@ -530,11 +549,13 @@ export function buildModel(data: ExplorerDataset, separation: number, buildingMe
               dashSize: 4,
               gapSize: 2,
               depthTest: false,
+              depthWrite: false,
               transparent: true,
             })
           : new THREE.LineBasicMaterial({
               color: "#098d99",
               depthTest: false,
+              depthWrite: false,
               transparent: true,
             });
       const path = new THREE.Line(
@@ -562,13 +583,30 @@ export function buildModel(data: ExplorerDataset, separation: number, buildingMe
         Math.max(...points.map((p) => p[1])) + 3,
       ),
       levels: [level.id],
-      color: "#385977",
+      color: "#253981",
+      anchors: points.map(p=>at(p,y(level.id)+2.2)),
     });
   }
   for (const feature of group.children)
     if (!["link", "reference", "comparison"].includes(feature.userData.category))
       batchLayer(feature as THREE.Group);
   details.forEach(batchLayer);
+  if (heightMode === "realistic") {
+    for (const feature of group.children) {
+      if (["station","exit","link"].includes(feature.userData.category)) {
+        feature.scale.y=detailScale;
+        // Align the platform slab top with the assumed level height.
+        feature.position.y=-2.2*detailScale;
+      }
+    }
+    for (const label of labels) {
+      if (!["building","reference"].includes(label.kind)) {
+        label.position.y*=detailScale;
+        if (label.kind!=="floor") label.position.y-=2.2*detailScale;
+        label.anchors?.forEach(p=>{p.y=p.y*detailScale-2.2*detailScale;});
+      }
+    }
+  }
   let objects = 0;
   group.traverse(() => objects++);
   return { group, labels, details, objects };

@@ -11,6 +11,8 @@ import FeatureDetails from "./FeatureDetails";
 import EntranceDetails from "./EntranceDetails";
 import PlateauBuildingControl from "./PlateauBuildingControl";
 import { usePlateauBuildings } from "./usePlateauBuildings";
+import HeightModeControl from "./HeightModeControl";
+import type { HeightMode } from "@/lib/stationHeights";
 
 const Explorer3D = dynamic(() => import("./Explorer3D"), {
   ssr: false,
@@ -39,19 +41,23 @@ function CubeIcon() {
 
 export default function StationExplorer() {
   const [view, setView] = useState<"3d" | "2d">("3d");
-  const [contextMode, setContextMode] = useState<ContextMode>("station");
+  const [contextMode, setContextMode] = useState<ContextMode>("both");
   const [activeLevel, setActiveLevel] = useState<ExplorerLevelId | "all">(
     "all",
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [separation, setSeparation] = useState(22);
+  const [separation, setSeparation] = useState(30);
+  const [heightMode,setHeightMode]=useState<HeightMode>("exploded");
+  const [showConnections,setShowConnections]=useState(true);
+  const [zoomStep,setZoomStep]=useState(0);
+  const [canvasFocus,setCanvasFocus]=useState(false);
   const [showLabels, setShowLabels] = useState(true);
   const [resetKey, setResetKey] = useState(0);
   const [query, setQuery] = useState("");
   const [listTab, setListTab] = useState<"places" | "exits" | "access">("places");
   const [panelOpen, setPanelOpen] = useState(false);
   const [detailedBuildings,setDetailedBuildings] = useState(false);
-  const plateau = usePlateauBuildings(detailedBuildings && view === "3d" && contextMode !== "station");
+  const plateau = usePlateauBuildings(detailedBuildings && heightMode === "realistic" && view === "3d" && contextMode !== "station");
   const selection = getSelection(data, selectedId);
   const level = data.levels.find((item) => item.id === activeLevel);
   const search = query.trim().toLowerCase();
@@ -112,6 +118,7 @@ export default function StationExplorer() {
   }
   const viewProps = {
     data,
+    heightMode,
     buildingMeshes: plateau.meshes,
     contextMode,
     activeLevel,
@@ -119,11 +126,13 @@ export default function StationExplorer() {
     onSelect: select,
     separation,
     showLabels,
+    showConnections,
+    zoomStep,
     resetKey,
   };
 
   return (
-    <main className="explorer-shell">
+    <main className={`explorer-shell ${canvasFocus ? "canvas-focused" : ""}`}>
       <header className="explorer-header">
         <a
           className="explorer-brand"
@@ -133,8 +142,10 @@ export default function StationExplorer() {
             setSelectedId(null);
             setActiveLevel("all");
             setView("3d");
-            setContextMode("station");
-            setSeparation(22);
+            setContextMode("both");
+            setHeightMode("exploded");
+            setSeparation(30);
+            setShowConnections(true);
             setResetKey((value) => value + 1);
           }}
           aria-label="Shibuya explorer home"
@@ -163,7 +174,7 @@ export default function StationExplorer() {
             2D plan
           </button>
         </div>
-        <span className="header-caption">v1.3 · An inside-out view of the city.</span>
+        <span className="header-caption">v1.4 · Floors, exits & connections.</span>
         <button
           className="mobile-explore"
           aria-expanded={panelOpen}
@@ -188,6 +199,9 @@ export default function StationExplorer() {
             <Link href="/area" prefetch={false} className="mt-3 block text-xs underline underline-offset-4">
               Unified city + station · lightweight PLATEAU ↗
             </Link>
+            <Link href="/detail" prefetch={false} className="mt-3 block text-xs underline underline-offset-4">
+              Geometry detail · enlarged view & dimensions ↗
+            </Link>
             <Link href="/verification" prefetch={false} className="mt-3 inline-block text-xs underline underline-offset-4">
               Sources & real-world reference ↗
             </Link>
@@ -211,7 +225,13 @@ export default function StationExplorer() {
                 ),
               )}
             </div>
-            {view === "3d" && contextMode !== "station" && <PlateauBuildingControl enabled={detailedBuildings} onChange={setDetailedBuildings} status={plateau.status} onRetry={plateau.retry}/>}
+            {view === "3d" && heightMode === "realistic" && contextMode !== "station" && <PlateauBuildingControl enabled={detailedBuildings} onChange={setDetailedBuildings} status={plateau.status} onRetry={plateau.retry}/>}
+            {view === "3d" && heightMode === "exploded" && contextMode !== "station" && <p className="diagram-context-note">Flat PLATEAU outlines keep the floors visible. Use Realistic for building heights.</p>}
+            {view === "3d" && <HeightModeControl mode={heightMode} onChange={setHeightMode} onFocus={station=>{
+              setHeightMode("realistic");setContextMode("both");setDetailedBuildings(true);
+              setActiveLevel(station==="ginza"?"3F":"2F");
+              setSelectedId(station==="jr"?"jr-west-platform":`${station}-platform`);setResetKey(value=>value+1);
+            }}/>}
           </div>
           {selectedId && (
             <section
@@ -249,7 +269,7 @@ export default function StationExplorer() {
               {selectedFeature && <FeatureDetails feature={selectedFeature} />}
               <EntranceDetails data={data} targetId={selectedId} unitsToMeters={stationAlignment.scale}/>
               {selection.building && <p>{selection.building.description}</p>}
-              {selection.building?.outlineSource && <p className="text-xs">{plateau.meshes ? "Source PLATEAU mesh and height" : "Shared PLATEAU outline; illustrative height"} · {selection.building.outlineSource.identity === "named-in-plateau" ? "named in PLATEAU" : "identity matched using the public map"}. Ground-contact boundaries and current construction remain unverified. <a href={`${process.env.NODE_ENV === "production" ? "/transit-layout" : ""}/evidence/building-crosswalk.json`} target="_blank" rel="noreferrer">Match evidence ↗</a></p>}
+              {selection.building?.outlineSource && <p className="text-xs">{heightMode === "exploded" ? "Shared PLATEAU outline; flattened for the diagram" : plateau.meshes ? "Source PLATEAU mesh and height" : "Shared PLATEAU outline; source envelope height"} · {selection.building.outlineSource.identity === "named-in-plateau" ? "named in PLATEAU" : "identity matched using the public map"}. Ground-contact boundaries and current construction remain unverified. <a href={`${process.env.NODE_ENV === "production" ? "/transit-layout" : ""}/evidence/building-crosswalk.json`} target="_blank" rel="noreferrer">Match evidence ↗</a></p>}
               {selection.space && (
                 <>
                   <p>
@@ -429,7 +449,7 @@ export default function StationExplorer() {
               About this diagram <span>↗</span>
             </summary>
             <p>
-              Station shapes, stairs and floor heights remain illustrative. All eight building outlines share the compact PLATEAU source used by the city view. Enable PLATEAU 3D buildings for the source roof shapes, setbacks and heights. Textures are omitted to keep the download small.
+              Keio, Ginza and JR platform outlines follow the public map, including the two mapped JR openings. Gates and stairs are locally inferred; remaining station shapes are schematic. Realistic uses estimated heights, while Exploded separates floors for reading. All eight building outlines share the compact PLATEAU source used by the city view. PLATEAU predates JR’s recent reconstruction.
             </p>
             <p>Blue circles in Both / Buildings show public entrance references on the comparison plane. These do not move the underground landings or establish a route. Building outlines are projected mesh envelopes, not surveyed ground footprints. <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap contributors · ODbL</a> · <a href="https://www.mlit.go.jp/plateau/" target="_blank" rel="noreferrer">MLIT PLATEAU</a>.</p>
             <p>
@@ -447,7 +467,7 @@ export default function StationExplorer() {
         <section className="map-stage" aria-label="Interactive Shibuya map">
           <div className="map-heading">
             <span className="eyebrow">
-              {view === "3d" ? (plateau.meshes && contextMode === "buildings" ? "PLATEAU BUILDING MODEL" : "EXPLODED STATION ATLAS") : "STATION FLOOR PLAN"}
+              {view === "3d" ? (plateau.meshes && contextMode === "buildings" ? "PLATEAU BUILDING MODEL" : heightMode === "realistic" ? "REALISTIC · HEIGHTS UNVERIFIED" : "EXPLODED STATION ATLAS") : "STATION FLOOR PLAN"}
             </span>
             <h2>
               {activeLevel === "all"
@@ -484,13 +504,22 @@ export default function StationExplorer() {
             <Explorer2D {...viewProps} />
           )}
           <div className="map-top-actions">
+            <button className="reset-view canvas-focus-control" aria-pressed={canvasFocus} onClick={()=>setCanvasFocus(v=>!v)}>{canvasFocus ? "Show guide" : "Expand diagram"}</button>
+            {view === "3d" && <div className="diagram-zoom" role="group" aria-label="Diagram zoom">
+              <button onClick={()=>setZoomStep(v=>v-1)} aria-label="Zoom out">−</button>
+              <button onClick={()=>setZoomStep(v=>v+1)} aria-label="Zoom in">+</button>
+            </div>}
             <button
               className="reset-view"
               onClick={() => {
                 setResetKey((value) => value + 1);
                 if (view === "3d") {
                   setActiveLevel("all");
-                  setSeparation(22);
+                  setSeparation(30);
+                  setHeightMode("exploded");
+                  setContextMode("both");
+                  setSelectedId(null);
+                  setShowConnections(true);
                 }
               }}
             >
@@ -523,14 +552,14 @@ export default function StationExplorer() {
           </div>
           <div className="map-bottom-controls">
             <div className="scene-options">
-              {view === "3d" && (
+              {view === "3d" && heightMode === "exploded" && (
                 <label className="separation-control">
                   <span>Level spacing</span>
                   <input
                     aria-label="Level spacing"
                     type="range"
                     min="10"
-                    max="34"
+                    max="48"
                     value={separation}
                     onChange={(event) =>
                       setSeparation(Number(event.target.value))
@@ -547,6 +576,10 @@ export default function StationExplorer() {
                 />
                 <span>Labels</span>
               </label>
+              {view === "3d" && contextMode !== "station" && <label className="labels-control">
+                <input type="checkbox" checked={showConnections} onChange={e=>setShowConnections(e.target.checked)} />
+                <span>All connections</span>
+              </label>}
             </div>
             <div className="map-legend">
               <span>
@@ -571,10 +604,11 @@ export default function StationExplorer() {
                     <i className="legend-toward" />
                     Toward
                   </span>
-                  <span style={{color:"#285580"}}>○ Mapped entry</span>
+                  {(view === "2d" || heightMode === "realistic") && <span style={{color:"#285580"}}>○ Mapped entry</span>}
                 </>
               )}
             </div>
+            {contextMode !== "station" && <p className="association-note">Links show destinations, not walking routes. Select an exit or building to focus.</p>}
           </div>
           <div className="map-orientation" aria-hidden="true">
             <svg viewBox="0 0 28 36">

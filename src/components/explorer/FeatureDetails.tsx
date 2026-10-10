@@ -3,7 +3,7 @@ import { connectorLevels } from "@/lib/explorer";
 
 /** Source observations are deliberately separate from present operating status. */
 export default function FeatureDetails({ feature }: { feature: {
-  evidence?: FeatureEvidence; access?: FeatureAccess; kind?: string;
+  evidence?: FeatureEvidence; access?: FeatureAccess; kind?: string; positionNote?: string;
 } }) {
   const { evidence, access } = feature;
   const connector = "from" in feature ? feature as ExplorerConnector : null;
@@ -16,6 +16,6 @@ export default function FeatureDetails({ feature }: { feature: {
       {access.note && <p>{access.note}</p>}
     </>}
     {evidence && <p>{evidence.certainty === "inferred" ? "Provisional correspondence" : "Source reference"}: {evidence.locator}.</p>}
-    <p>Position and dimensions are schematic. Source records do not establish today’s operating status or a complete accessible route.</p>
+    <p>{feature.positionNote ?? "Position and dimensions are schematic."} Source records do not establish today’s operating status or a complete accessible route.</p>
   </div>;
 }

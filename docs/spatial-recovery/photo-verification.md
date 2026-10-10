@@ -1,10 +1,18 @@
 # Photo verification — remaining evidence
 
-Status for **v1.3.0: pending user-supplied photos**. The user will provide photographs later. This evidence work is deferred from v1.1.0; v1.3 retains its documented uncertainty instead of presenting the pending checks as complete. No photos are needed to build or use this release.
+Status for **v1.4.0: pending user-supplied photos**. The user will provide photographs later. This evidence work is deferred from v1.1.0; the clearer v1.4 presentation retains the documented uncertainty. No photos are needed to build or use this release.
+
+The v1.4 destination lines are visual associations between a schematic exit and the nearest PLATEAU outer envelope. Their endpoints are not accepted doorway coordinates, and a straight solid line does not establish an indoor walking route. Flat outlines in Exploded are a presentation choice; Realistic remains the height comparison. Neither view replaces the photos and measured sections below.
+
+## V1.4 handoff — 11 October 2026
+
+The final diagram, unified-map and source-geometry checks are recorded in [V1.4 validation](v1.4-validation.md). The release does not depend on photos arriving now. When available, prioritise entrance signs with wide street/building context; Keio, Ginza and JR gate/floor signs; lift stop panels; and both landings of uncertain stairs/escalators. Include the capture date and paid/unpaid side. The detailed locations below remain open; no field observation or live access condition was inferred from a successful software check.
+
+Measured floor elevations, doorway coordinates and passage widths remain a separate request for dimensioned plans or survey controls. Photos can establish identities and relationships but cannot alone resolve the provisional 25.7 m global fit or calibrate the vertical datum.
 
 ## Completed before photos — 10 October 2026
 
-All eight destination outlines and optional source building meshes are now shared between the diagram and PLATEAU map. Three identities are named in PLATEAU; five have strong, unique matches to named public building polygons. Twenty-one public entrance references are placed at their map coordinates, separate from schematic landings. See the [public alignment record](pre-photo-alignment.md) and [final release checks](v1.3-validation.md) for dates, match evidence and limits. The station's original 25.7 m RMS fit remains provisional. The PLATEAU 2025 release largely uses 2021 surveys: roof detail and source heights do not establish present construction, current access or station floor elevations.
+All eight destination outlines and optional source building meshes are now shared between the diagram and PLATEAU map. Three identities are named in PLATEAU; five have strong, unique matches to named public building polygons. Twenty-one public entrance references are placed at their map coordinates, separate from schematic landings. See the [public alignment record](pre-photo-alignment.md) and [V1.3 source checks](v1.3-validation.md) and [V1.4 final checks](v1.4-validation.md) for dates, match evidence and limits. The station's original 25.7 m RMS fit remains provisional. The PLATEAU 2025 release largely uses 2021 surveys: roof detail and source heights do not establish present construction, current access or station floor elevations.
 
 The most useful next entrance photos are:
 
@@ -16,6 +24,14 @@ The most useful next entrance photos are:
 Legacy public map codes 8/15 and unnamed nodes are not automatically assigned current codes. Current signage should establish their identity first.
 
 ## Requested views
+
+The [Ginza/JR correction, 11 October 2026](ginza-jr-alignment.md) now uses public-map platform boundaries and retains both mapped JR openings in both viewers. Operator plans confirm **Ginza platforms 3F / Meiji-dori gate 2F**, and **JR platforms 2F / Central and New South gates 3F / South and Hachiko gates 1F**. Heights remain estimates. PLATEAU is older than JR's 2023 platform merge and 2024 New South gate relocation; roof overlap is a context check, not evidence of current interiors.
+
+For Ginza, please photograph the Scramble Square and Meiji-dori gate signs with floor labels, the paid lift stop panel, the outside-gate ground lift panel, and both ends of the Hikarie/JR connecting approaches. For JR, prioritise the **current New South gate and its public passage**, Central gate, South/Hachiko gates, platform numbers 1–4 with views along each island, and lifts **A–F** with stop panels and nearby signs. Include wide views of stair/escalator landings and the platform openings near the New South end; the public-map openings do not identify individual equipment banks.
+
+Photos can establish these identities and relationships. To replace the provisional **1F = 0 m, 2F = +5 m, 3F = +10 m** display elevations, we still need dimensioned sections or measured levels tied to an identified datum, including each operator's street/building reference. Equal floor names do not prove equal physical elevations. Intermediate levels, widths and the exact geometry of the Keio–JR and Ginza–JR approaches remain inferred.
+
+The subsequent [Keio/Mark City alignment correction](keio-mark-city-alignment.md) fixes platform plan placement and adds Realistic / Exploded views. Its 1F / 2F / 4F floor labels are confirmed, but the displayed 0 / +5 / +15 m elevations are assumptions. Please include wide views and signed levels at all three gates, the Central lift stop panel, and the 4F Avenue approach toward Dogenzaka. Measured sections or floor elevations are still required to calibrate those heights.
 
 | Priority | Area | Useful evidence | What it resolves |
 | --- | --- | --- | --- |

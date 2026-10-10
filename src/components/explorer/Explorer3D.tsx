@@ -15,6 +15,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import type { ExplorerViewProps } from "@/types/explorer";
 import { getSelection } from "@/lib/explorer";
 import { fitOrthographicCamera, visibleGeometryCorners } from "@/lib/cameraFraming";
+import { measureFootprint } from "@/lib/geometryDimensions";
+import { associationVisible, placeDiagramLabel, type LabelBox } from "@/lib/diagramPresentation";
 import {
   buildModel,
   disposeModel,
@@ -48,16 +50,24 @@ type SceneProps = ExplorerViewProps & {
   onUnavailable: () => void;
 };
 
+function labelFontSize(kind: LabelRecord["kind"], width = 480) {
+  if (kind === "floor") return width < 480 ? 14 : 15;
+  if (kind === "platform") return width < 480 ? 10 : 11;
+  return kind === "exit" ? 11 : 10;
+}
+
 function ArchitecturalScene(props: SceneProps) {
   const {
     data,
     buildingMeshes,
     separation,
+    heightMode,
     contextMode,
     activeLevel,
     selectedId,
     showLabels,
     resetKey,
+    showConnections = false,
     hostRef,
     overlayRef,
   } = props;
@@ -163,7 +173,7 @@ function ArchitecturalScene(props: SceneProps) {
 
   // Only source geometry or display separation can allocate a new model.
   useEffect(() => {
-    const model = buildModel(data, separation, buildingMeshes);
+    const model = buildModel(data, separation, buildingMeshes, heightMode);
     modelRef.current = model;
     scene.add(model.group);
     revision.current++;
@@ -171,7 +181,9 @@ function ArchitecturalScene(props: SceneProps) {
     if (host) {
       host.dataset.geometryRevision = String(revision.current);
       host.dataset.objectCount = String(model.objects);
-      host.dataset.buildingGeometry = buildingMeshes ? "plateau-source" : "outlines";
+      host.dataset.buildingGeometry = heightMode === "exploded" ? "flat-outlines" : buildingMeshes ? "plateau-source" : "outlines";
+      host.dataset.heightMode = heightMode;
+      host.dataset.heightVerification = "unverified";
     }
     const overlay = overlayRef.current;
     const focusId = overlay?.contains(document.activeElement)
@@ -184,7 +196,9 @@ function ArchitecturalScene(props: SceneProps) {
         const button = document.createElement("button");
         button.type = "button";
         button.textContent = label.text;
-        button.style.cssText = `position:absolute;left:0;top:0;white-space:nowrap;max-width:185px;overflow:hidden;text-overflow:ellipsis;font-family:inherit;font-size:${label.kind === "floor" ? 15 : label.kind === "exit" ? 10 : 11}px;line-height:1.3;font-weight:${label.kind === "floor" || label.kind === "exit" ? 750 : 600};padding:${label.kind === "exit" ? "2px 4px" : "2px 5px"};border-radius:3px;border:1px solid transparent;pointer-events:${label.id ? "auto" : "none"};cursor:${label.id ? "pointer" : "default"};`;
+        button.title = label.text;
+        button.dataset.labelKind = label.kind;
+        button.style.cssText = `position:absolute;left:0;top:0;white-space:nowrap;max-width:230px;overflow:hidden;text-overflow:ellipsis;font-family:inherit;font-size:${labelFontSize(label.kind)}px;line-height:1.3;font-weight:${["floor","exit"].includes(label.kind) ? 700 : 600};padding:${label.kind === "exit" ? "2px 4px" : "1px 4px"};border-radius:3px;border:1px solid transparent;pointer-events:${label.id ? "auto" : "none"};cursor:${label.id ? "pointer" : "default"};`;
         if (label.id) {
           button.dataset.featureId = label.id;
           button.setAttribute(
@@ -223,7 +237,7 @@ function ArchitecturalScene(props: SceneProps) {
       if (modelRef.current === model) modelRef.current = null;
       overlay?.replaceChildren();
     };
-  }, [data, separation, buildingMeshes, scene, invalidate, hostRef, overlayRef]);
+  }, [data, separation, heightMode, buildingMeshes, scene, invalidate, hostRef, overlayRef]);
 
   // Selection preserves meshes, buffers, labels, and keyboard focus.
   useEffect(() => {
@@ -238,13 +252,11 @@ function ArchitecturalScene(props: SceneProps) {
         meta.category === "building"
           ? contextMode !== "station"
           : meta.category === "reference"
-            ? contextMode !== "station" && matches
+            ? contextMode !== "station" && matches && (heightMode === "realistic" || selectedId === meta.id)
           : meta.category === "comparison"
             ? contextMode !== "station" && matches && selectedId === meta.id
           : meta.category === "link"
-            ? contextMode !== "station" &&
-              matches &&
-              (selectedId === meta.exitId || selectedId === meta.buildingId)
+            ? associationVisible(meta as {exitId:string;buildingId:string;levels:string[]},contextMode,activeLevel,selectedId,showConnections)
             : matches &&
               (meta.category === "exit" || contextMode !== "buildings");
       if (meta.category === "link") continue;
@@ -262,7 +274,7 @@ function ArchitecturalScene(props: SceneProps) {
             colored.color.lerp(new THREE.Color("#d5d6d1"), 0.32);
           if (meta.category === "building") {
             const solidEnvelope =
-              contextMode === "buildings" && object.type === "Mesh";
+              heightMode === "realistic" && contextMode === "buildings" && object.type === "Mesh";
             mat.opacity = solidEnvelope
               ? highlighted
                 ? 0.95
@@ -281,15 +293,15 @@ function ArchitecturalScene(props: SceneProps) {
       label.element.style.color = highlighted ? "#087786" : label.color;
       label.element.style.background =
         label.kind === "exit"
-          ? "#ffe17b"
+          ? "#ffdf52"
           : highlighted
             ? "#e8fbfa"
-            : "rgba(250,249,246,.88)";
+            : "rgba(255,255,255,.94)";
       label.element.style.borderColor = highlighted
         ? "#008e9c"
         : label.kind === "exit"
           ? "#cfb643"
-          : "transparent";
+          : label.kind === "platform" ? label.color : "transparent";
       if (label.id)
         label.element.setAttribute(
           "aria-pressed",
@@ -301,10 +313,12 @@ function ArchitecturalScene(props: SceneProps) {
     data,
     buildingMeshes,
     separation,
+    heightMode,
     contextMode,
     activeLevel,
     selectedId,
     showLabels,
+    showConnections,
     invalidate,
   ]);
 
@@ -314,7 +328,11 @@ function ArchitecturalScene(props: SceneProps) {
     const controls = controlsRef.current;
     if (!model || !controls || !size.width || !size.height) return;
     if (reset || firstFit.current) {
-      camera.position.set(160, 210, 390);
+      const platform=data.spaces.find(s=>s.id===selectedId&&s.kind==="platform");
+      if(props.inspection&&platform) {
+        const {v}=measureFootprint(platform.polygon);
+        camera.position.set(-v[0]*400,300,-v[1]*400);
+      } else camera.position.set(260, 210, 440);
       controls.target.set(0, -25, 0);
       camera.lookAt(controls.target);
       firstFit.current = false;
@@ -323,10 +341,10 @@ function ArchitecturalScene(props: SceneProps) {
       model.group.children.filter((entity) => entity.userData.category !== "link"),
     );
     for (const label of model.labels)
-      if (label.kind === "floor" && contextMode !== "buildings" &&
+      if (!props.inspection && label.kind === "floor" && contextMode !== "buildings" &&
           (activeLevel === "all" || label.levels.includes(activeLevel)))
         points.push(label.position);
-    const target = fitOrthographicCamera(camera, points, size.width, size.height, { x: 22, y: 20 });
+    const target = fitOrthographicCamera(camera, points, size.width, size.height, { x: size.width < 480 ? 18 : props.inspection ? 22 : 60, y: 28 });
     if (target) controls.target.copy(target);
     if (hostRef.current) hostRef.current.dataset.framedLevel = activeLevel;
     controls.update();
@@ -334,15 +352,24 @@ function ArchitecturalScene(props: SceneProps) {
   };
   useEffect(() => {
     fitRef.current(false);
-  }, [data, separation, buildingMeshes, contextMode, activeLevel, size.width, size.height]);
+  }, [data, separation, heightMode, buildingMeshes, contextMode, activeLevel, size.width, size.height]);
   useEffect(() => {
     fitRef.current(true);
   }, [resetKey]);
+  const previousZoom=useRef(props.zoomStep??0);
+  useEffect(()=>{
+    const step=props.zoomStep??0,delta=step-previousZoom.current;
+    previousZoom.current=step;
+    if(!delta) return;
+    camera.zoom=THREE.MathUtils.clamp(camera.zoom*Math.pow(1.3,delta),.45,6);
+    camera.updateProjectionMatrix();invalidate();
+  },[props.zoomStep,camera,invalidate]);
 
   useFrame(() => {
     const model = modelRef.current;
     if (!model) return;
-    for (const detail of model.details) detail.visible = camera.zoom > 1.7;
+    // Decorative posts have no source coordinates; the inspection view omits them.
+    for (const detail of model.details) detail.visible = !props.inspection && camera.zoom > 1.7;
     const { selectedId, showLabels, contextMode, activeLevel } =
       current.current;
     const selection = getSelection(current.current.data, selectedId);
@@ -356,23 +383,17 @@ function ArchitecturalScene(props: SceneProps) {
             ? 110
             : label.kind === "floor"
               ? 100
-              : label.kind === "exit"
-                ? 70
-                : label.kind === "platform"
-                  ? 60
-                  : 30;
-    const occupied: {
-      left: number;
-      right: number;
-      top: number;
-      bottom: number;
-    }[] = [];
+              : label.kind === "platform"
+                ? 90
+                : label.kind === "exit" ? 85 : label.kind === "building" ? 80 : 30;
+    const occupied: LabelBox[] = [];
     const projected = new THREE.Vector3();
     for (const label of [...model.labels].sort(
       (a, b) => priority(b) - priority(a),
     )) {
       const button = label.element;
       if (!button) continue;
+      button.style.fontSize = `${labelFontSize(label.kind, size.width)}px`;
       const selected =
         (label.id !== null && label.id === selectedId) ||
         button === document.activeElement;
@@ -380,14 +401,17 @@ function ArchitecturalScene(props: SceneProps) {
       const matches =
         activeLevel === "all" || label.levels.includes(activeLevel);
       const modeMatches =
-        label.kind === "building" || label.kind === "reference"
+        label.kind === "reference"
+          ? contextMode !== "station" && (heightMode === "realistic" || selectedId === label.id)
+          : label.kind === "building"
           ? contextMode !== "station"
           : label.kind === "exit" || contextMode !== "buildings";
       const densityHidden =
         !selected &&
         !highlighted &&
         ((label.kind === "space" && camera.zoom < 1.55) ||
-          label.kind === "connector");
+          (label.kind === "reference" && heightMode === "exploded") ||
+          (label.kind === "connector" && !(props.inspection&&camera.zoom>1.5)));
       const enabled =
         modeMatches &&
         (label.kind === "building" || matches) &&
@@ -399,53 +423,19 @@ function ArchitecturalScene(props: SceneProps) {
         continue;
       }
       projected.copy(label.position).project(camera);
+      if (label.anchors?.length) {
+        // Pick an actual visible slab corner, rather than an empty bounding-box corner.
+        const corners = label.anchors.map(p=>p.clone().project(camera));
+        const visible = corners.filter(p=>p.x>=-.9&&p.x<=.9&&p.y>=-.9&&p.y<=.9);
+        projected.copy((visible.length ? visible : corners).reduce((a,b)=>b.x<a.x?b:a));
+      }
       const x = ((projected.x + 1) * size.width) / 2,
         y = ((1 - projected.y) * size.height) / 2;
       button.style.display = "block";
       const w = button.offsetWidth,
         h = button.offsetHeight;
-      const boxAt = (cx: number, cy: number) => ({
-        left: cx - w / 2 - 3,
-        right: cx + w / 2 + 3,
-        top: cy - h / 2 - 3,
-        bottom: cy + h / 2 + 3,
-      });
-      let labelX = x,
-        labelY = y,
-        bounds = boxAt(x, y);
-      const collides = (candidate: typeof bounds) =>
-        occupied.some(
-          (b) =>
-            candidate.left < b.right &&
-            candidate.right > b.left &&
-            candidate.top < b.bottom &&
-            candidate.bottom > b.top,
-        );
-      if ((highlighted || label.kind === "floor") && collides(bounds)) {
-        for (const [dx, dy] of [
-          [0, -24],
-          [0, 24],
-          [-w - 8, 0],
-          [w + 8, 0],
-          [0, -48],
-          [0, 48],
-        ]) {
-          const candidate = boxAt(x + dx, y + dy);
-          if (
-            !collides(candidate) &&
-            candidate.left >= 0 &&
-            candidate.right <= size.width &&
-            candidate.top >= 0 &&
-            candidate.bottom <= size.height
-          ) {
-            labelX = x + dx;
-            labelY = y + dy;
-            bounds = candidate;
-            break;
-          }
-        }
-      }
-      const overlaps = collides(bounds);
+      const placement = placeDiagramLabel([x,y],w,h,[size.width,size.height],occupied,label.kind,selected || label.kind === "floor");
+      const labelX = placement?.x ?? x, labelY = placement?.y ?? y;
       const outside =
         projected.z < -1 ||
         projected.z > 1 ||
@@ -453,20 +443,20 @@ function ArchitecturalScene(props: SceneProps) {
         x > size.width ||
         y < 0 ||
         y > size.height;
-      const hide =
-        outside ||
-        (!selected && !highlighted && label.kind !== "floor" && overlaps);
+      const hide = outside || !placement;
       button.style.display = hide ? "none" : "block";
       if (label.leader) {
         const dx = labelX - x,
           dy = labelY - y;
-        label.leader.style.display = !hide && (dx || dy) ? "block" : "none";
+        label.leader.style.background = label.color;
+        label.leader.style.opacity = ".65";
+        label.leader.style.display = !hide && Math.hypot(dx,dy)>8 ? "block" : "none";
         label.leader.style.width = `${Math.hypot(dx, dy)}px`;
         label.leader.style.transform = `translate(${x}px,${y}px) rotate(${Math.atan2(dy, dx)}rad)`;
       }
-      if (!hide) {
+      if (!hide && placement) {
         button.style.transform = `translate(-50%,-50%) translate(${labelX}px,${labelY}px)`;
-        occupied.push(bounds);
+        occupied.push(placement.bounds);
       }
     }
     // Read after R3F's render without scheduling another frame or React update.
@@ -477,6 +467,7 @@ function ArchitecturalScene(props: SceneProps) {
         host.dataset.triangles = String(gl.info.render.triangles);
         host.dataset.geometryCount = String(gl.info.memory.geometries);
         host.dataset.renderedFrames = String(gl.info.render.frame);
+        host.dataset.visibleConnections = String(model.group.children.filter(e=>e.userData.category === "link" && e.visible).length);
       }
     });
   });

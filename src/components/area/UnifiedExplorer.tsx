@@ -16,6 +16,8 @@ import FeatureDetails from "../explorer/FeatureDetails";
 import EntranceDetails from "../explorer/EntranceDetails";
 import PlateauBuildingControl from "../explorer/PlateauBuildingControl";
 import { usePlateauBuildings } from "../explorer/usePlateauBuildings";
+import HeightModeControl from "../explorer/HeightModeControl";
+import type { HeightMode } from "@/lib/stationHeights";
 
 const Viewer = dynamic(() => import("./CompactScene"), {
   ssr: false,
@@ -33,6 +35,7 @@ export default function UnifiedExplorer() {
   const [reset, setReset] = useState(0);
   const [level, setLevel] = useState("all");
   const [spacing, setSpacing] = useState(18);
+  const [heightMode,setHeightMode]=useState<HeightMode>("realistic");
   const [opacity, setOpacity] = useState(45);
   const [schematic, setSchematic] = useState(true);
   const [map, setMap] = useState(true);
@@ -49,8 +52,6 @@ export default function UnifiedExplorer() {
     setLevel(next);
     setSchematic(true);
     setDistrict(false);
-    setContext("footprints");
-    setOpacity(45);
   }
 
   function switchPlan(next: boolean) {
@@ -86,10 +87,11 @@ export default function UnifiedExplorer() {
     <main className={styles.shell}>
       <header className={styles.header}>
         <div>
-          <span className={styles.eyebrow}>SHIBUYA / CITY + STATION · v1.3</span>
+          <span className={styles.eyebrow}>SHIBUYA / CITY + STATION · v1.4</span>
           <h1>One place. One shared view.</h1>
         </div>
         <nav>
+          <Link href="/detail" prefetch={false}>Geometry detail</Link>
           <Link href="/" prefetch={false}>
             Original diagram
           </Link>
@@ -164,6 +166,12 @@ export default function UnifiedExplorer() {
             )}
           </div>
           {plan && <p className={styles.hint}>One floor at a time keeps the plan readable.</p>}
+          <HeightModeControl mode={heightMode} onChange={setHeightMode} onFocus={station=>{
+            setPlan(false);setDistrict(false);setSchematic(true);setHeightMode("realistic");
+            setLevel(station==="ginza"?"3F":"2F");setContext("buildings");setDetailedBuildings(true);setOpacity(25);
+            setSelected(station==="jr"?"jr-west-platform":`${station}-platform`);setReset(value=>value+1);
+          }}/>
+          {heightMode === "exploded" && <>
           <label className={styles.range}>
             Illustrative floor spacing <span>{spacing}</span>
             <input
@@ -172,7 +180,7 @@ export default function UnifiedExplorer() {
               min="4"
               max="24"
               value={spacing}
-              disabled={plan || level !== "all"}
+              disabled={plan}
               onChange={(e) => setSpacing(Number(e.target.value))}
             />
           </label>
@@ -180,6 +188,7 @@ export default function UnifiedExplorer() {
             Station floor elevations are not surveyed. Spacing separates the
             drawing for readability.
           </p>
+          </>}
           <h2>Compare layers</h2>
           <div className={styles.buttonRow} aria-label="City context style">
             <button aria-pressed={footprints} onClick={() => setContext("footprints")}>Outlines</button>
@@ -286,7 +295,7 @@ export default function UnifiedExplorer() {
                 {plateau.meshes ? "The same source PLATEAU mesh is available in both views, with roof shapes and source heights." : "The same PLATEAU outline appears in the diagram and city view. Projected mesh envelope; ground-contact footprint unverified."}
               </p>
               <p>
-                {residual ? `The original schematic centre was ${residual.distance.toFixed(1)} m from the source centre. This original fit is retained for station interiors; replacing the building outline does not validate entrances.` : "Building identity is inferred from a unique 88–96% overlap with a named OpenStreetMap outline. It was not added as a station-fit control."}
+                {residual ? `The original schematic centre was ${residual.distance.toFixed(1)} m from the source centre. Keio, Ginza and JR platforms now use public-map outlines. Their gates and equipment follow local, inferred positions; remaining station interiors retain the original fit.` : "Building identity is inferred from a unique 88–96% overlap with a named OpenStreetMap outline. It was not added as a station-fit control."}
               </p>
               <code>{place.outlineSource?.featureId}</code>
               <a href={`${base}/evidence/building-crosswalk.json`} target="_blank" rel="noreferrer">Match evidence ↗</a>
@@ -296,7 +305,7 @@ export default function UnifiedExplorer() {
             <strong>Draft horizontal alignment</strong>
             <p>
               {stationAlignment.rmse.toFixed(1)} m RMS mismatch across three
-              original building centres. Station interiors remain approximate; the shared building outlines are now placed at their source coordinates.
+              original building centres. Keio, Ginza and JR platforms use public-map outlines; gates and stairs remain approximate. Remaining station interiors keep this draft fit.
             </p>
           </div>
           <label className={styles.layer}>
@@ -314,8 +323,8 @@ export default function UnifiedExplorer() {
             <p>
               The plan and 3D view use the same registered station coordinates.
               One rotation, translation and uniform scale fits the original
-              drawing to three named PLATEAU building centres. The drawing is
-              not warped to force an exact match.
+              drawing to three named PLATEAU building centres. Keio, Ginza and JR are locally
+              corrected using five public-map platform outlines, including the two mapped JR openings. Their gate and equipment positions remain inferred. PLATEAU predates JR’s recent reconstruction; roof overlap does not verify present interiors.
             </p>
             <p>
               Most city buildings are simplified plan envelopes with flat roofs. The optional PLATEAU 3D layer preserves source triangles, roof shapes and heights for the eight destinations, without textures. Both layers use the same geographic frame and are shared with the original diagram. Three identities are named in PLATEAU; five are cross-source matches. The original station fit remains frozen.
@@ -333,7 +342,7 @@ export default function UnifiedExplorer() {
             </p>
             <p>
               The map is a flat plan reference, not terrain. Station floor
-              heights are illustrative. The optional passage retains its
+              heights are unverified estimates in Realistic and exaggerated in Exploded. The optional passage retains its
               measured source position and ellipsoidal height.
             </p>
             <p>
@@ -362,6 +371,7 @@ export default function UnifiedExplorer() {
                 reset={reset}
                 level={level}
                 spacing={spacing}
+                heightMode={heightMode}
                 opacity={opacity}
                 schematic={schematic}
                 map={map}
@@ -384,7 +394,8 @@ export default function UnifiedExplorer() {
           )}
           <div className={styles.mapCaption}>
             <strong>{plan ? "NORTH-UP PLAN" : "CITY + STATION"} · {level === "all" ? "ALL LEVELS" : level}</strong>
-            <span>{activeLevel?.description ?? "Exploded station diagram"}</span>
+            <span>{activeLevel?.description ?? (heightMode === "realistic" ? "Station · estimated heights" : "Exploded station diagram")}</span>
+            <span>{plan ? "Plan positions · elevations not shown" : heightMode === "realistic" ? "Realistic · heights unverified" : "Exploded · exaggerated spacing"}</span>
             <span>
               Draft alignment · {stationAlignment.rmse.toFixed(1)} m fit
               mismatch

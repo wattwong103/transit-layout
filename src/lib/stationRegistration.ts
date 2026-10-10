@@ -7,6 +7,8 @@ import outlines from "../data/station-building-outlines.json";
 import entranceSource from "../../public/evidence/entrance-references.json";
 import type { EntranceReference } from "../types/explorer";
 import type { CompactCity } from "../types/geographic";
+import { alignKeio } from "./keioAlignment";
+import { alignGinzaJr } from "./ginzaJrAlignment";
 
 export interface AlignmentControl {
   id: string;
@@ -170,7 +172,7 @@ const entranceReferences: EntranceReference[] = entranceSource.entries.map(entry
 
 /** Presentation dataset: all eight envelopes match the compact city exactly in plan. */
 export const schematicExplorer: ExplorerDataset = {
-  ...explorerData,
+  ...alignGinzaJr(alignKeio(explorerData, geographicToLocal, inverseTransformPoint), geographicToLocal, inverseTransformPoint),
   buildings: explorerData.buildings.map(building => {
     const source = outlines.buildings.find(b => b.explorerId === building.id);
     if (!source) throw new Error(`Missing shared building outline ${building.id}`);

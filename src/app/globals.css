@@ -468,6 +468,8 @@ button {
   top: 28px;
   right: 25px;
   z-index: 6;
+  display: flex;
+  gap: 8px;
 }
 .reset-view {
   display: flex;
@@ -529,12 +531,12 @@ button {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 60px;
+  bottom: 36px;
   z-index: 6;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 10px;
 }
 .scene-options {
   display: flex;
@@ -1031,8 +1033,29 @@ button {
 .explorer-3d-canvas {
   bottom: 137px;
 }
+.diagram-context-note {font-size:11px; line-height:1.65; color:#667368; margin-top:10px;}
+.diagram-zoom {display:flex; border:1px solid #d8dfd7; border-radius:6px; overflow:hidden; background:#fff;}
+.diagram-zoom button {width:31px; color:#3b6757; font-size:18px;}
+.diagram-zoom button + button {border-left:1px solid #e4e9e0;}
+.association-note {font-size:10px; color:#64756e; text-align:center; margin:0; max-width:460px;}
+.scene-options {flex-wrap:wrap; justify-content:center;}
+@media (min-width:701px) {
+  .canvas-focused .explorer-sidebar {display:none;}
+  .canvas-focused .explorer-header {height:62px;}
+  .canvas-focused .explorer-3d-canvas {top:88px; bottom:137px;}
+  .canvas-focused .map-bottom-controls {bottom:36px;}
+}
+@media (min-width:701px) and (max-width:1100px) {.map-bottom-controls {bottom:36px;}}
+@media (max-width: 700px) {
+  .canvas-focus-control {display:none;}
+  .map-top-actions {gap:4px;}
+  .diagram-zoom button {width:26px;}
+  .map-bottom-controls {width:calc(100% - 72px); left:calc(50% + 20px); bottom:48px; gap:7px;}
+  .scene-options {gap:8px 12px; padding:8px 10px;}
+  .association-note {font-size:9px; line-height:1.4;}
+}
 @media (max-width: 700px) {
   .explorer-3d-canvas {
-    bottom: 125px;
+    bottom: 170px;
   }
 }

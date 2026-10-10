@@ -6,7 +6,7 @@ import reference from "../../../public/plateau/reference.json";
 export const metadata = {
   title: "Shibuya — Sources & real-world reference",
   description:
-    "Review the v1.3 schematic against operator diagrams and decoded PLATEAU geometry.",
+    "Review the v1.4 schematic against operator diagrams and decoded PLATEAU geometry.",
 };
 
 export default function VerificationPage() {
@@ -18,7 +18,7 @@ export default function VerificationPage() {
         <Link href="/" className="underline underline-offset-4">
           ← Back to station explorer
         </Link>
-        <span className="text-slate-500">v1.3.0 · operator review 19 September · building and entrance references 10 October 2026</span>
+        <span className="text-slate-500">v1.4.0 · operator review 19 September · building and entrance references 10 October 2026</span>
       </nav>
       <Link
         href="/area"

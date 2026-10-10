@@ -18,6 +18,7 @@ import { extrudePlan, flatPlan } from "@/lib/planGeometry";
 import citySummary from "@/data/station-city-summary.json";
 import { fitOrthographicCamera, visibleGeometryCorners } from "@/lib/cameraFraming";
 import { plateauBuildingGeometry, type PlateauBuildingMeshes } from "@/lib/plateauBuildingGeometry";
+import { stationLevelHeight, type HeightMode } from "@/lib/stationHeights";
 
 const base = process.env.NODE_ENV === "production" ? "/transit-layout" : "";
 const ground = citySummary.displayGroundEllipsoidM;
@@ -28,6 +29,7 @@ const stationLabels = [
 ];
 
 export interface CompactSceneProps {
+  heightMode: HeightMode;
   city: CompactCity;
   buildingMeshes?: PlateauBuildingMeshes | null;
   plan: boolean;
@@ -132,10 +134,10 @@ function cityModel(city: CompactCity, footprints: boolean, buildingMeshes?: Plat
   return group;
 }
 
-function stationModel(spacing: number) {
+function stationModel(spacing: number, heightMode: HeightMode) {
   const root = new THREE.Group();
-  const height = (id: string) =>
-    (station.levels.find((l) => l.id === id)?.order ?? 0) * spacing;
+  const height = (id: string) => stationLevelHeight(id,heightMode,spacing);
+  const realistic=heightMode === "realistic";
   for (const level of station.levels) {
     const group = new THREE.Group();
     group.userData.levels = [level.id];
@@ -143,12 +145,12 @@ function stationModel(spacing: number) {
     for (const space of station.spaces.filter((s) => s.levelId === level.id)) {
       const parts = buckets.get(space.color) ?? [];
       const holes = getSpaceOpenings(station, space);
-      parts.push(extrusion([space.polygon, ...holes], height(level.id) + floorSurfaceOffset(station,space), 0.85));
+      parts.push(extrusion([space.polygon, ...holes], height(level.id) + floorSurfaceOffset(station,space) - (realistic ? .85 : 0), 0.85));
       buckets.set(space.color, parts);
       space.tracks?.forEach((track) => {
         const geometry = new THREE.BufferGeometry().setFromPoints(
           track.points.map(
-            ([x, z]) => new THREE.Vector3(x, height(level.id) + 1, z),
+            ([x, z]) => new THREE.Vector3(x, height(level.id) + (realistic ? .2 : 1), z),
           ),
         );
         group.add(
@@ -193,12 +195,12 @@ function stationModel(spacing: number) {
   for (const connector of station.connectors) {
     const a = new THREE.Vector3(
       connector.from.position[0],
-      height(connector.from.levelId) + 1,
+      height(connector.from.levelId) + (realistic ? .1 : 1),
       connector.from.position[1],
     );
     const b = new THREE.Vector3(
       connector.to.position[0],
-      height(connector.to.levelId) + 1,
+      height(connector.to.levelId) + (realistic ? .1 : 1),
       connector.to.position[1],
     );
     const mesh = new THREE.Mesh(
@@ -398,7 +400,7 @@ function Scene(
   const buildings = useMemo(() => cityModel(props.city, props.footprints, props.buildingMeshes), [props.city, props.footprints, props.buildingMeshes]);
   const cameraPreset = useRef("");
   const previousZoomStep = useRef(props.zoomStep);
-  const schematic = useMemo(() => stationModel(props.spacing), [props.spacing]);
+  const schematic = useMemo(() => stationModel(props.spacing,props.heightMode), [props.spacing,props.heightMode]);
   const references = useMemo(() => {
     const group = new THREE.Group();
     for (const entry of station.entranceReferences ?? []) {
@@ -598,7 +600,7 @@ function Scene(
       const selected=props.selected===record.id;
       const visible=props.schematic && (props.level === record.level || (props.level === "all" && selected));
       if (!visible) {button.style.display="none";return;}
-      const height=(station.levels.find(l=>l.id===record.level)?.order??0)*props.spacing;
+      const height=stationLevelHeight(record.level,props.heightMode,props.spacing);
       const p=new THREE.Vector3(record.position[0],height+5,record.position[1]).project(camera);
       const x=(p.x+1)*size.width/2,y=(1-p.y)*size.height/2;
       const blocked=!selected && occupied.some(q=>Math.abs(q.x-x)<24 && Math.abs(q.y-y)<20);
@@ -615,6 +617,8 @@ function Scene(
       gl.domElement.dataset.renderedLevel = props.level;
       gl.domElement.dataset.contextStyle = props.footprints ? "footprints" : "buildings";
       gl.domElement.dataset.buildingGeometry = props.buildingMeshes && !props.footprints ? "plateau-source" : "outlines";
+      gl.domElement.dataset.heightMode = props.heightMode;
+      gl.domElement.dataset.heightVerification = "unverified";
       gl.domElement.dataset.zoom = camera.zoom.toFixed(3);
     });
   });
